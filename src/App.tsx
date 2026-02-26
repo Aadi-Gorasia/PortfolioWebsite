@@ -104,7 +104,7 @@ export default function App() {
           <AboutSection />
           <ExpertiseSection />
 <SelectedWorks />  
-<IdentitySection />
+<TheArsenal />
 <EditorialSection />
 <Contact /> 
 <Footer />
