@@ -32,7 +32,7 @@ function ScrambleText({
       setOutput(
         text
           .split("")
-          .map((letter, index) => {
+          .map((_, index) => {
             if (index < iteration) return text[index];
             return CHARS[Math.floor(Math.random() * CHARS.length)];
           })

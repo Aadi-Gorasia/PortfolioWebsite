@@ -11,7 +11,6 @@ import Navbar from "./components/Navbar";
 import AboutSection from "./components/AboutSection"; // "Blueprint to Full Bloom"
 import ExpertiseSection from "./components/ExpertiseSection"; // "Predatory Focus"
 import EditorialSection from "./components/EditorialSection"; // (Placeholder/Existing)
-import IdentitySection from "./components/TheArsenal"; // "Breathing Void / Aadi Gorasia"
 import Footer from "./components/Footer";
 import SelectedWorks from "./components/SelectedWorks"; // "Case Files 2022—2024"
 import TheArsenal from "./components/TheArsenal"; // "The Arsenal"

@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
 
-const COLORS = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
 
 export default function MainHero() {
   const mouseX = useMotionValue(0);

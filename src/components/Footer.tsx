@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 
 export default function FatFooter() {
