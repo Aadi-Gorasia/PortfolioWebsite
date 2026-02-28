@@ -1,4 +1,43 @@
 
+@layer utilities {
+  /* --- THE TRACK (The Rail) --- */
+  ::-webkit-scrollbar {
+    width: 6px;  /* Vertical width */
+    height: 6px; /* Horizontal height */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0B0B0C; /* Matches your Deep Void background */
+    border-left: 1px solid rgba(243, 239, 230, 0.05); /* Faint guide rail */
+  }
+
+  /* --- THE THUMB (The Moving Part) --- */
+  ::-webkit-scrollbar-thumb {
+    background: #1F1F1F; /* Dark Titanium default */
+    border-radius: 0px;   /* Sharp, industrial edges */
+    border: 1px solid #0B0B0C; /* Separator */
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* --- HOVER STATE (Activation) --- */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #D6B97A; /* The Signature Gold */
+    box-shadow: 0 0 15px rgba(214, 185, 122, 0.4); /* Glow effect */
+  }
+
+  /* --- ACTIVE STATE (Clicking) --- */
+  ::-webkit-scrollbar-thumb:active {
+    background: #F3EFE6; /* White hot */
+    box-shadow: 0 0 20px rgba(243, 239, 230, 0.6);
+  }
+  
+  /* Firefox Support */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #1F1F1F #0B0B0C;
+  }
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

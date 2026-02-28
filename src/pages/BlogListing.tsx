@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Command } from "lucide-react";
+import { ArrowUpRight, Command, ArrowLeft, Terminal } from "lucide-react";
 import { getBlogPosts } from "@/lib/blog-utils";
 
 export default function BlogListing() {
@@ -9,6 +9,10 @@ export default function BlogListing() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isFocused, setIsFocused] = useState(false);
+
+  // Scroll Progress (The Fuel Line)
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   // Extract Categories
   const categories = useMemo(
@@ -31,10 +35,26 @@ export default function BlogListing() {
   }, [allPosts, searchQuery, selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-[#0B0B0C] pt-32 pb-24 px-6 md:px-12 selection:bg-[#D6B97A] selection:text-[#0B0B0C] relative overflow-hidden">
+    <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#050505] relative overflow-hidden">
       
-      {/* 1. Global Noise (Atmosphere) */}
-      <div className="fixed inset-0 z-0 opacity-[0.04] pointer-events-none mix-blend-overlay">
+      {/* 1. PROGRESS LINE (The Fuel) */}
+      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-[#D6B97A] origin-left z-50 mix-blend-difference" style={{ scaleX }} />
+
+      {/* 2. BACK TO HOME (The Magnetic Return) */}
+      <Link to="/" className="fixed top-8 left-8 z-40 group mix-blend-difference">
+        <div className="flex items-center gap-4">
+            <div className="relative flex items-center justify-center w-14 h-14 border border-[#F3EFE6] rounded-full overflow-hidden transition-all duration-500 group-hover:bg-[#F3EFE6]">
+                <ArrowLeft className="w-6 h-6 text-[#F3EFE6] group-hover:text-[#000] transition-colors duration-300 relative z-10" />
+            </div>
+            <div className="hidden md:flex flex-col">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#F3EFE6]">Return</span>
+                <span className="text-[10px] font-mono text-[#F3EFE6]/50">TO_BASE</span>
+            </div>
+        </div>
+      </Link>
+
+      {/* 3. Global Noise (Atmosphere) */}
+      <div className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-overlay">
         <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
           <filter id='noise'>
             <feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch' />
@@ -43,75 +63,84 @@ export default function BlogListing() {
         </svg>
       </div>
 
-      <div className="max-w-[1400px] mx-auto relative z-10">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-12 relative z-10 pt-48 pb-24">
         
-        {/* --- HEADER --- */}
-        <div className="mb-20 space-y-6">
-            <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse" />
-                <span className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em]">
-                    System Archive
-                </span>
+        {/* --- HEADER (Loud & Bold) --- */}
+        <div className="mb-32 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end border-b border-[#F3EFE6]/10 pb-12">
+            <div className="lg:col-span-9">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse" />
+                    <span className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em]">
+                        System Archive
+                    </span>
+                </div>
+                
+                <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9] text-[#F3EFE6] uppercase">
+                    Engineering <br />
+                    <span className="text-[#F3EFE6]/20">Logs</span>
+                </h1>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-semibold text-[#F3EFE6] tracking-tight leading-[0.95]">
-                Engineering <br />
-                <span className="text-[#F3EFE6]/20">Logs & Transmissions</span>
-            </h1>
+            <div className="lg:col-span-3 text-right hidden lg:block">
+                <p className="font-mono text-xs text-[#F3EFE6]/40 uppercase tracking-widest mb-2">Database Status</p>
+                <p className="text-[#D6B97A] font-mono text-xl">ONLINE_READ_WRITE</p>
+            </div>
         </div>
 
         {/* --- CONTROL PANEL (Search & Filter) --- */}
-        <div className="flex flex-col lg:flex-row gap-12 lg:items-end justify-between mb-24 border-b border-[#F3EFE6]/10 pb-8">
-            
-            {/* Search Input (The Terminal) */}
-            <div className={`relative group transition-all duration-300 w-full lg:w-1/3 ${isFocused ? "opacity-100" : "opacity-60"}`}>
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 text-[#D6B97A]">
-                    <Command size={18} />
+        <div className="sticky top-0 z-30 bg-[#050505]/80 backdrop-blur-xl border-b border-[#F3EFE6]/10 mb-24 py-6 -mx-6 px-6 md:-mx-12 md:px-12">
+            <div className="flex flex-col lg:flex-row gap-8 lg:items-center justify-between">
+                
+                {/* Search Input (The Terminal) */}
+                <div className={`relative group transition-all duration-300 w-full lg:w-1/3`}>
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 text-[#D6B97A]">
+                        <Command size={18} />
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="SEARCH_DATABASE..."
+                        value={searchQuery}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 pl-10 pr-4 text-[#F3EFE6] font-mono text-sm placeholder:text-[#F3EFE6]/20 focus:outline-none focus:border-[#D6B97A] transition-colors uppercase"
+                    />
+                    {/* Blinking Cursor */}
+                    {isFocused && (
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#D6B97A] animate-pulse" />
+                    )}
                 </div>
-                <input
-                    type="text"
-                    placeholder="Search database..."
-                    value={searchQuery}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-4 pl-10 pr-4 text-[#F3EFE6] font-mono text-sm placeholder:text-[#F3EFE6]/20 focus:outline-none focus:border-[#D6B97A] transition-colors"
-                />
-                {/* Blinking Cursor Decoration */}
-                {isFocused && (
-                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#D6B97A] animate-pulse" />
-                )}
-            </div>
 
-            {/* Category Tabs (The Frequency Bands) */}
-            <div className="flex flex-wrap gap-x-8 gap-y-4">
-                {categories.map((cat) => (
-                    <button
-                        key={cat}
-                        onClick={() => setSelectedCategory(cat)}
-                        className="relative pb-2 text-sm uppercase tracking-widest transition-colors"
-                    >
-                        <span className={`${selectedCategory === cat ? "text-[#F3EFE6]" : "text-[#F3EFE6]/40 hover:text-[#F3EFE6]/70"}`}>
-                            {cat}
-                        </span>
-                        
-                        {/* The Active Line (Liquid Motion) */}
-                        {selectedCategory === cat && (
-                            <motion.div
-                                layoutId="activeCategory"
-                                className="absolute bottom-0 left-0 w-full h-[1px] bg-[#D6B97A]"
-                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                            />
-                        )}
-                    </button>
-                ))}
+                {/* Category Tabs (The Frequency Bands) */}
+                <div className="flex flex-wrap gap-x-8 gap-y-4">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className="relative pb-1 text-sm font-mono uppercase tracking-widest transition-colors"
+                        >
+                            <span className={`${selectedCategory === cat ? "text-[#F3EFE6]" : "text-[#F3EFE6]/40 hover:text-[#F3EFE6]/70"}`}>
+                                {cat}
+                            </span>
+                            
+                            {/* The Active Line (Liquid Motion) */}
+                            {selectedCategory === cat && (
+                                <motion.div
+                                    layoutId="activeCategory"
+                                    className="absolute bottom-0 left-0 w-full h-[2px] bg-[#D6B97A]"
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                />
+                            )}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
 
         {/* --- THE GRID (Dossier Files) --- */}
         <motion.div 
             layout 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-24"
         >
           <AnimatePresence>
             {filteredPosts.map((post, index) => (
@@ -122,10 +151,10 @@ export default function BlogListing() {
 
         {/* --- EMPTY STATE (System Void) --- */}
         {filteredPosts.length === 0 && (
-          <div className="py-32 flex flex-col items-center justify-center border border-dashed border-[#F3EFE6]/10 rounded-lg">
-            <span className="text-[#D6B97A] font-mono text-4xl mb-4">404</span>
-            <p className="text-[#F3EFE6]/40 font-mono uppercase tracking-widest text-sm">
-                Query returned no results.
+          <div className="py-32 flex flex-col items-center justify-center border border-dashed border-[#F3EFE6]/10 rounded-lg opacity-50">
+            <Terminal size={48} className="text-[#D6B97A] mb-6" />
+            <p className="text-[#F3EFE6] font-mono uppercase tracking-widest text-lg">
+                NO_MATCHING_RECORDS
             </p>
           </div>
         )}
@@ -140,17 +169,17 @@ function DossierCard({ post, index }: { post: any, index: number }) {
     return (
         <motion.div
             layout
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
+            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="group relative flex flex-col h-full"
         >
             <Link to={`/blog/${post.slug}`} className="block h-full">
                 {/* 1. Image Window */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden border border-[#F3EFE6]/10 mb-8 bg-[#111]">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#111] mb-8 border border-[#F3EFE6]/10 group-hover:border-[#D6B97A] transition-colors duration-500">
                     {/* The Scanline Overlay */}
-                    <div className="absolute inset-0 z-10 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-10 pointer-events-none" />
+                    <div className="absolute inset-0 z-10 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none" />
                     
                     {/* The Image */}
                     {post.coverImage && (
@@ -161,43 +190,43 @@ function DossierCard({ post, index }: { post: any, index: number }) {
                         />
                     )}
 
-                    {/* Corner Markers */}
-                    <div className="absolute top-2 left-2 w-2 h-2 border-l border-t border-[#F3EFE6]/50" />
-                    <div className="absolute top-2 right-2 w-2 h-2 border-r border-t border-[#F3EFE6]/50" />
-                    <div className="absolute bottom-2 left-2 w-2 h-2 border-l border-b border-[#F3EFE6]/50" />
-                    <div className="absolute bottom-2 right-2 w-2 h-2 border-r border-b border-[#F3EFE6]/50" />
+                    {/* Corner Markers (Technical Viewport) */}
+                    <div className="absolute top-0 left-0 w-3 h-3 border-l-2 border-t-2 border-[#D6B97A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute top-0 right-0 w-3 h-3 border-r-2 border-t-2 border-[#D6B97A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 w-3 h-3 border-l-2 border-b-2 border-[#D6B97A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 border-r-2 border-b-2 border-[#D6B97A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     
                     {/* Hover Badge */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-[#D6B97A] text-[#0B0B0C] px-4 py-2 text-xs font-mono uppercase tracking-widest font-bold">
-                            Access File
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-90 group-hover:scale-100">
+                        <div className="bg-[#D6B97A] text-[#000] px-6 py-3 text-sm font-mono uppercase tracking-widest font-bold">
+                            Access_File
                         </div>
                     </div>
                 </div>
 
                 {/* 2. Data Block */}
-                <div className="flex flex-col flex-grow border-l border-[#F3EFE6]/10 pl-6 transition-all duration-300 group-hover:border-[#D6B97A]">
+                <div className="flex flex-col flex-grow border-l border-[#F3EFE6]/10 pl-8 transition-all duration-300 group-hover:border-[#D6B97A]">
                     {/* Meta Row */}
-                    <div className="flex items-center gap-4 text-[#F3EFE6]/40 text-[10px] font-mono uppercase tracking-widest mb-4">
+                    <div className="flex items-center gap-4 text-[#F3EFE6]/40 text-xs font-mono uppercase tracking-widest mb-4">
                         <span className="text-[#D6B97A]">{post.category}</span>
                         <span>//</span>
                         <span>{post.date}</span>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-2xl text-[#F3EFE6] font-medium leading-tight mb-4 group-hover:text-[#D6B97A] transition-colors">
+                    <h3 className="text-3xl lg:text-4xl text-[#F3EFE6] font-bold leading-[1] mb-6 group-hover:text-[#D6B97A] transition-colors">
                         {post.title}
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-[#BEB6A8]/70 text-sm leading-relaxed mb-6 line-clamp-3">
+                    <p className="text-[#A1A1AA] text-sm leading-relaxed mb-8 line-clamp-3 font-light">
                         {post.description}
                     </p>
                     
                     {/* Read Tech */}
                     <div className="mt-auto flex items-center gap-2 text-[#F3EFE6]/30 group-hover:text-[#F3EFE6] transition-colors text-xs font-mono uppercase tracking-widest">
                         <span>Read_Time: {post.readingTime}</span>
-                        <ArrowUpRight size={12} />
+                        <ArrowUpRight size={14} />
                     </div>
                 </div>
             </Link>

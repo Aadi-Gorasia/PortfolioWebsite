@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 /* -------------------- TYPES -------------------- */
 
 interface NavItemType {
   name: string;
   id: string;
+  isRoute?: boolean;
 }
 
 interface NavItemProps {
@@ -31,12 +33,16 @@ const NAV_ITEMS: NavItemType[] = [
   { name: "Expertise", id: "work" },
   { name: "Projects", id: "projects" },
   { name: "Editorial", id: "editorial" },
-  { name: "Identity", id: "contact" },
+  { name: "Blogs", id: "blog", isRoute: true }, // ← route
+  { name: "Identity", id: "identity" },
+  { name: "Contact", id: "contact" },
 ];
 
-/* -------------------- MAIN COMPONENT -------------------- */
+/* -------------------- MAIN -------------------- */
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState<string>("home");
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
@@ -57,7 +63,6 @@ export default function Navbar() {
         })
       );
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
@@ -67,6 +72,8 @@ export default function Navbar() {
       const scrollPosition = window.scrollY + 300;
 
       NAV_ITEMS.forEach((item) => {
+        if (item.isRoute) return; // ignore routes in scroll spy
+
         const section = document.getElementById(item.id);
 
         if (
@@ -83,12 +90,21 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleScrollTo = (id: string): void => {
-    const el = document.getElementById(id);
+  /* NAVIGATION HANDLER */
+  const handleNavigation = (item: NavItemType) => {
+    if (item.isRoute) {
+      navigate(`/${item.id}`);
+      setActiveTab(item.id);
+      setIsMobileOpen(false);
+      return;
+    }
+
+    const el = document.getElementById(item.id);
     if (el) {
       window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
     }
-    setActiveTab(id);
+
+    setActiveTab(item.id);
     setIsMobileOpen(false);
   };
 
@@ -104,6 +120,7 @@ export default function Navbar() {
           <div className="absolute -inset-1 bg-gradient-to-r from-transparent via-[#F3EFE6]/10 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <div className="relative flex items-center bg-[#0B0B0C]/80 backdrop-blur-xl border border-[#F3EFE6]/10 rounded-full p-1.5 shadow-2xl shadow-black/80">
+            
             {/* LEFT */}
             <div className="hidden md:flex items-center gap-3 px-4 border-r border-[#F3EFE6]/10 mr-1 h-8">
               <div className="flex items-center gap-2">
@@ -130,7 +147,7 @@ export default function Navbar() {
                   isHovered={hoveredTab === item.id}
                   isAnyHovered={!!hoveredTab}
                   onHover={() => setHoveredTab(item.id)}
-                  onClick={() => handleScrollTo(item.id)}
+                  onClick={() => handleNavigation(item)}
                 />
               ))}
             </ul>
@@ -148,7 +165,7 @@ export default function Navbar() {
               </a>
             </div>
 
-            {/* MOBILE */}
+            {/* MOBILE BUTTON */}
             <div className="md:hidden px-2">
               <button
                 onClick={() => setIsMobileOpen(true)}
@@ -189,7 +206,7 @@ export default function Navbar() {
               {NAV_ITEMS.map((item, i) => (
                 <motion.button
                   key={item.id}
-                  onClick={() => handleScrollTo(item.id)}
+                  onClick={() => handleNavigation(item)}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
@@ -260,13 +277,14 @@ function ScrambleText({ text, trigger }: ScrambleTextProps) {
       if (intervalRef.current) clearInterval(intervalRef.current);
 
       intervalRef.current = setInterval(() => {
-        setDisplayText(() =>
+        setDisplayText(
           text
             .split("")
-            .map((_, index) => {
-              if (index < iteration) return text[index];
-              return CHARS[Math.floor(Math.random() * CHARS.length)];
-            })
+            .map((_, index) =>
+              index < iteration
+                ? text[index]
+                : CHARS[Math.floor(Math.random() * CHARS.length)]
+            )
             .join("")
         );
 
