@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo, useEffect, useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowLeft, ShieldAlert, Hash } from "lucide-react";
 import { getBlogPosts } from "@/lib/blog-utils";
 
