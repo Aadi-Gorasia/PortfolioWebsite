@@ -34,8 +34,6 @@ const NAV_ITEMS: NavItemType[] = [
   { name: "Projects", id: "projects" },
   { name: "Editorial", id: "editorial" },
   { name: "Blogs", id: "blog", isRoute: true }, // ← route
-  { name: "Identity", id: "identity" },
-  { name: "Contact", id: "contact" },
 ];
 
 /* -------------------- MAIN -------------------- */

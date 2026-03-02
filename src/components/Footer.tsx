@@ -10,7 +10,7 @@ export default function FatFooter() {
       setTime(now.toLocaleTimeString("en-US", { 
         hour: "2-digit", 
         minute: "2-digit", 
-        timeZoneName: "short" 
+        timeZoneName: "long" 
       }));
     };
     updateTime();
@@ -41,7 +41,7 @@ export default function FatFooter() {
                   <span className="text-[#666] italic font-serif">unseen.</span>
                 </h2>
                 <button 
-                  onClick={() => window.location.href = "mailto:hello@example.com"}
+                  onClick={() => window.location.href = "mailto:aadigorasia6@gmail.com"}
                   className="group flex items-center gap-4 text-[#F3EFE6] hover:text-[#D6B97A] transition-colors duration-300"
                 >
                   <span className="text-sm font-mono uppercase tracking-widest border-b border-[#F3EFE6]/30 pb-1 group-hover:border-[#D6B97A]">
@@ -85,7 +85,7 @@ export default function FatFooter() {
             <div>
                 <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em] mb-4">Coordinates</h4>
                 <p className="text-[#F3EFE6] font-mono text-xs">
-                    San Francisco, CA<br />
+                    Pune, MH<br />
                     37.7749° N, 122.4194° W
                 </p>
             </div>

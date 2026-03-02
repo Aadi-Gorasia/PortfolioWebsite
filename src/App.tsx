@@ -15,9 +15,12 @@ import SelectedWorks from "./components/SelectedWorks";
 import TheArsenal from "./components/TheArsenal";
 import Contact from "./components/Contact";
 
-// Blog Pages
+//  Pages
 import BlogListing from "./pages/BlogListing";
 import BlogPost from "./pages/BlogPost";
+import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
+import NotFound from "./pages/NotFound";
 
 /* ===============================
    HOME PAGE (CINEMATIC LANDING)
@@ -121,6 +124,9 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogListing />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:slug" element={<ProjectDetail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
   );
 }

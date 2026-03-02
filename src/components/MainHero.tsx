@@ -109,7 +109,7 @@ export default function MainHero() {
             >
                 Pioneering the intersection of <span className="text-[#F3EFE6]">Aerospace</span>, <span className="text-[#F3EFE6]">Artificial Intelligence</span>, and <span className="text-[#F3EFE6]">Control Systems</span>. We build the architecture for the autonomous future.
             </motion.p>
-
+<a href="#contact" style={{width: "200px", display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", cursor: "grabbing"}}>
             {/* Magnetic CTA Button */}
             <motion.button
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -119,9 +119,11 @@ export default function MainHero() {
                 transition={{ duration: 0.3 }}
                 className="group flex items-center justify-between gap-4 px-8 py-4 border border-[#F3EFE6]/20 rounded-full text-[#F3EFE6] transition-colors duration-300 hover:border-[#F3EFE6]"
             >
-                <span className="uppercase tracking-widest text-sm font-medium">Explore Research</span>
-                <ArrowDownRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-[-45deg]" />
+              
+                <span className="uppercase tracking-widest text-lg font-medium">Meet Up</span> 
+                <ArrowDownRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-[45deg]" />
             </motion.button>
+            </a>
         </div>
       </div>
     </section>
