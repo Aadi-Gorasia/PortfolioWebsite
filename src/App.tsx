@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -122,6 +122,7 @@ function HomePage() {
 ================================ */
 export default function App() {
   return (
+    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogListing />} />
@@ -130,5 +131,6 @@ export default function App() {
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Router>
   );
 }
