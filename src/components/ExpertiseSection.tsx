@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MoveRight } from "lucide-react";
 
 // Replace these with your actual gritty engineering photos/videos
 const EXPERTISE = [
@@ -139,7 +138,7 @@ function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: any) {
           <span className="text-sm font-mono tracking-widest uppercase opacity-70">
             {item.category}
           </span>
-          <MoveRight className="w-8 h-8" />
+          {/* <MoveRight className="w-8 h-8" /> */}
         </motion.div>
       </div>
 

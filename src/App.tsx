@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import SelectedWorks from "./components/SelectedWorks";
 import TheArsenal from "./components/TheArsenal";
 import Contact from "./components/Contact";
+import SentinelAgent from "./components/CustomCursor";
 
 //  Pages
 import BlogListing from "./pages/BlogListing";
@@ -100,6 +101,7 @@ function HomePage() {
         </motion.div>
 
         <div className="relative z-10 bg-[#0B0B0C]">
+          <SentinelAgent />
           <MainHero />
           <AboutSection />
           <ExpertiseSection />
