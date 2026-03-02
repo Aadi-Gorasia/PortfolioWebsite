@@ -112,7 +112,7 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-6 inset-x-0 z-50 flex justify-center pointer-events-none"
+        className="fixed top-6 inset-x-0 z-10 flex justify-center pointer-events-none"
       >
         <div className="pointer-events-auto relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-transparent via-[#F3EFE6]/10 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

@@ -65,7 +65,7 @@ export default function DeadpanAgent() {
         mixBlendMode: "difference", 
       }}
       // Z-INDEX set to maximum to clear Navbars and Modals
-      className="fixed top-0 left-0 z-[9999999] pointer-events-none flex items-center justify-center"
+      className="fixed top-0 left-0 z-100 pointer-events-none flex items-center justify-center"
     >
       {/* The Agent Reticle (Outer Square) */}
       <motion.div
