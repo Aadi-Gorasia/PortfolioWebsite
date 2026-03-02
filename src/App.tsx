@@ -122,7 +122,6 @@ function HomePage() {
 ================================ */
 export default function App() {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogListing />} />
@@ -131,6 +130,5 @@ export default function App() {
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      </Router>
   );
 }
