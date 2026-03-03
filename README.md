@@ -106,7 +106,7 @@ To initialize this system on your local machine:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/Aadi-Gorasia/PortfolioWebsite.git
 
 # 2. Infiltrate the directory
 cd aadi-portfolio
