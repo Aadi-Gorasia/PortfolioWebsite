@@ -72,7 +72,7 @@ export default function FatFooter() {
                   <span className="text-[#666] italic font-serif">unseen.</span>
                 </h2>
                 <button 
-                  onClick={() => window.location.href = "mailto:aadigorasia6@gmail.com"}
+                  onClick={(e) => handleScroll(e, "contact")}
                   className="group flex items-center gap-4 text-[#F3EFE6] hover:text-[#D6B97A] transition-colors duration-300"
                 >
                   <span className="text-sm font-mono uppercase tracking-widest border-b border-[#F3EFE6]/30 pb-1 group-hover:border-[#D6B97A]">
