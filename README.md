@@ -28,44 +28,6 @@ Designed to bypass the noise of the modern web, this repository houses a **React
 
 ---
 
-## 👁️ // VISUAL_INTELLIGENCE
-
-> **ACCESSING SURVEILLANCE FEED...**
-> **TARGET: LOCALHOST:5173**
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <b>THE HERO (VOID STATE)</b><br />
-        <img src="https://raw.githubusercontent.com/Aadi-Gorasia/PortfolioWebsite/public/IntroHero.png" width="400" alt="Hero Section" />" width="400" alt="Hero Section" />
-      </td>
-      <td align="center">
-        <b>The About Section</b><br />
-        <img src="https://raw.githubusercontent.com/Aadi-Gorasia/PortfolioWebsite/public/AboutSection.png" width="400" alt="Navigation" />
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <b>PROJECT SCHEMATICS</b><br />
-        <img src="https://raw.githubusercontent.com/Aadi-Gorasia/PortfolioWebsite/public/ProjectSelectorPage.png" width="400" alt="Projects" />
-      </td>
-      <td align="center">
-        <b>INTELLIGENCE LOGS (BLOG)</b><br />
-        <img src="https://raw.githubusercontent.com/Aadi-Gorasia/PortfolioWebsite/public/BlogSelection.png" width="400" alt="Blog" />
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" align="center">
-        <b>THE 404 REALITY BREACH</b><br />
-        <img src="https://raw.githubusercontent.com/Aadi-Gorasia/PortfolioWebsite/public/404Section.png" width="800" alt="404 Page" />
-      </td>
-    </tr>
-  </table>
-</div>
-
----
-
 ## ⚡ // THE_ARSENAL (Tech Stack)
 
 The system runs on a highly optimized, type-safe chassis.
