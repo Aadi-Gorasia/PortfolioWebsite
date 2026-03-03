@@ -1,57 +1,65 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-export default function DeadpanAgent() {
-  const [isLocked, setIsLocked] = useState(false); // Suspicious/Hovering
-  const [isFiring, setIsFiring] = useState(false); // Clicking
-  const [isVisible, setIsVisible] = useState(false);
+export default function CustomCursor() {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
+  
+  // 1. Mouse Position
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-
-  // Professional-grade tracking: ultra-fast, zero lag, heavy feel.
-  const springConfig = { stiffness: 1200, damping: 50, mass: 0.1 };
-  const x = useSpring(rawX, springConfig);
-  const y = useSpring(rawY, springConfig);
+  // 2. Physics Configuration
+  // "Stiff" enough to feel responsive, "Damped" enough to feel heavy/expensive.
+  const springConfig = { stiffness: 1500, damping: 100, mass: 0.5 };
+  const x = useSpring(mouseX, springConfig);
+  const y = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    // KILL the default cursor everywhere (navbars, buttons, etc.)
+    // A. GLOBAL CSS: Kill the default cursor universally
     const style = document.createElement("style");
     style.innerHTML = `
       * { cursor: none !important; }
-      nav, button, a, [role="button"] { cursor: none !important; }
+      body, html { cursor: none !important; }
     `;
     document.head.appendChild(style);
 
+    // B. MOUSE LISTENERS
     const move = (e: MouseEvent) => {
-      rawX.set(e.clientX);
-      rawY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
 
-    const handleDown = () => setIsFiring(true);
-    const handleUp = () => setIsFiring(false);
+    const down = () => setIsClicking(true);
+    const up = () => setIsClicking(false);
 
-    const handleHover = (e: MouseEvent) => {
-      const el = e.target as HTMLElement;
-      // The Agent "Locks On" to interactive elements
-      const isTarget = el.closest("button, a, input, [role='button'], nav");
-      setIsLocked(!!isTarget);
+    // C. HOVER DETECTION (The "Magnet")
+    const checkHover = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      // Detect anything clickable
+      const isInteractive =
+        target.closest("a, button, input, textarea, [role='button'], .cursor-hover") !== null;
+      setIsHovered(isInteractive);
     };
 
-    window.addEventListener("mousemove", move, { passive: true });
-    window.addEventListener("mousedown", handleDown);
-    window.addEventListener("mouseup", handleUp);
-    window.addEventListener("mouseover", handleHover);
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mousedown", down);
+    window.addEventListener("mouseup", up);
+    window.addEventListener("mouseover", checkHover);
 
     return () => {
       document.head.removeChild(style);
       window.removeEventListener("mousemove", move);
-      window.removeEventListener("mousedown", handleDown);
-      window.removeEventListener("mouseup", handleUp);
-      window.removeEventListener("mouseover", handleHover);
+      window.removeEventListener("mousedown", down);
+      window.removeEventListener("mouseup", up);
+      window.removeEventListener("mouseover", checkHover);
     };
-  }, [isVisible]);
+  }, [mouseX, mouseY]);
+
+  // D. MOBILE CHECK (Disable on touch devices)
+  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+     return null;
+  }
 
   return (
     <motion.div
@@ -60,60 +68,53 @@ export default function DeadpanAgent() {
         y,
         translateX: "-50%",
         translateY: "-50%",
-        opacity: isVisible ? 1 : 0,
-        // INVERSE COLOR: This makes it visible on white, black, or any color.
-        mixBlendMode: "difference", 
+        // 3. THE MAGIC: INVERSE COLOR MODE
+        mixBlendMode: "difference",
       }}
-      // Z-INDEX set to maximum to clear Navbars and Modals
-      className="fixed top-0 left-0 z-100 pointer-events-none flex items-center justify-center"
+      className="fixed top-0 left-0 z-[9999] pointer-events-none flex items-center justify-center"
     >
-      {/* The Agent Reticle (Outer Square) */}
+      {/* 
+         THE ENTITY 
+         - Default: Small, solid white dot (12px)
+         - Hover: Large, solid white circle (80px)
+         - Click: Shrinks slightly (Recoil)
+         
+         Since mix-blend-mode is 'difference':
+         - White Entity on Black BG = White Cursor
+         - White Entity on White BG = Black Cursor
+      */}
       <motion.div
         animate={{
-          // Snaps shut when it detects a target
-          width: isLocked ? 16 : 24,
-          height: isLocked ? 16 : 24,
-          borderWidth: isLocked ? 2 : 1,
-          scale: isFiring ? 0.7 : 1,
+          width: isHovered ? 30 : 20,
+          height: isHovered ? 30 : 20,
+          scale: isClicking ? 0.8 : 1,
+          // Optional: Add a subtle blur on hover to make it feel like light
+          // filter: isHovered ? "blur(1px)" : "blur(1px)", 
+          border: "2px solid black", // Add a border for better visibility on light backgrounds
         }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 800, 
-          damping: 35 
+        transition={{
+          type: "spring",
+          stiffness: 350, // Snappy transformation
+          damping: 25,
         }}
-        className="border-white relative flex items-center justify-center"
-      >
-        {/* The '+' Centerpiece */}
-        <div className="relative w-full h-full flex items-center justify-center">
-          {/* Vertical line */}
-          <motion.div 
-            animate={{ height: isLocked ? "120%" : "30%" }}
-            className="absolute w-[1px] bg-white transition-all duration-200" 
-          />
-          {/* Horizontal line */}
-          <motion.div 
-            animate={{ width: isLocked ? "120%" : "30%" }}
-            className="absolute h-[1px] bg-white transition-all duration-200" 
-          />
-        </div>
+        className="bg-white rounded-full"
+      />
+      
+      {/* OPTIONAL: Text Reveal inside the bubble when hovering
+          Because of 'difference' mode, this text will invert AGAIN.
+          Black Text on White Cursor on Black BG = Black Text.
+      */}
+      {isHovered && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          {/* We keep this empty for pure minimalism, or add an icon if you want */}
+        </motion.div>
+      )}
 
-        {/* Tactical "Scanning" Corner accents - only visible when shadowing */}
-        {!isLocked && (
-            <motion.div 
-                animate={{ opacity: [0.2, 0.5, 0.2] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-                className="absolute inset-[-4px] border border-white/20"
-            />
-        )}
-      </motion.div>
-
-      {/* Subtle Locked text for flavor (very small, very deadpan) */}
-      <motion.span
-        animate={{ opacity: isLocked ? 1 : 0, y: isLocked ? 15 : 10 }}
-        className="absolute text-[8px] font-mono text-white uppercase tracking-widest"
-      >
-        LOCKED
-      </motion.span>
     </motion.div>
   );
 }

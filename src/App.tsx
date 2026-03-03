@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -14,7 +14,6 @@ import Footer from "./components/Footer";
 import SelectedWorks from "./components/SelectedWorks";
 import TheArsenal from "./components/TheArsenal";
 import Contact from "./components/Contact";
-import SentinelAgent from "./components/CustomCursor";
 
 //  Pages
 import BlogListing from "./pages/BlogListing";
@@ -22,31 +21,42 @@ import BlogPost from "./pages/BlogPost";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
+import CustomCursor from "./components/CustomCursor";
 
 /* ===============================
-   HOME PAGE (CINEMATIC LANDING)
+   HOME PAGE (LOGIC)
 ================================ */
 function HomePage() {
-  const [phase, setPhase] = useState<"intro" | "reveal" | "main">("intro");
+  // 1. Check Session Storage immediately
+  const [phase, setPhase] = useState<"intro" | "reveal" | "main">(() => {
+    const hasVisited = sessionStorage.getItem("hasVisited");
+    return hasVisited ? "main" : "intro";
+  });
 
-  // Lock scroll during intro
+  // 2. Lock scroll ONLY if we are actually in intro
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-
-    const timer = setTimeout(() => {
-      setPhase("reveal");
-    }, 4500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Unlock scroll after reveal
-  useEffect(() => {
-    if (phase === "main") {
+    if (phase === "intro") {
+      document.body.style.overflow = "hidden";
+      
+      // Auto-advance intro after 4.5s
+      const timer = setTimeout(() => {
+        setPhase("reveal");
+      }, 4500);
+      return () => clearTimeout(timer);
+    } else {
+      // If skipping intro, ensure scroll is unlocked
       document.body.style.overflow = "unset";
       document.body.style.cursor = "default";
     }
   }, [phase]);
+
+  // 3. Mark as visited when revealing is done
+  const handleRevealComplete = () => {
+    setPhase("main");
+    sessionStorage.setItem("hasVisited", "true");
+    document.body.style.overflow = "unset";
+    document.body.style.cursor = "default";
+  };
 
   return (
     <main className="relative w-full min-h-screen bg-[#0B0B0C] text-[#F3EFE6] selection:bg-[#F3EFE6] selection:text-[#0B0B0C]">
@@ -61,7 +71,7 @@ function HomePage() {
         </svg>
       </div>
 
-      {/* PHASE 1: INTRO */}
+      {/* PHASE 1: INTRO (Only if phase is intro) */}
       <AnimatePresence>
         {phase === "intro" && (
           <motion.div
@@ -74,23 +84,19 @@ function HomePage() {
         )}
       </AnimatePresence>
 
-      {/* PHASE 2: REVEAL */}
+      {/* PHASE 2: REVEAL (Only if phase is reveal) */}
       <AnimatePresence>
         {phase === "reveal" && (
           <div className="fixed inset-0 z-40 pointer-events-none">
-            <StripReveal
-              onComplete={() => {
-                setPhase("main");
-              }}
-            />
+            <StripReveal onComplete={handleRevealComplete} />
           </div>
         )}
       </AnimatePresence>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN CONTENT (Always rendered, covered by intro initially) */}
       <div className="relative z-0 flex flex-col">
         
-        {/* Navbar */}
+        {/* Navbar: Fade in logic */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={phase === "main" ? { opacity: 1, y: 0 } : {}}
@@ -101,7 +107,6 @@ function HomePage() {
         </motion.div>
 
         <div className="relative z-10 bg-[#0B0B0C]">
-          <SentinelAgent />
           <MainHero />
           <AboutSection />
           <ExpertiseSection />
@@ -110,25 +115,46 @@ function HomePage() {
           <EditorialSection />
           <Contact />
           <Footer />
-        </div>
 
+        </div>
       </div>
+          <CustomCursor />
     </main>
   );
 }
 
 /* ===============================
-   ROOT APP WITH ROUTER
+   ROOT APP WRAPPER
+   (Handles navbar visibility on other pages)
 ================================ */
+function Layout({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
+  return (
+    <>
+      {/* If NOT home, show Navbar immediately */}
+      {!isHome && (
+        <div className="fixed top-0 left-0 right-0 z-[60]">
+           <Navbar />
+        </div>
+      )}
+      {children}
+    </>
+  );
+}
+
 export default function App() {
   return (
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/blog" element={<BlogListing />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/:slug" element={<ProjectDetail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/blog" element={<BlogListing />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
   );
 }

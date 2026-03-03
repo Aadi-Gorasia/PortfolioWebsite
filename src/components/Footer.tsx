@@ -1,7 +1,37 @@
 import { useEffect, useState } from "react";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+const FOOTER_LINKS = [
+  { label: "About", id: "about" },
+  { label: "Expertise", id: "work" }, // Maps 'Expertise' to the 'work' ID
+  { label: "Projects", id: "projects" },
+  { label: "Editorial", id: "editorial" },
+];
+
 
 export default function FatFooter() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 2. The Universal Scroll Handler
+  const handleScroll = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+
+    // If we are NOT on home, go there first
+    if (location.pathname !== "/") {
+      navigate("/");
+      // Wait for the home page to mount, then hunt the ID
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      // If we ARE on home, just hunt the ID
+      const element = document.getElementById(id);
+      if (element) element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   const [time, setTime] = useState("");
 
   useEffect(() => {
@@ -10,6 +40,7 @@ export default function FatFooter() {
       setTime(now.toLocaleTimeString("en-US", { 
         hour: "2-digit", 
         minute: "2-digit", 
+        second: "2-digit",
         timeZoneName: "long" 
       }));
     };
@@ -54,17 +85,24 @@ export default function FatFooter() {
 
           {/* 2. Sitemap (Span 2) */}
           <div className="md:col-span-2 space-y-6">
-            <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em]">Index</h4>
-            <ul className="space-y-3">
-              {["About", "Expertise", "Projects", "Editorial"].map((item) => (
-                <li key={item}>
-                  <a href={`#${item.toLowerCase()}`} className="text-[#F3EFE6]/70 hover:text-[#F3EFE6] text-sm tracking-wide transition-colors block">
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em]">
+          Index
+        </h4>
+        <ul className="space-y-3">
+          {FOOTER_LINKS.map((item) => (
+            <li key={item.label}>
+              <a
+                href={`#${item.id}`} // Fallback for hover preview
+                onClick={(e) => handleScroll(e, item.id)}
+                className="text-[#F3EFE6]/70 hover:text-[#D6B97A] text-sm tracking-wide transition-colors block cursor-pointer"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
 
           {/* 3. Socials (Span 2) */}
           <div className="md:col-span-2 space-y-6">
