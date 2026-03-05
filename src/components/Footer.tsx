@@ -124,7 +124,7 @@ export default function FatFooter() {
                 <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em] mb-4">Coordinates</h4>
                 <p className="text-[#F3EFE6] font-mono text-xs">
                     Pune, MH<br />
-                    37.7749° N, 122.4194° W
+                    18.5246° N, 73.8786° E
                 </p>
             </div>
             

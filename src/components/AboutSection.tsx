@@ -86,7 +86,7 @@ export default function AboutSection() {
                 >
                     {/* Replace with your actual image. Using a placeholder that fits the vibe. */}
                     <img 
-                        src="https://images.unsplash.com/photo-1506720188989-b844bd5414bd?q=80&w=2670&auto=format&fit=crop" 
+                        src="/AboutSection.png" 
                         alt="Engineering Schematic"
                         className="w-full h-full object-cover grayscale contrast-[0.9] brightness-[1.1]"
                     />

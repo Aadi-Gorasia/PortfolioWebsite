@@ -35,6 +35,15 @@ export default function MainHero() {
     rgba(255, 255, 255, 0.04),
     transparent 80%
   )`;
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+
+    // 3. Scroll to contact
+    document.getElementById("contact")?.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section id="home" className="relative w-full min-h-screen bg-[#0B0B0C] overflow-hidden selection:bg-[#F3EFE6] selection:text-[#0B0B0C]">
@@ -109,7 +118,7 @@ export default function MainHero() {
             >
                 Pioneering the intersection of <span className="text-[#F3EFE6]">Aerospace</span>, <span className="text-[#F3EFE6]">Artificial Intelligence</span>, and <span className="text-[#F3EFE6]">Control Systems</span>. We build the architecture for the autonomous future.
             </motion.p>
-<a href="#contact" style={{width: "200px", display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", cursor: "grabbing"}}>
+
             {/* Magnetic CTA Button */}
             <motion.button
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -117,13 +126,13 @@ export default function MainHero() {
                 whileHover={{ scale: 1.05, backgroundColor: "#F3EFE6", color: "#0B0B0C" }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.3 }}
+                onClick={handleContactClick}
                 className="group flex items-center justify-between gap-4 px-8 py-4 border border-[#F3EFE6]/20 rounded-full text-[#F3EFE6] transition-colors duration-300 hover:border-[#F3EFE6]"
             >
               
-                <span className="uppercase tracking-widest text-lg font-medium">Meet Up</span> 
+               <span className="uppercase tracking-widest text-lg font-medium">Meet Up</span> 
                 <ArrowDownRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-[45deg]" />
             </motion.button>
-            </a>
         </div>
       </div>
     </section>
