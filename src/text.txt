@@ -1,0 +1,19 @@
+function Layout({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  const hideNavbarRoutes = ["/blog", "/projects"];
+const shouldHideNavbar = hideNavbarRoutes.some(route =>
+  location.pathname.startsWith(route)
+);
+
+  return (
+    <>
+      {/* If NOT home, show Navbar immediately */}
+      {!shouldHideNavbar && location.pathname !== "/" && (
+        <div className="fixed top-0 left-0 right-0 z-[60]">
+           <Navbar />
+        </div>
+      )}
+      {children}
+    </>
+  );
+}

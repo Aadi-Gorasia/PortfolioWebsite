@@ -14,22 +14,40 @@ import Footer from "./components/Footer";
 import SelectedWorks from "./components/SelectedWorks";
 import TheArsenal from "./components/TheArsenal";
 import Contact from "./components/Contact";
+import CustomCursor from "./components/CustomCursor";
 
-//  Pages
+// Pages
 import BlogListing from "./pages/BlogListing";
 import BlogPost from "./pages/BlogPost";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
-import CustomCursor from "./components/CustomCursor";
 import Now from "./pages/Now";
+
+/* ===============================
+   SYSTEM UTILITY: SCROLL RESET
+================================ */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Instant hard reset to top coordinates on every route change
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant", // 'instant' prevents smooth scrolling weirdness on mount
+    });
+  },[pathname]);
+
+  return null;
+}
 
 /* ===============================
    HOME PAGE (LOGIC)
 ================================ */
 function HomePage() {
   // 1. Check Session Storage immediately
-  const [phase, setPhase] = useState<"intro" | "reveal" | "main">(() => {
+  const[phase, setPhase] = useState<"intro" | "reveal" | "main">(() => {
     const hasVisited = sessionStorage.getItem("hasVisited");
     return hasVisited ? "main" : "intro";
   });
@@ -47,7 +65,7 @@ function HomePage() {
     } else {
       // If skipping intro, ensure scroll is unlocked
       document.body.style.overflow = "unset";
-      document.body.style.cursor = "default";
+      document.body.style.cursor = "none"; // Keep 'none' if using CustomCursor
     }
   }, [phase]);
 
@@ -56,7 +74,7 @@ function HomePage() {
     setPhase("main");
     sessionStorage.setItem("hasVisited", "true");
     document.body.style.overflow = "unset";
-    document.body.style.cursor = "default";
+    document.body.style.cursor = "none"; 
   };
 
   return (
@@ -72,7 +90,7 @@ function HomePage() {
         </svg>
       </div>
 
-      {/* PHASE 1: INTRO (Only if phase is intro) */}
+      {/* PHASE 1: INTRO */}
       <AnimatePresence>
         {phase === "intro" && (
           <motion.div
@@ -85,7 +103,7 @@ function HomePage() {
         )}
       </AnimatePresence>
 
-      {/* PHASE 2: REVEAL (Only if phase is reveal) */}
+      {/* PHASE 2: REVEAL */}
       <AnimatePresence>
         {phase === "reveal" && (
           <div className="fixed inset-0 z-40 pointer-events-none">
@@ -94,7 +112,7 @@ function HomePage() {
         )}
       </AnimatePresence>
 
-      {/* MAIN CONTENT (Always rendered, covered by intro initially) */}
+      {/* MAIN CONTENT */}
       <div className="relative z-0 flex flex-col">
         
         {/* Navbar: Fade in logic */}
@@ -111,22 +129,20 @@ function HomePage() {
           <MainHero />
           <AboutSection />
           <ExpertiseSection />
-          <TheArsenal />
           <SelectedWorks />
+          <TheArsenal />
           <EditorialSection />
           <Contact />
           <Footer />
-
         </div>
+
       </div>
-          <CustomCursor />
     </main>
   );
 }
 
 /* ===============================
    ROOT APP WRAPPER
-   (Handles navbar visibility on other pages)
 ================================ */
 function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -137,6 +153,7 @@ const shouldHideNavbar = hideNavbarRoutes.some(route =>
 
   return (
     <>
+    <ScrollToTop />
       {/* If NOT home, show Navbar immediately */}
       {!shouldHideNavbar && location.pathname !== "/" && (
         <div className="fixed top-0 left-0 right-0 z-[60]">
@@ -144,6 +161,7 @@ const shouldHideNavbar = hideNavbarRoutes.some(route =>
         </div>
       )}
       {children}
+      <CustomCursor />
     </>
   );
 }
@@ -157,8 +175,8 @@ export default function App() {
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/now" element={<Now />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
   );

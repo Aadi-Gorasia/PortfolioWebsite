@@ -83,13 +83,24 @@ export default function Now() {
             {/* ROW 2: PRIMARY FOCUS */}
             <Row delay={0.2} label="Primary_Focus">
                 <div className="max-w-3xl">
-                    <h3 className="text-3xl md:text-5xl font-serif italic text-[#F3EFE6] leading-tight mb-8">
-                        Building adaptive systems that bridge the gap between abstract control theory and raw hardware.
-                    </h3>
+                    <h4 className="text-3xl md:text-5xl font-serif italic text-[#F3EFE6] leading-tight mb-8">
+                        Designing adaptive, self-regulating systems that translate abstract control theory into efficient, real-world hardware implementations.  
+                    </h4>
+                       
+<h3>01 // THE COLLISION </h3>
                     <p className="text-[#F3EFE6]/60 text-lg md:text-xl font-light leading-relaxed">
-                        Currently deep in the architecture phase of a new autonomous grid protocol. Spending most of my hours wrestling with Rust compilers and reading whitepapers on mesh networking latency. 
-                        Trying to reduce complexity rather than manage it.
+Colliding abstract control theory with the friction of real hardware. I build for the moment the mathematical blueprint meets the unpredictability of a circuit board. I’m not looking for a "clean" simulation; I’m looking for the specific point where the logic holds under load.
                     </p>
+                    <br />
+<h3>02 // CURRENT ARCHITECTURE</h3>
+ <p className="text-[#F3EFE6]/60 text-lg md:text-xl font-light leading-relaxed">
+Constructing an autonomous, decentralized grid protocol. My current hours are spent in the Rust borrow-checker trenches, sifting through mesh networking whitepapers to isolate the one variable causing packet jitter. I’m drafting a system where nodes negotiate in the dark to keep the power moving.
+</p>
+<br />
+<h3>03 // THE MISSION</h3>
+ <p className="text-[#F3EFE6]/60 text-lg md:text-xl font-light leading-relaxed">
+Reducing complexity until only the skeleton remains. I don't "manage" chaos; I eliminate the clutter that causes it. If a system can’t be explained by a diagram on a napkin or survive a "frayed wire" event, it’s not finished. I’m still working toward that blue LED.
+</p>
                 </div>
             </Row>
 
@@ -103,9 +114,9 @@ export default function Now() {
                             Reading
                         </span>
                         <ul className="space-y-6">
-                            <ListItem title="Designing Data-Intensive Applications" author="Martin Kleppmann" />
-                            <ListItem title="The Master Switch" author="Tim Wu" />
-                            <ListItem title="Meditations" author="Marcus Aurelius" />
+                            <ListItem title="Project Hail Mary" author="Andy Weir" />
+                            <ListItem title="The Hunger Games" author="Suzanne Collins" />
+                            <ListItem title="Unfinished Tales" author="J.R.R. Tolkein" />
                         </ul>
                     </div>
 
