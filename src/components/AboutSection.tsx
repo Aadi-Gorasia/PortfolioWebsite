@@ -83,20 +83,20 @@ export default function AboutSection() {
             <div className="overflow-hidden h-full w-full relative">
                 <motion.div 
                     style={{ y }} 
-                    className="absolute inset-0 w-50% h-[120%] -top-[10%]"
+                    className="absolute left-1/2 -translate-x-1/2 h-[120%] w-[70%] -top-[10%]"
                 >
                     {/* Replace with your actual image. Using a placeholder that fits the vibe. */}
-                    <img 
-                        src="/aboutPhoto.jpeg" 
-                        alt="Engineering Schematic"
-                        className="w-full h-full object-cover contrast-[1] brightness-[1.1]"
-                    />
+                   <img 
+  src="/aboutPhoto.jpeg" 
+  alt="Engineering Schematic"
+  className="w-full h-full object-cover object-[75%_center] contrast-[1] brightness-[1.1]"
+/>
                 </motion.div>
                 
                 {/* Technical Overlay */}
                 <div className="absolute inset-0 border-[1px] border-[#1A1A1A]/10 m-4 pointer-events-none">
                     <div className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase font-mono text-[#1A1A1A]">
-                        Fig. 01 — The Man
+                        Fig. 01 — The Man, The Myth, HIM
                     </div>
                 </div>
             </div>
