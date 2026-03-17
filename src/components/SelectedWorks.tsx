@@ -1,45 +1,45 @@
 import { useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Database } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// ⚠️ DATA CONFIGURATION
-const PROJECTS = [
+// ⚠️ DATA CONFIGURATION (Top 4 Featured)
+const PROJECTS =[
   {
     id: "01",
-    client: "Aerospace Dynamics",
-    name: "Autonomous Flight Grid",
+    client: "Machine Learning",
+    name: "Gesture Control Car",
     role: "Systems Architecture",
-    year: "2024",
-    slug: "autonomous-flight-grid",
-    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+    year: "2023",
+    slug: "gesture-control-car",
+    img: "/gesturecontrolcar.png",
   },
   {
     id: "02",
-    client: "Neural Net Corp",
-    name: "Adaptive Vision Mod",
+    client: "Applied Physics",
+    name: "Tesla Turbine",
     role: "ML Engineering",
-    year: "2023",
-    slug: "adaptive-vision-mod",
-    img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop"
+    year: "2024",
+    slug: "tesla-turbine",
+    img: "/teslaturbine.png"
   },
   {
     id: "03",
-    client: "DefSpec",
-    name: "Protocol: OMEGA",
-    role: "Full Stack Security",
-    year: "2023",
-    slug: "protocol-omega",
-    img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop"
+    client: "Algorithmic Technologies",
+    name: "A* Path Finding Algorithm",
+    role: "Algorithm Design",
+    year: "2024",
+    slug: "a-star-path-finding",
+    img: "/a*pathfindingalgorithm.png"
   },
   {
     id: "04",
-    client: "Private Sector",
-    name: "Hyper-Index Engine",
+    client: "Aerospace Systems",
+    name: "PLEN",
     role: "Backend Optimization",
-    year: "2022",
+    year: "2025 (ONGOING)",
     slug: "hyper-index-engine",
-    img: "https://images.unsplash.com/photo-1614728853913-1e2217713b2e?q=80&w=2070&auto=format&fit=crop"
+    img: "/plen.png"
   }
 ];
 
@@ -50,13 +50,11 @@ export default function SelectedWorks() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth out the mouse movement for the image container
   const smoothX = useSpring(mouseX, { stiffness: 150, damping: 15, mass: 0.1 });
   const smoothY = useSpring(mouseY, { stiffness: 150, damping: 15, mass: 0.1 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const { clientX, clientY } = e;
-    // We want the image centered on the cursor, but we'll offset it in the CSS
     mouseX.set(clientX);
     mouseY.set(clientY);
   };
@@ -65,13 +63,13 @@ export default function SelectedWorks() {
     <section 
         id="projects" 
         onMouseMove={handleMouseMove}
-        className="relative bg-[#050505] py-32 overflow-hidden cursor-none" // Hide default cursor inside section
+        className="relative bg-[#050505] py-32 overflow-hidden cursor-none" 
     >
       
       {/* 1. ATMOSPHERE GRID */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
 
-      {/* 2. THE FLOATING EYE (Cursor Follower) */}
+      {/* 2. THE FLOATING EYE */}
       <motion.div
         style={{ 
             left: smoothX, 
@@ -80,7 +78,6 @@ export default function SelectedWorks() {
         className="fixed top-0 left-0 w-[400px] h-[280px] pointer-events-none z-30 hidden md:block overflow-hidden rounded-sm -translate-x-1/2 -translate-y-1/2"
       >
         {PROJECTS.map((project, index) => {
-            // Logic: Is this the active image?
             const isActive = hoveredIndex === index;
             return (
                 <motion.div
@@ -98,10 +95,8 @@ export default function SelectedWorks() {
                         alt={project.name}
                         className="w-full h-full object-cover filter grayscale contrast-125"
                     />
-                    {/* Scanlines on the floating image */}
                     <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-30" />
                     
-                    {/* Overlay Badge */}
                     <div className="absolute bottom-4 left-4 bg-[#D6B97A] text-black px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-widest">
                         Target_Locked
                     </div>
@@ -109,7 +104,6 @@ export default function SelectedWorks() {
             )
         })}
       </motion.div>
-
 
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative z-10">
         
@@ -121,13 +115,13 @@ export default function SelectedWorks() {
           <div className="hidden md:flex flex-col items-end text-right gap-2">
              <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse" />
              <span className="text-[#D6B97A] font-mono text-xs tracking-widest uppercase">
-                Secure Archive
+                Featured Archive
              </span>
           </div>
         </div>
 
         {/* THE LIST */}
-        <div className="flex flex-col">
+        <div className="flex flex-col border-b border-[#F3EFE6]/10">
           {PROJECTS.map((project, index) => (
             <ProjectItem 
               key={index} 
@@ -138,11 +132,42 @@ export default function SelectedWorks() {
             />
           ))}
         </div>
+
+        {/* --- 3. THE GATEWAY (Link to All Projects) --- */}
+        <div className="mt-12 flex justify-end">
+            <Link 
+                to="/projects" 
+                className="group relative flex items-center justify-between w-full md:w-[600px] border border-[#F3EFE6]/20 bg-[#0A0A0A] p-8 overflow-hidden transition-colors duration-500 hover:border-[#D6B97A]"
+            >
+                {/* Background Fill Animation */}
+                <div className="absolute inset-0 bg-[#D6B97A] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
+                
+                {/* Content */}
+                <div className="relative z-10 flex items-center gap-6 mix-blend-difference">
+                    <Database className="w-8 h-8 text-[#F3EFE6]" />
+                    <div className="flex flex-col">
+                        <span className="text-[#F3EFE6]/50 font-mono text-[10px] uppercase tracking-widest mb-1">
+                            // Unrestricted_Access
+                        </span>
+                        <span className="text-2xl md:text-3xl font-bold text-[#F3EFE6] uppercase tracking-tighter">
+                            Access Full Database
+                        </span>
+                    </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="relative z-10 mix-blend-difference">
+                    <ArrowUpRight className="w-8 h-8 text-[#F3EFE6] group-hover:rotate-45 transition-transform duration-500" />
+                </div>
+            </Link>
+        </div>
+
       </div>
     </section>
   );
 }
 
+// --- ROW COMPONENT ---
 function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
   const isHovered = hoveredIndex === index;
   const isDimmed = hoveredIndex !== null && hoveredIndex !== index;
@@ -161,12 +186,11 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
         <motion.div
              initial={{ scaleX: 0 }}
              animate={{ scaleX: isHovered ? 1 : 0 }}
-             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+             transition={{ duration: 0.5, ease:[0.16, 1, 0.3, 1] }}
              className="absolute inset-0 bg-[#F3EFE6] origin-left z-0"
         />
 
         {/* CONTENT LAYER */}
-        {/* We use mix-blend-difference so when the white background slides in, the text turns black automatically */}
         <div className="relative z-10 flex flex-col md:flex-row md:items-baseline justify-between gap-6 mix-blend-difference">
             
             {/* Left: ID + Title */}
@@ -201,7 +225,7 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
             </div>
         </div>
 
-        {/* Mobile-Only Image (Since floating eye is hidden on mobile) */}
+        {/* Mobile-Only Image */}
         <div className="md:hidden mt-8 w-full aspect-video overflow-hidden border border-white/10">
             <img src={project.img} className="w-full h-full object-cover grayscale" />
         </div>

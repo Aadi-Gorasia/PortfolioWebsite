@@ -7,17 +7,17 @@ import { Plus, ArrowRight } from "lucide-react";
 const PHILOSOPHY = [
   {
     title: "Design",
-    desc: "Architecture isn't just visual. It's the silent logic that dictates how a system breathes under pressure.",
+    desc: "I map the logic in Figma to enforce structural integrity. I define the pixels early so the hardware doesn't have to guess during implementation.",
     tag: "01"
   },
   {
     title: "Build",
-    desc: "Resilience is engineered, not assumed. Every line of code is a structural beam in the final edifice.",
+    desc: "The transition from abstract logic to a lit screen. This is where the system either functions as intended or the battery smokes.",
     tag: "02"
   },
   {
     title: "Research",
-    desc: "To innovate is to be comfortable in the unknown. I explore the white space between defined disciplines.",
+    desc: "Identifying the 'scut work' early. Sifting through documentation to find the one character or the one frayed wire that threatens the build.",
     tag: "03"
   },
 ];
@@ -61,10 +61,11 @@ export default function AboutSection() {
                 transition={{ duration: 0.8, delay: 0.2 }}
             >
                 <p className="text-xl md:text-2xl font-light text-[#1A1A1A] leading-relaxed max-w-2xl">
-                    I treat engineering as a craft of <span className="font-medium italic">adaptation</span>. 
-                    In a world of rigid algorithms, I build systems that learn, flex, and evolve.
+                    Building systems is a habit born from an inability to accept 
+<span className="font-medium italic"> surface-level answers</span>.
+                     My process started with the scent of burnt rosin in a cramped living room—a refusal to let a circuit board stay dead.
                     <br /><br />
-                    My work is the bridge between the abstract elegance of mathematics and the chaotic reality of hardware implementation.
+                    I use mathematics as the blueprint and duct tape as the reality. I’m not looking for perfection; I’m looking for the moment the system actually pulses.
                 </p>
             </motion.div>
 
@@ -82,20 +83,20 @@ export default function AboutSection() {
             <div className="overflow-hidden h-full w-full relative">
                 <motion.div 
                     style={{ y }} 
-                    className="absolute inset-0 w-full h-[120%] -top-[10%]"
+                    className="absolute inset-0 w-50% h-[120%] -top-[10%]"
                 >
                     {/* Replace with your actual image. Using a placeholder that fits the vibe. */}
                     <img 
-                        src="/AboutSection.png" 
+                        src="/aboutPhoto.jpeg" 
                         alt="Engineering Schematic"
-                        className="w-full h-full object-cover grayscale contrast-[0.9] brightness-[1.1]"
+                        className="w-full h-full object-cover contrast-[1] brightness-[1.1]"
                     />
                 </motion.div>
                 
                 {/* Technical Overlay */}
                 <div className="absolute inset-0 border-[1px] border-[#1A1A1A]/10 m-4 pointer-events-none">
                     <div className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase font-mono text-[#1A1A1A]">
-                        Fig. 01 — The Process
+                        Fig. 01 — The Man
                     </div>
                 </div>
             </div>
@@ -118,8 +119,8 @@ function RevealTitle() {
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 className="text-5xl md:text-7xl font-semibold text-[#1A1A1A] tracking-tight leading-[1.1]"
             >
-                From blueprint <br />
-                to <span className="text-[#888] italic serif">full bloom.</span>
+                Working towards <br />
+                the <span className="text-[#888] italic serif">blue LED.</span>
             </motion.h2>
         </div>
     )

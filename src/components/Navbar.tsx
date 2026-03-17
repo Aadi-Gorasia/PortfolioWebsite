@@ -18,6 +18,7 @@ const NAV_ITEMS: NavItemType[] = [
   { name: "Projects", id: "projects" },
   { name: "Editorial", id: "editorial" },
   { name: "Blogs", id: "blog", isRoute: true },
+  { name: "Now", id: "now", isRoute: true }
 ];
 
 /* -------------------- MAIN COMPONENT -------------------- */

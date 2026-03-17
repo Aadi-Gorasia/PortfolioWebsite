@@ -7,15 +7,15 @@ import { motion, AnimatePresence } from "framer-motion";
 const EXPERTISE = [
   {
     id: 0,
-    title: "Adaptive Control",
-    category: "System Dynamics",
-    src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2670&auto=format&fit=crop", // Industrial/Tech
+    title: "Catabolic Process",
+    category: "Dynamic Control",
+    src: "https://images.unsplash.com/photo-1738162837619-5d0b158abcec?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fHByb2Nlc3MlMjBhdXRvbWF0aW9ufGVufDB8fDB8fHww", // Industrial/Tech
   },
   {
     id: 1,
-    title: "Aerospace Proto",
+    title: "Aerospace Systems",
     category: "Hardware Integration",
-    src: "https://images.unsplash.com/photo-1559067515-bf7d799b23e2?q=80&w=2574&auto=format&fit=crop", // Turbine/Jet
+    src: "https://images.unsplash.com/photo-1648998224981-99656b9f2c3c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGFlcm9zcGFjZSUyMGVuZ2luZWVyaW5nfGVufDB8fDB8fHww", // Turbine/Jet
   },
   {
     id: 2,
@@ -25,14 +25,14 @@ const EXPERTISE = [
   },
   {
     id: 3,
-    title: "Auto Navigation",
+    title: "Navigational Algorithms",
     category: "Path Planning",
     src: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2670&auto=format&fit=crop", // Robot/Drone
   },
   {
     id: 4,
-    title: "System Arch",
-    category: "Full Stack Engineering",
+    title: "Systems Knowledge",
+    category: "Full Stack Development",
     src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop", // Server/Structure
   },
 ];
@@ -50,7 +50,7 @@ export default function ExpertiseSection() {
             <motion.div
               key={hoveredIndex}
               initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 0.4, scale: 1 }}
+              animate={{ opacity: 0.8, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="absolute inset-0 w-full h-full"

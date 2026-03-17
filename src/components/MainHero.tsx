@@ -32,8 +32,8 @@ export default function MainHero() {
   // Dynamic gradient background that follows mouse
   const background = useMotionTemplate`radial-gradient(
     650px circle at ${mouseX}px ${mouseY}px,
-    rgba(255, 255, 255, 0.04),
-    transparent 80%
+    rgba(255, 255, 255, 0.1),
+    transparent 120%
   )`;
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -90,7 +90,7 @@ export default function MainHero() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} // "Quiet" ease curve
             className="text-6xl md:text-8xl lg:text-9xl font-semibold text-[#F3EFE6] leading-[0.95] tracking-tight"
             >
-            Engineering
+              
             </motion.h1>
         </div>
         
@@ -101,7 +101,7 @@ export default function MainHero() {
             transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-6xl md:text-8xl lg:text-9xl font-semibold text-[#8a8a8a] leading-[0.95] tracking-tight relative"
             >
-            <span className="text-[#F3EFE6]">Adaptive</span> Systems
+            <span className="text-[#F3EFE6]">Aadi</span> Gorasia
             
             {/* Subtle glow on the word Adaptive */}
             <div className="absolute -left-10 top-1/2 -translate-y-1/2 w-[300px] h-[100px] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
@@ -116,7 +116,7 @@ export default function MainHero() {
                 transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
                 className="max-w-xl text-[#BEB6A8] text-lg md:text-xl font-light leading-relaxed"
             >
-                Pioneering the intersection of <span className="text-[#F3EFE6]">Aerospace</span>, <span className="text-[#F3EFE6]">Artificial Intelligence</span>, and <span className="text-[#F3EFE6]">Control Systems</span>. We build the architecture for the autonomous future.
+                I live in Pune and the lockdown turned me into <span className="text-[#F3EFE6]">a nerd</span>, the boredom kicked in and <span className="text-[#F3EFE6]">programming really got to me</span>, I built a lot of random projects, mainly to teach myself <span className="text-[#F3EFE6]">but also for the fun of it</span>
             </motion.p>
 
             {/* Magnetic CTA Button */}

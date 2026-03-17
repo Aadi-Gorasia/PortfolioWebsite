@@ -7,7 +7,7 @@ export default function Contact() {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   
-  const email = "aadi@engineering.com"; 
+  const email = "gorasiaaadi@gmail.com"; 
 
   const handleCopy = () => {
     navigator.clipboard.writeText(email);
@@ -15,17 +15,33 @@ export default function Contact() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    
-    // Simulate network request (Replace with actual Formspree/EmailJS logic)
-    setTimeout(() => {
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setStatus("sending");
+
+  try {
+    const res = await fetch("https://formspree.io/f/mreyogwb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        Username: formState.name,
+        "User Address": formState.email,
+        Message: formState.message,
+      }),
+    });
+
+    if (res.ok) {
       setStatus("success");
       setFormState({ name: "", email: "", message: "" });
-      setTimeout(() => setStatus("idle"), 3000);
-    }, 2000);
-  };
+    } else {
+      setStatus("error");
+    }
+  } catch (err) {
+    setStatus("error");
+  }
+};
 
   return (
     <section id="contact" className="relative bg-[#0B0B0C] py-32 px-6 md:px-12 overflow-hidden">
@@ -109,6 +125,7 @@ export default function Contact() {
                         <input 
                             type="text" 
                             required
+                            name="Username"
                             value={formState.name}
                             onChange={(e) => setFormState({...formState, name: e.target.value})}
                             className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 text-[#F3EFE6] font-mono text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
@@ -124,6 +141,7 @@ export default function Contact() {
                         <input 
                             type="email" 
                             required
+                            name="User Address"
                             value={formState.email}
                             onChange={(e) => setFormState({...formState, email: e.target.value})}
                             className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 text-[#F3EFE6] font-mono text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
@@ -139,6 +157,7 @@ export default function Contact() {
                         <textarea 
                             required
                             rows={4}
+                            name="Message"
                             value={formState.message}
                             onChange={(e) => setFormState({...formState, message: e.target.value})}
                             className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 text-[#F3EFE6] font-mono text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10 resize-none"

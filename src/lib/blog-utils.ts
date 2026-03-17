@@ -8,6 +8,7 @@ export interface BlogPostMeta {
   featured: boolean;
   slug: string;
   readingTime: string;
+  
 }
 
 const modules = import.meta.glob("../content/blog/*.mdx", {
@@ -45,7 +46,8 @@ export function getBlogPosts(): BlogPostMeta[] {
       coverImage: meta.coverImage ?? "",
       featured: Boolean(meta.featured),
       slug,
-      readingTime: calculateReadingTime(contentString),
+      readingTime: meta.readingTime ?? calculateReadingTime(contentString),
+      
     });
   }
 

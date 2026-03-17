@@ -22,6 +22,7 @@ import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 import CustomCursor from "./components/CustomCursor";
+import Now from "./pages/Now";
 
 /* ===============================
    HOME PAGE (LOGIC)
@@ -110,8 +111,8 @@ function HomePage() {
           <MainHero />
           <AboutSection />
           <ExpertiseSection />
-          <SelectedWorks />
           <TheArsenal />
+          <SelectedWorks />
           <EditorialSection />
           <Contact />
           <Footer />
@@ -129,12 +130,15 @@ function HomePage() {
 ================================ */
 function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const isHome = location.pathname === "/";
+  const hideNavbarRoutes = ["/blog", "/projects"];
+const shouldHideNavbar = hideNavbarRoutes.some(route =>
+  location.pathname.startsWith(route)
+);
 
   return (
     <>
       {/* If NOT home, show Navbar immediately */}
-      {!isHome && (
+      {!shouldHideNavbar && location.pathname !== "/" && (
         <div className="fixed top-0 left-0 right-0 z-[60]">
            <Navbar />
         </div>
@@ -154,6 +158,7 @@ export default function App() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/now" element={<Now />} />
         </Routes>
       </Layout>
   );

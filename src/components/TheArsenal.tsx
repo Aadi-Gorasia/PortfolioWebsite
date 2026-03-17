@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 
 const STACK = [
-  { category: "Core", items: ["TypeScript", "Rust", "Python", "C++"] },
-  { category: "Frameworks", items: ["Next.js", "React Native", "PyTorch", "TensorFlow"] },
-  { category: "Infrastructure", items: ["Docker", "Kubernetes", "AWS Lambda", "Terraform"] },
-  { category: "Design", items: ["Figma", "Blender", "WebGL", "GLSL"] },
+  { category: "Core", items: ["Python", "Rust", "JavaScript", "HTML"] },
+  { category: "Frameworks", items: ["Next.js", "React Native", "Django", "Vite"] },
+  { category: "Infrastructure", items: ["Vercel", "GitHub", "Gemini Code CLI", "MongoDB Atlas"] },
+  { category: "Design", items: ["Figma", "Blender", "DaVinci Resolve", "SolidWorks"] },
 ];
 
 export default function TheArsenal() {

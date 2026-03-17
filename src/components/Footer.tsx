@@ -106,17 +106,31 @@ export default function FatFooter() {
 
           {/* 3. Socials (Span 2) */}
           <div className="md:col-span-2 space-y-6">
-            <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em]">Network</h4>
-            <ul className="space-y-3">
-              {["LinkedIn", "GitHub", "Twitter / X", "Read.cv"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-[#F3EFE6]/70 hover:text-[#F3EFE6] text-sm tracking-wide transition-colors block group">
-                    {item} <span className="opacity-0 group-hover:opacity-100 transition-opacity ml-1">↗</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+  <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em]">
+    Network
+  </h4>
+
+  <ul className="space-y-3">
+    {[
+      { name: "GitHub", url: "https://github.com/Aadi-Gorasia" },
+      { name: "Twitter / X", url: "https://x.com/gorasiaaadi" },
+    ].map((item) => (
+      <li key={item.name}>
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#F3EFE6]/70 hover:text-[#F3EFE6] text-sm tracking-wide transition-colors block group"
+        >
+          {item.name}
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity ml-1">
+            ↗
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
 
           {/* 4. Meta Data (Span 2) */}
           <div className="md:col-span-2 space-y-6 flex flex-col justify-between">
