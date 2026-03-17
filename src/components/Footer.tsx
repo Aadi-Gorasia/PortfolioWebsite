@@ -68,8 +68,8 @@ export default function FatFooter() {
           <div className="md:col-span-6 flex flex-col justify-between">
             <div>
                 <h2 className="text-[#F3EFE6] text-5xl md:text-7xl font-medium tracking-tighter leading-[0.9] mb-8">
-                  Let’s build the <br />
-                  <span className="text-[#666] italic font-serif">unseen.</span>
+                  Let’s build <br />
+                  <span className="text-[#666] italic font-serif">something.</span>
                 </h2>
                 <button 
                   onClick={(e) => handleScroll(e, "contact")}

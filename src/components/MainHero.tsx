@@ -31,7 +31,7 @@ export default function MainHero() {
   // Dynamic gradient background that follows mouse - upgraded to have a subtle gold core
   const background = useMotionTemplate`radial-gradient(
     800px circle at ${mouseX}px ${mouseY}px,
-    rgba(214, 185, 122, 0.08),
+    rgba(214, 185, 122, 0.25),
     transparent 80%
   )`;
 
