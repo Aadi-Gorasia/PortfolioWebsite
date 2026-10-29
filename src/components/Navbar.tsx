@@ -30,12 +30,11 @@ export default function Navbar() {
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const [time, setTime] = useState<string>("");
+  const { scrollYProgress } = useScroll();
+  const width = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   // Ref to prevent Scroll Spy from reactivating tabs while we auto-scroll to contact
   const isManualScroll = useRef(false);
-
-  const { scrollYProgress } = useScroll();
-  const width = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   /* CLOCK */
   useEffect(() => {
@@ -54,7 +53,11 @@ export default function Navbar() {
 
   /* SCROLL SPY (Desktop Only) */
   useEffect(() => {
+    let scheduledFrame = 0;
     const handleScroll = () => {
+      if (scheduledFrame) return;
+      scheduledFrame = requestAnimationFrame(() => {
+        scheduledFrame = 0;
       // 1. If not home, ignore
       if (location.pathname !== "/") return;
       
@@ -74,9 +77,13 @@ export default function Navbar() {
           setActiveTab(item.id);
         }
       });
+      });
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(scheduledFrame);
+    };
   }, [location.pathname]);
 
   /* NAVIGATION HANDLER */
@@ -135,11 +142,8 @@ export default function Navbar() {
       >
         <div className="pointer-events-auto relative group w-full lg:w-auto flex justify-center">
           
-          {/* Outer Glow */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-transparent via-[#F3EFE6]/10 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
           {/* HUD Container */}
-          <div className="relative flex items-center justify-between lg:justify-center bg-[#0B0B0C]/80 backdrop-blur-xl border border-[#F3EFE6]/10 rounded-full p-1.5 shadow-2xl shadow-black/80 w-full lg:w-auto">
+          <div className="relative flex items-center justify-between lg:justify-center bg-[#0B0B0C]/90 backdrop-blur-md border border-[#F3EFE6]/10 rounded-full p-1.5 shadow-xl shadow-black/60 w-full lg:w-auto">
             
             {/* LEFT: Telemetry */}
             <div className="hidden lg:flex items-center gap-3 px-4 border-r border-[#F3EFE6]/10 mr-1 h-8">
@@ -204,13 +208,13 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* SCROLL PROGRESS */}
-            <div className="absolute bottom-0 left-6 right-6 h-[1px] bg-[#F3EFE6]/5 overflow-hidden rounded-full">
+            <div className="absolute bottom-0 left-6 right-6 h-px bg-[#F3EFE6]/5 overflow-hidden rounded-full">
               <motion.div
                 style={{ width }}
-                className="h-full bg-[#F3EFE6]/50 shadow-[0_0_10px_#F3EFE6]"
+                className="h-full bg-[#D6B97A]/70"
               />
             </div>
+
           </div>
         </div>
       </motion.nav>
@@ -219,9 +223,9 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] bg-[#050505]/95 flex flex-col items-center justify-center overflow-hidden"
           >
             {/* Background Grid */}

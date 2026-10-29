@@ -1,39 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
+import { useRef } from "react";
+import { motion, useSpring } from "framer-motion";
 import { ArrowDownRight, Crosshair } from "lucide-react";
 
 export default function MainHero() {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const heroRef = useRef<HTMLElement>(null);
+  const spotlightX = useSpring(0, { stiffness: 120, damping: 24 });
+  const spotlightY = useSpring(0, { stiffness: 120, damping: 24 });
 
-  // Smooth mouse tracking for the spotlight
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      animate(mouseX, e.clientX, {
-        type: "spring",
-        damping: 50,
-        stiffness: 400,
-        mass: 0.5, // Lightweight feel
-      });
-      animate(mouseY, e.clientY, {
-        type: "spring",
-        damping: 50,
-        stiffness: 400,
-        mass: 0.5,
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
-
-  // Dynamic gradient background that follows mouse - upgraded to have a subtle gold core
-  const background = useMotionTemplate`radial-gradient(
-    800px circle at ${mouseX}px ${mouseY}px,
-    rgba(214, 185, 122, 0.25),
-    transparent 80%
-  )`;
+  const handlePointerMove = (event: React.MouseEvent<HTMLElement>) => {
+    const bounds = heroRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+    spotlightX.set(event.clientX - bounds.left);
+    spotlightY.set(event.clientY - bounds.top);
+  };
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -43,23 +24,19 @@ export default function MainHero() {
   };
 
   return (
-    <section id="home" className="relative w-full min-h-screen bg-[#0B0B0C] overflow-hidden selection:bg-[#D6B97A] selection:text-[#0B0B0C] flex flex-col justify-between">
+    <section ref={heroRef} onMouseMove={handlePointerMove} id="home" className="portfolio-section relative w-full min-h-screen bg-[#0B0B0C] overflow-hidden selection:bg-[#D6B97A] selection:text-[#0B0B0C] flex flex-col justify-between">
       
       {/* 1. TECHNICAL GRID & NOISE */}
       <div className="absolute inset-0 z-0 opacity-20 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-      <div className="absolute inset-0 z-20 opacity-[0.03] pointer-events-none mix-blend-overlay">
-        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
-          <filter id='noise'>
-            <feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch' />
-          </filter>
-          <rect width='100%' height='100%' filter='url(#noise)' />
-        </svg>
-      </div>
-
-      {/* 2. THE SPOTLIGHT */}
       <motion.div
-        className="absolute inset-0 z-10 opacity-100 pointer-events-none mix-blend-screen"
-        style={{ background }}
+        className="absolute top-0 left-0 z-10 w-[900px] h-[700px] pointer-events-none rounded-full opacity-80"
+        style={{
+          x: spotlightX,
+          y: spotlightY,
+          translateX: "-50%",
+          translateY: "-50%",
+          background: "radial-gradient(ellipse, rgba(214,185,122,0.16), transparent 70%)",
+        }}
       />
 
       {/* 3. STRUCTURAL FRAMING (The HUD Elements) */}
@@ -124,8 +101,7 @@ export default function MainHero() {
                     className="text-[18vw] md:text-[14vw] font-black text-[#D6B97A] uppercase md:pl-32 relative"
                 >
                     Gorasia
-                    {/* Subtle optical flare behind the text */}
-                    <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-[40vw] h-[20vh] bg-[#D6B97A]/20 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
+                    <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-[30vw] h-[15vh] bg-[#D6B97A]/15 blur-[60px] rounded-full pointer-events-none" />
                 </motion.h1>
             </div>
 

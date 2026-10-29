@@ -44,7 +44,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 };
 
   return (
-    <section id="contact" className="relative bg-[#0B0B0C] py-32 px-6 md:px-12 overflow-hidden">
+    <section id="contact" className="portfolio-section relative bg-[#0B0B0C] py-32 px-6 md:px-12 overflow-hidden">
       
       {/* 1. ATMOSPHERE */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,185,122,0.05),transparent_40%)] pointer-events-none" />

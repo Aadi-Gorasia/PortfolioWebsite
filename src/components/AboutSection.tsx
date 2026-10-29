@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Plus, ArrowRight } from "lucide-react";
 
 const PHILOSOPHY = [
@@ -23,31 +23,19 @@ const PHILOSOPHY = [
 ];
 
 export default function AboutSection() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
+  const imageY = useTransform(scrollYProgress, [0, 1], [-35, 35]);
 
-  // Parallax effect for the image
-  const y = useTransform(scrollYProgress, [0, 1], [-50, 50]);
-  
   return (
     <section 
       id="about" 
       ref={containerRef}
-      className="relative bg-[#F1ECE2] min-h-screen flex items-center py-32 px-6 md:px-16 overflow-hidden"
+      className="portfolio-section relative bg-[#F1ECE2] min-h-screen flex items-center py-32 px-6 md:px-16 overflow-hidden"
     >
-      {/* Background Texture (Subtle Noise for continuity) */}
-      <div className="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply">
-        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
-            <filter id='noiseLight'>
-                <feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch' />
-            </filter>
-            <rect width='100%' height='100%' filter='url(#noiseLight)' />
-        </svg>
-      </div>
-
       <div className="max-w-7xl mx-auto w-full grid md:grid-cols-12 gap-16 items-start z-10">
         
         {/* Left Column: Narrative */}
@@ -81,14 +69,13 @@ export default function AboutSection() {
         <div className="md:col-span-5 relative h-[600px] w-full hidden md:block">
             {/* The Image Container with Masking */}
             <div className="overflow-hidden h-full w-full relative">
-                <motion.div 
-                    style={{ y }} 
-                    className="absolute left-1/2 -translate-x-1/2 h-[120%] w-[70%] -top-[10%]"
-                >
+                <motion.div style={{ y: imageY }} className="absolute left-1/2 -translate-x-1/2 h-[120%] w-[70%] -top-[10%]">
                     {/* Replace with your actual image. Using a placeholder that fits the vibe. */}
                    <img 
   src="/aboutPhoto.jpeg" 
   alt="Engineering Schematic"
+  loading="lazy"
+  decoding="async"
   className="w-full h-full object-cover object-[75%_center] contrast-[1] brightness-[1.1]"
 />
                 </motion.div>

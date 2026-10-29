@@ -1,77 +1,49 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { AlertTriangle, Zap } from "lucide-react";
 
 export default function NotFound() {
   const [glitchText, setGlitchText] = useState("404");
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 50, damping: 12 });
+  const smoothY = useSpring(pointerY, { stiffness: 50, damping: 12 });
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], ["8deg", "-8deg"]);
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], ["-8deg", "8deg"]);
 
-  // Mouse Physics for the Parallax Void
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  
-  const mouseX = useSpring(x, { stiffness: 50, damping: 10 });
-  const mouseY = useSpring(y, { stiffness: 50, damping: 10 });
-
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-15deg", "15deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (rect) {
-      const width = rect.width;
-      const height = rect.height;
-      const mouseXVal = e.clientX - rect.left;
-      const mouseYVal = e.clientY - rect.top;
-      const xPct = mouseXVal / width - 0.5;
-      const yPct = mouseYVal / height - 0.5;
-      x.set(xPct);
-      y.set(yPct);
-    }
-  };
-
-  // Glitch Effect
   useEffect(() => {
     const interval = setInterval(() => {
-      const chars = "40X_ERR#?";
-      const r1 = chars[Math.floor(Math.random() * chars.length)];
-      const r2 = chars[Math.floor(Math.random() * chars.length)];
-      const r3 = chars[Math.floor(Math.random() * chars.length)];
-      if (Math.random() > 0.9) setGlitchText(`${r1}${r2}${r3}`);
-      else setGlitchText("404");
-    }, 100);
+      setGlitchText(Math.random() > 0.82 ? "40X" : "404");
+    }, 700);
     return () => clearInterval(interval);
   }, []);
+
+  const handlePointerMove = (event: React.MouseEvent<HTMLElement>) => {
+    const bounds = containerRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+    pointerX.set((event.clientX - bounds.left) / bounds.width - 0.5);
+    pointerY.set((event.clientY - bounds.top) / bounds.height - 0.5);
+  };
 
   return (
     <section 
       ref={containerRef}
-      onMouseMove={handleMouseMove}
+      onMouseMove={handlePointerMove}
       className="relative h-screen w-full bg-[#050505] overflow-hidden flex flex-col items-center justify-center text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-black cursor-crosshair"
     >
       
       {/* 1. THE VOID BACKGROUND (Dynamic Gradient) */}
-      <motion.div 
-        style={{ x: mouseX, y: mouseY }}
-        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(214,185,122,0.15),transparent_60%)] z-0 pointer-events-none" 
-      />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(214,185,122,0.12),transparent_60%)] z-0 pointer-events-none" />
       
       {/* 2. NOISE & SCANLINES */}
-      <div className="fixed inset-0 z-[1] opacity-[0.05] pointer-events-none mix-blend-overlay">
-         <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
-            <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/></filter>
-            <rect width='100%' height='100%' filter='url(#n)'/>
-         </svg>
-      </div>
-      <div className="fixed inset-0 z-[2] bg-[linear-gradient(rgba(18,18,18,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-50" />
-
       {/* 3. CONTENT LAYER */}
       <div className="relative z-10 flex flex-col items-center text-center">
         
         {/* Warning Badge */}
         <div className="flex items-center gap-3 mb-8 border border-red-500/30 bg-red-500/10 px-4 py-2 rounded-full">
-            <AlertTriangle size={14} className="text-red-500 animate-pulse" />
+            <AlertTriangle size={14} className="text-red-500" />
             <span className="text-red-500 font-mono text-xs uppercase tracking-[0.2em] font-bold">
                 Critical Failure
             </span>
@@ -79,9 +51,9 @@ export default function NotFound() {
 
         {/* MASSIVE 3D TEXT */}
         <div className="perspective-1000">
-            <motion.h1 
+            <motion.h1
                 style={{ rotateX, rotateY }}
-                className="text-[25vw] leading-[0.8] font-black tracking-tighter text-[#F3EFE6] mix-blend-difference select-none drop-shadow-[0_0_50px_rgba(214,185,122,0.5)]"
+                className="text-[25vw] leading-[0.8] font-black tracking-tighter text-[#F3EFE6] select-none"
             >
                 {glitchText}
             </motion.h1>

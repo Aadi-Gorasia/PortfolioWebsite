@@ -54,7 +54,7 @@ export default function FatFooter() {
   };
 
   return (
-    <footer className="relative bg-[#0B0B0C] pt-24 pb-8 px-6 md:px-12 border-t border-[#F3EFE6]/10 overflow-hidden">
+    <footer className="portfolio-section relative bg-[#0B0B0C] pt-24 pb-8 px-6 md:px-12 border-t border-[#F3EFE6]/10 overflow-hidden">
       
       {/* Background Grid Pattern (Faint) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />

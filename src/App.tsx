@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 // Homepage Components
@@ -17,12 +17,12 @@ import Contact from "./components/Contact";
 import CustomCursor from "./components/CustomCursor";
 
 // Pages
-import BlogListing from "./pages/BlogListing";
-import BlogPost from "./pages/BlogPost";
-import Projects from "./pages/Projects";
-import ProjectDetail from "./pages/ProjectDetail";
-import NotFound from "./pages/NotFound";
-import Now from "./pages/Now";
+const BlogListing = lazy(() => import("./pages/BlogListing"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const Projects = lazy(() => import("./pages/Projects"));
+const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Now = lazy(() => import("./pages/Now"));
 
 /* ===============================
    SYSTEM UTILITY: SCROLL RESET
@@ -31,13 +31,12 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Instant hard reset to top coordinates on every route change
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "instant", // 'instant' prevents smooth scrolling weirdness on mount
+      behavior: "auto",
     });
-  },[pathname]);
+  }, [pathname]);
 
   return null;
 }
@@ -46,51 +45,30 @@ function ScrollToTop() {
    HOME PAGE (LOGIC)
 ================================ */
 function HomePage() {
-  // 1. Check Session Storage immediately
-  const[phase, setPhase] = useState<"intro" | "reveal" | "main">(() => {
-    const hasVisited = sessionStorage.getItem("hasVisited");
-    return hasVisited ? "main" : "intro";
+  const [phase, setPhase] = useState<"intro" | "reveal" | "main">(() => {
+    return sessionStorage.getItem("hasVisited") ? "main" : "intro";
   });
 
-  // 2. Lock scroll ONLY if we are actually in intro
   useEffect(() => {
     if (phase === "intro") {
       document.body.style.overflow = "hidden";
-      
-      // Auto-advance intro after 4.5s
-      const timer = setTimeout(() => {
-        setPhase("reveal");
-      }, 4500);
+      const timer = setTimeout(() => setPhase("reveal"), 4500);
       return () => clearTimeout(timer);
-    } else {
-      // If skipping intro, ensure scroll is unlocked
-      document.body.style.overflow = "unset";
-      document.body.style.cursor = "none"; // Keep 'none' if using CustomCursor
     }
+
+    document.body.style.overflow = "unset";
+    document.body.style.cursor = "auto";
   }, [phase]);
 
-  // 3. Mark as visited when revealing is done
   const handleRevealComplete = () => {
-    setPhase("main");
     sessionStorage.setItem("hasVisited", "true");
+    setPhase("main");
     document.body.style.overflow = "unset";
-    document.body.style.cursor = "none"; 
+    document.body.style.cursor = "auto";
   };
 
   return (
     <main className="relative w-full min-h-screen bg-[#0B0B0C] text-[#F3EFE6] selection:bg-[#F3EFE6] selection:text-[#0B0B0C]">
-      
-      {/* GLOBAL NOISE OVERLAY */}
-      <div className="fixed inset-0 z-[100] opacity-[0.03] pointer-events-none mix-blend-overlay">
-        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-          <filter id="globalNoise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#globalNoise)" />
-        </svg>
-      </div>
-
-      {/* PHASE 1: INTRO */}
       <AnimatePresence>
         {phase === "intro" && (
           <motion.div
@@ -103,7 +81,6 @@ function HomePage() {
         )}
       </AnimatePresence>
 
-      {/* PHASE 2: REVEAL */}
       <AnimatePresence>
         {phase === "reveal" && (
           <div className="fixed inset-0 z-40 pointer-events-none">
@@ -112,10 +89,7 @@ function HomePage() {
         )}
       </AnimatePresence>
 
-      {/* MAIN CONTENT */}
       <div className="relative z-0 flex flex-col">
-        
-        {/* Navbar: Fade in logic */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={phase === "main" ? { opacity: 1, y: 0 } : {}}
@@ -147,20 +121,21 @@ function HomePage() {
 function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const hideNavbarRoutes = ["/blog", "/projects"];
-const shouldHideNavbar = hideNavbarRoutes.some(route =>
-  location.pathname.startsWith(route)
-);
+  const shouldHideNavbar = hideNavbarRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
 
   return (
     <>
-    <ScrollToTop />
-      {/* If NOT home, show Navbar immediately */}
+      <ScrollToTop />
       {!shouldHideNavbar && location.pathname !== "/" && (
         <div className="fixed top-0 left-0 right-0 z-[60]">
-           <Navbar />
+          <Navbar />
         </div>
       )}
-      {children}
+      <Suspense fallback={<div className="min-h-screen bg-[#050505]" />}>
+        {children}
+      </Suspense>
       <CustomCursor />
     </>
   );

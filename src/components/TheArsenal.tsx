@@ -9,7 +9,7 @@ const STACK = [
 
 export default function TheArsenal() {
   return (
-    <section className="bg-[#0E0E0E] py-24 border-t border-white/5">
+    <section className="portfolio-section bg-[#0E0E0E] py-24 border-t border-white/5">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 grid md:grid-cols-4 gap-12 md:gap-0">
         
         {/* Title */}

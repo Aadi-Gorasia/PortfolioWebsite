@@ -21,19 +21,19 @@ const EXPERTISE = [
     id: 2,
     title: "Machine Learning",
     category: "Neural Architectures",
-    src: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2565&auto=format&fit=crop", // AI/Data
+    src: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=900&q=65", // AI/Data
   },
   {
     id: 3,
     title: "Navigational Algorithms",
     category: "Path Planning",
-    src: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2670&auto=format&fit=crop", // Robot/Drone
+    src: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=65", // Robot/Drone
   },
   {
     id: 4,
     title: "Systems Knowledge",
     category: "Full Stack Development",
-    src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop", // Server/Structure
+    src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=65", // Server/Structure
   },
 ];
 
@@ -41,7 +41,7 @@ export default function ExpertiseSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="work" className="relative bg-[#0B0B0C] min-h-screen py-32 px-4 md:px-16 overflow-hidden flex flex-col justify-center">
+    <section id="work" className="portfolio-section relative bg-[#0B0B0C] min-h-screen py-32 px-4 md:px-16 overflow-hidden flex flex-col justify-center">
       
       {/* 1. The Background Image Reveal Layer */}
       <div className="absolute inset-0 z-0 w-full h-full pointer-events-none">
@@ -59,6 +59,8 @@ export default function ExpertiseSection() {
               <img
                 src={EXPERTISE[hoveredIndex].src}
                 alt="Expertise"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover filter grayscale contrast-[1.2] brightness-75"
               />
               {/* Vignette Overlay */}
@@ -109,7 +111,7 @@ function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: any) {
     <motion.div
       onHoverStart={() => setHoveredIndex(index)}
       onHoverEnd={() => setHoveredIndex(null)}
-      className="group relative border-b border-[#F3EFE6]/10 py-10 cursor-none md:cursor-pointer transition-colors duration-500"
+      className="group relative border-b border-[#F3EFE6]/10 py-10 cursor-pointer transition-colors duration-500"
     >
       {/* Container Layout */}
       <div className="flex items-center justify-between relative z-20 mix-blend-difference">
@@ -119,7 +121,7 @@ function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: any) {
           animate={{
             x: isHovered ? 20 : 0,
             opacity: isDimmed ? 0.2 : 1,
-            filter: isDimmed ? "blur(4px)" : "blur(0px)",
+            filter: isDimmed ? "blur(2px)" : "blur(0px)",
           }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className="text-5xl md:text-8xl font-bold tracking-tighter text-[#F3EFE6] uppercase"

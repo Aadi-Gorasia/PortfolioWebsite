@@ -9,8 +9,7 @@ export default function ProjectDetail() {
   const { slug } = useParams();
   const project = PROJECTS.find((p) => p.slug === slug);
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
+  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   // Scroll to top on load
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -20,9 +19,10 @@ export default function ProjectDetail() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#000] relative">
-      
-      {/* Fuel Line */}
-      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-[#D6B97A] origin-left z-50 mix-blend-difference" style={{ scaleX }} />
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-[#D6B97A] origin-left z-50"
+        style={{ scaleX: progress }}
+      />
 
       {/* Back Button */}
       <Link to="/projects" className="fixed top-8 left-8 z-40 group mix-blend-difference">
@@ -36,10 +36,10 @@ export default function ProjectDetail() {
 
       {/* --- HERO SECTION --- */}
       <header className="relative h-[80vh] w-full overflow-hidden flex items-end pb-24 px-6 md:px-12 border-b border-[#F3EFE6]/10">
-        
+
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-            <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover opacity-40 filter grayscale contrast-125" />
+            <img src={project.coverImage} alt={project.title} fetchPriority="high" decoding="async" className="w-full h-full object-cover opacity-40 grayscale" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent" />
             {/* Grid Overlay */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px]" />
@@ -55,7 +55,7 @@ export default function ProjectDetail() {
                 </span>
                 <div className="h-[1px] w-24 bg-[#F3EFE6]/20" />
             </div>
-            
+
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter leading-[0.9] max-w-5xl">
                 {project.title}
             </h1>
@@ -73,10 +73,10 @@ export default function ProjectDetail() {
       </section>
 
       <main className="max-w-[1600px] mx-auto px-6 md:px-12 py-32 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
-        
+
         {/* --- LEFT: NARRATIVE --- */}
         <div className="lg:col-span-7 space-y-16">
-            
+
             {/* Description */}
             <div>
                 <h3 className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
@@ -127,13 +127,15 @@ export default function ProjectDetail() {
             <h3 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em] mb-6 text-right">
                 Visual_Evidence
             </h3>
-            
+
             {project.gallery.map((img: string, i: number) => (
                 <div key={i} className="group relative aspect-[4/3] bg-[#111] border border-[#F3EFE6]/10 overflow-hidden">
-                    <img 
-                        src={img} 
-                        alt={`Evidence ${i}`} 
-                        className="w-full h-full object-cover filter grayscale contrast-125 transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
+                    <img
+                        src={img}
+                        alt={`Evidence ${i}`}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover grayscale transition-[filter] duration-300 group-hover:grayscale-0"
                     />
                     {/* Scanlines */}
                     <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none" />

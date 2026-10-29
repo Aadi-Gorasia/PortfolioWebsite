@@ -3,31 +3,20 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 export default function EditorialSection() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
-
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const citationY = useTransform(scrollYProgress, [0, 1], [35, -35]);
 
   return (
     <section 
       id="editorial" 
       ref={containerRef}
-      className="relative min-h-screen bg-[#050505] text-[#F3EFE6] flex items-center justify-center py-32 px-6 md:px-12 overflow-hidden"
+      className="portfolio-section relative min-h-screen bg-[#050505] text-[#F3EFE6] flex items-center justify-center py-32 px-6 md:px-12 overflow-hidden"
     >
       
-      {/* 1. ATMOSPHERE */}
-      <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none mix-blend-overlay">
-        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
-          <filter id='noise'>
-            <feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch' />
-          </filter>
-          <rect width='100%' height='100%' filter='url(#noise)' />
-        </svg>
-      </div>
-
       <div className="max-w-[1600px] mx-auto relative z-10 w-full">
         
         {/* --- THE POEM (Arranged Layout) --- */}
@@ -76,10 +65,7 @@ export default function EditorialSection() {
         </div>
 
         {/* --- THE CITATION (Tripesh Bodhi) --- */}
-        <motion.div 
-            style={{ y }}
-            className="mt-32 md:mt-48 flex justify-center md:justify-end"
-        >
+        <motion.div style={{ y: citationY }} className="mt-32 md:mt-48 flex justify-center md:justify-end">
             <a 
                 href="https://palerecrite.vercel.app/profile.html?author=TRIPESH%20BODHI" 
                 target="_blank" 

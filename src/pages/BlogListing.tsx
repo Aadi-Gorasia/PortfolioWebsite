@@ -6,13 +6,11 @@ import { getBlogPosts } from "@/lib/blog-utils";
 
 export default function BlogListing() {
   const allPosts = useMemo(() => getBlogPosts(), []);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isFocused, setIsFocused] = useState(false);
-
-  // Scroll Progress (The Fuel Line)
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   // Extract Categories
   const categories = useMemo(
@@ -36,10 +34,11 @@ export default function BlogListing() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#050505] relative overflow-hidden">
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-[#D6B97A] origin-left z-50"
+        style={{ scaleX: progress }}
+      />
       
-      {/* 1. PROGRESS LINE (The Fuel) */}
-      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-[#D6B97A] origin-left z-50 mix-blend-difference" style={{ scaleX }} />
-
       {/* 2. BACK TO HOME (The Magnetic Return) */}
       <Link to="/" className="fixed top-8 left-8 z-40 group mix-blend-difference">
         <div className="flex items-center gap-4">
@@ -52,16 +51,6 @@ export default function BlogListing() {
             </div>
         </div>
       </Link>
-
-      {/* 3. Global Noise (Atmosphere) */}
-      <div className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-overlay">
-        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
-          <filter id='noise'>
-            <feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch' />
-          </filter>
-          <rect width='100%' height='100%' filter='url(#noise)' />
-        </svg>
-      </div>
 
       <div className="max-w-[1800px] mx-auto px-6 md:px-12 relative z-10 pt-48 pb-24">
         
@@ -88,7 +77,7 @@ export default function BlogListing() {
         </div>
 
         {/* --- CONTROL PANEL (Search & Filter) --- */}
-        <div className="sticky top-0 z-30 bg-[#050505]/80 backdrop-blur-xl border-b border-[#F3EFE6]/10 mb-24 py-6 -mx-6 px-6 md:-mx-12 md:px-12">
+        <div className="sticky top-0 z-30 bg-[#050505] border-b border-[#F3EFE6]/10 mb-24 py-6 -mx-6 px-6 md:-mx-12 md:px-12">
             <div className="flex flex-col lg:flex-row gap-8 lg:items-center justify-between">
                 
                 {/* Search Input (The Terminal) */}
@@ -186,6 +175,8 @@ function DossierCard({ post, index }: { post: any, index: number }) {
                         <img
                             src={post.coverImage}
                             alt={post.title}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover filter grayscale contrast-125 transition-transform duration-700 group-hover:scale-105 group-hover:grayscale-0"
                         />
                     )}

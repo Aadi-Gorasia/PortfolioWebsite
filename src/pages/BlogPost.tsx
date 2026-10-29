@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useRef } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowLeft, Command } from "lucide-react";
@@ -32,6 +32,8 @@ const MDXComponents = {
       <motion.img 
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        loading="lazy"
+        decoding="async"
         className="w-full grayscale hover:grayscale-0 transition-all duration-700" 
         {...props} 
       />
@@ -43,20 +45,10 @@ const mdxModules = import.meta.glob("../content/blog/*.mdx");
 
 export default function BlogPost() {
   const { slug } = useParams();
-  const containerRef = useRef(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
-  const blur = useTransform(scrollYProgress, [0, 0.2], [0, 10]);
-
-
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const titleY = useTransform(scrollYProgress, [0, 0.3], [0, 70]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const posts = useMemo(() => getBlogPosts(), []);
   const post = posts.find((p) => p.slug === slug);
 
@@ -71,26 +63,17 @@ export default function BlogPost() {
 
   return (
 
-    <div ref={containerRef} className="relative min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#000] overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#000] overflow-x-hidden">
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[2px] bg-[#D6B97A] origin-left z-[110]"
+        style={{ scaleX: progress }}
+      />
       <br />
       <br />
       <br />
       <br />
-      {/* --- VISCERAL OVERLAYS --- */}
-      <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] mix-blend-overlay">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <filter id="noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noise)" />
-        </svg>
-      </div>
-      <div className="fixed inset-0 pointer-events-none z-[99] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] bg-[length:100%_4px,3px_100%]" />
-
       {/* --- HUD / NAVIGATION --- */}
       
-      <motion.div className="fixed top-0 left-0 right-0 h-[2px] bg-[#D6B97A] origin-left z-[110]" style={{ scaleX }} />
-
       <nav className="fixed top-0 inset-x-0 h-20 flex items-center justify-between px-6 md:px-12 z-[105] mix-blend-difference">
         <Link to="/blog" className="group flex items-center gap-4">
             <div className="p-2 border border-[#F3EFE6] rounded-full group-hover:bg-[#F3EFE6] group-hover:text-black transition-all">
@@ -102,7 +85,7 @@ export default function BlogPost() {
 
       {/* --- HERO SECTION --- */}
       <header className="relative h-screen flex flex-col justify-center px-6 md:px-12 max-w-[1800px] mx-auto overflow-hidden">
-        <motion.div style={{ y: titleY, opacity, filter: `blur(${blur}px)` }} className="z-10">
+        <motion.div style={{ y: titleY, opacity: titleOpacity }} className="z-10">
             <div className="flex items-center gap-4 mb-8 text-[#D6B97A]">
                 <Command size={20} className="animate-spin-slow" />
                 <span className="font-mono tracking-[0.5em] text-sm uppercase">{post.category} // {post.date}</span>

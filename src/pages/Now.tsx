@@ -24,18 +24,10 @@ export default function Now() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#F3EFE6] selection:text-[#050505] font-sans">
-      
-      {/* 1. ATMOSPHERE (Static Noise, No Glows) */}
-      <div className="fixed inset-0 z-0 opacity-[0.04] pointer-events-none mix-blend-overlay">
-        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
-          <filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch' /></filter>
-          <rect width='100%' height='100%' filter='url(#noise)' />
-        </svg>
-      </div>
 
       {/* 2. THE RETURN (Minimalist Back Button) */}
-      <Link 
-        to="/" 
+      <Link
+        to="/"
         className="fixed top-8 left-6 md:left-12 z-50 flex items-center gap-4 text-[#F3EFE6]/40 hover:text-[#F3EFE6] transition-colors duration-500 group"
       >
         <ArrowLeft size={16} className="group-hover:-translate-x-2 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
@@ -43,10 +35,10 @@ export default function Now() {
       </Link>
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 pt-40 pb-32">
-        
+
         {/* --- HEADER --- */}
         <header className="mb-32">
-            <motion.h1 
+            <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.2, ease:[0.16, 1, 0.3, 1] }}
@@ -58,7 +50,7 @@ export default function Now() {
 
         {/* --- THE LEDGER (Brutalist Grid) --- */}
         <div className="border-t border-[#F3EFE6]/20">
-            
+
             {/* ROW 1: TELEMETRY */}
             <Row delay={0.1} label="Current_State">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -84,9 +76,9 @@ export default function Now() {
             <Row delay={0.2} label="Primary_Focus">
                 <div className="max-w-3xl">
                     <h4 className="text-3xl md:text-5xl font-serif italic text-[#F3EFE6] leading-tight mb-8">
-                        Designing adaptive, self-regulating systems that translate abstract control theory into efficient, real-world hardware implementations.  
+                        Designing adaptive, self-regulating systems that translate abstract control theory into efficient, real-world hardware implementations.
                     </h4>
-                       
+
 <h3>01 // THE COLLISION </h3>
                     <p className="text-[#F3EFE6]/60 text-lg md:text-xl font-light leading-relaxed">
 Colliding abstract control theory with the friction of real hardware. I build for the moment the mathematical blueprint meets the unpredictability of a circuit board. I’m not looking for a "clean" simulation; I’m looking for the specific point where the logic holds under load.
@@ -107,7 +99,7 @@ Reducing complexity until only the skeleton remains. I don't "manage" chaos; I e
             {/* ROW 3: CONSUMPTION */}
             <Row delay={0.3} label="Input_Stream">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-4xl">
-                    
+
                     {/* Reading */}
                     <div className="flex flex-col gap-6">
                         <span className="font-mono text-xs text-[#F3EFE6]/30 uppercase tracking-[0.2em] border-b border-[#F3EFE6]/10 pb-4">
@@ -149,7 +141,7 @@ Reducing complexity until only the skeleton remains. I don't "manage" chaos; I e
         </div>
 
         {/* --- FOOTER --- */}
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 1 }}
@@ -175,7 +167,7 @@ Reducing complexity until only the skeleton remains. I don't "manage" chaos; I e
 // The "Ledger Row"
 function Row({ children, label, delay }: { children: React.ReactNode, label: string, delay: number }) {
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
@@ -187,7 +179,7 @@ function Row({ children, label, delay }: { children: React.ReactNode, label: str
                     // {label}
                 </span>
             </div>
-            
+
             {/* The Content Column */}
             <div className="lg:w-3/4 py-12 lg:py-16 lg:pl-16">
                 {children}

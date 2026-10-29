@@ -45,7 +45,7 @@ const PROJECTS =[
 
 export default function SelectedWorks() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  
+
   // Mouse Position Physics
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -54,25 +54,26 @@ export default function SelectedWorks() {
   const smoothY = useSpring(mouseY, { stiffness: 150, damping: 15, mass: 0.1 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (hoveredIndex === null) return;
     const { clientX, clientY } = e;
     mouseX.set(clientX);
     mouseY.set(clientY);
   };
 
   return (
-    <section 
-        id="projects" 
+    <section
+        id="projects"
         onMouseMove={handleMouseMove}
-        className="relative bg-[#050505] py-32 overflow-hidden cursor-none" 
+        className="portfolio-section relative bg-[#050505] py-32 overflow-hidden"
     >
-      
+
       {/* 1. ATMOSPHERE GRID */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
 
       {/* 2. THE FLOATING EYE */}
       <motion.div
-        style={{ 
-            left: smoothX, 
+        style={{
+            left: smoothX,
             top: smoothY,
         }}
         className="fixed top-0 left-0 w-[400px] h-[280px] pointer-events-none z-30 hidden md:block overflow-hidden rounded-sm -translate-x-1/2 -translate-y-1/2"
@@ -80,33 +81,33 @@ export default function SelectedWorks() {
         {PROJECTS.map((project, index) => {
             const isActive = hoveredIndex === index;
             return (
-                <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 1.2 }}
-                    animate={{ 
-                        opacity: isActive ? 1 : 0,
-                        scale: isActive ? 1 : 1.2 
-                    }}
-                    transition={{ duration: 0.4 }}
-                    className="absolute inset-0 w-full h-full bg-[#111]"
-                >
-                    <img 
-                        src={project.img} 
-                        alt={project.name}
-                        className="w-full h-full object-cover filter grayscale contrast-125"
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-30" />
-                    
-                    <div className="absolute bottom-4 left-4 bg-[#D6B97A] text-black px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-widest">
-                        Target_Locked
-                    </div>
-                </motion.div>
+                isActive && (
+                  <motion.div
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 w-full h-full bg-[#111]"
+                  >
+                      <img
+                          src={project.img}
+                          alt={project.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.45)_50%)] bg-[size:100%_4px]" />
+                      <div className="absolute bottom-4 left-4 bg-[#D6B97A] text-black px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-widest">
+                          Target_Locked
+                      </div>
+                  </motion.div>
+                )
             )
         })}
       </motion.div>
 
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative z-10">
-        
+
         {/* HEADER */}
         <div className="flex items-end justify-between mb-24 border-b border-[#F3EFE6]/10 pb-6">
           <h2 className="text-[#F3EFE6] text-6xl md:text-9xl font-bold tracking-tighter uppercase leading-[0.8]">
@@ -123,25 +124,25 @@ export default function SelectedWorks() {
         {/* THE LIST */}
         <div className="flex flex-col border-b border-[#F3EFE6]/10">
           {PROJECTS.map((project, index) => (
-            <ProjectItem 
-              key={index} 
-              project={project} 
-              index={index} 
-              setHoveredIndex={setHoveredIndex} 
-              hoveredIndex={hoveredIndex} 
+            <ProjectItem
+              key={index}
+              project={project}
+              index={index}
+              setHoveredIndex={setHoveredIndex}
+              hoveredIndex={hoveredIndex}
             />
           ))}
         </div>
 
         {/* --- 3. THE GATEWAY (Link to All Projects) --- */}
         <div className="mt-12 flex justify-end">
-            <Link 
-                to="/projects" 
+            <Link
+                to="/projects"
                 className="group relative flex items-center justify-between w-full md:w-[600px] border border-[#F3EFE6]/20 bg-[#0A0A0A] p-8 overflow-hidden transition-colors duration-500 hover:border-[#D6B97A]"
             >
                 {/* Background Fill Animation */}
                 <div className="absolute inset-0 bg-[#D6B97A] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
-                
+
                 {/* Content */}
                 <div className="relative z-10 flex items-center gap-6 mix-blend-difference">
                     <Database className="w-8 h-8 text-[#F3EFE6]" />
@@ -177,11 +178,11 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
       <motion.div
         onMouseEnter={() => setHoveredIndex(index)}
         onMouseLeave={() => setHoveredIndex(null)}
-        animate={{ opacity: isDimmed ? 0.3 : 1, filter: isDimmed ? "blur(2px)" : "blur(0px)" }}
+        animate={{ opacity: isDimmed ? 0.3 : 1 }}
         transition={{ duration: 0.3 }}
         className="relative border-t border-[#F3EFE6]/10 py-16 transition-all duration-500 hover:border-[#D6B97A]/50"
       >
-        
+
         {/* BACKGROUND FLASH (On Hover) */}
         <motion.div
              initial={{ scaleX: 0 }}
@@ -192,7 +193,7 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
 
         {/* CONTENT LAYER */}
         <div className="relative z-10 flex flex-col md:flex-row md:items-baseline justify-between gap-6 mix-blend-difference">
-            
+
             {/* Left: ID + Title */}
             <div className="flex items-baseline gap-8 md:gap-16">
                 <span className="text-[#F3EFE6] font-mono text-sm opacity-50">
@@ -213,7 +214,7 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
                         {project.year}
                     </span>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                     <span className="text-[#F3EFE6] font-mono text-xs uppercase tracking-widest hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Access_File
@@ -227,7 +228,13 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
 
         {/* Mobile-Only Image */}
         <div className="md:hidden mt-8 w-full aspect-video overflow-hidden border border-white/10">
-            <img src={project.img} className="w-full h-full object-cover grayscale" />
+            <img
+              src={project.img}
+              alt={project.name}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover grayscale"
+            />
         </div>
 
       </motion.div>

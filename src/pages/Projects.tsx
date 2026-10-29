@@ -15,11 +15,6 @@ export default function Projects() {
   return (
     <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#000] relative overflow-hidden pt-32 pb-24 px-6 md:px-12">
       
-      {/* Atmosphere */}
-      <div className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-overlay">
-        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch' /></filter><rect width='100%' height='100%' filter='url(#noise)' /></svg>
-      </div>
-
       <div className="max-w-[1600px] mx-auto relative z-10">
         
         <Link to="/" className="fixed top-8 left-6 z-40 group mix-blend-difference">
@@ -95,6 +90,8 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
                     <img 
                         src={project.coverImage} 
                         alt={project.title} 
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover filter grayscale contrast-125 brightness-75 transition-all duration-700 group-hover:grayscale-0 group-hover:contrast-100 group-hover:scale-105"
                     />
                     
@@ -102,7 +99,7 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
                     <div className="absolute inset-0 z-10 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none" />
                     
                     <div className="absolute top-4 left-4 z-20 flex gap-2">
-                        <span className="bg-[#050505]/80 backdrop-blur border border-[#F3EFE6]/20 text-[#F3EFE6] px-2 py-1 text-[10px] font-mono uppercase tracking-widest">
+                        <span className="bg-[#050505]/95 border border-[#F3EFE6]/20 text-[#F3EFE6] px-2 py-1 text-[10px] font-mono uppercase tracking-widest">
                             {project.category}
                         </span>
                         <span className={`px-2 py-1 text-[10px] font-mono uppercase tracking-widest border ${
