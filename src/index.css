@@ -41,6 +41,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+html.custom-cursor-active,
+html.custom-cursor-active body,
+html.custom-cursor-active body * {
+  cursor: none !important;
+}
+
 h1,
 h2,
 h3,

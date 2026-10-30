@@ -134,11 +134,14 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-[#F3EFE6]/10 bg-[#0B0B0C] pt-[env(safe-area-inset-top)]">
-        <div className="mx-auto flex min-h-16 max-w-[1600px] items-center justify-between px-5 sm:px-8 md:px-12">
-          <button onClick={() => handleNavigation(NAV_ITEMS[0])} className="font-display text-base font-semibold text-[#F3EFE6]" aria-label="Go to home">
-            Aadi Gorasia
-          </button>
+      <nav className="fixed top-0 inset-x-0 z-50 border-b border-[#F3EFE6]/10 bg-[#0B0B0C] pt-[env(safe-area-inset-top)] md:left-1/2 md:right-auto md:top-5 md:w-[min(96%,1440px)] md:-translate-x-1/2 md:border md:border-[#F3EFE6]/15 md:bg-[#0B0B0C]/85 md:pt-0 md:backdrop-blur-xl md:shadow-[0_12px_60px_rgba(0,0,0,0.35)]">
+        <div className="mx-auto flex min-h-16 max-w-[1600px] items-center justify-between px-5 sm:px-8 md:min-h-[4.25rem] md:px-7 lg:px-10">
+          <div className="flex items-center">
+            <button onClick={() => handleNavigation(NAV_ITEMS[0])} className="font-display text-base font-semibold text-[#F3EFE6] md:text-lg" aria-label="Go to home">
+              Aadi Gorasia
+            </button>
+            <LocalClock />
+          </div>
           <ul className="hidden items-center gap-1 lg:flex">
             {NAV_ITEMS.map((item) => (
               <NavItem
@@ -239,6 +242,38 @@ export default function Navbar() {
           </div>
       )}
     </>
+  );
+}
+
+function LocalClock() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      setTime(
+        new Intl.DateTimeFormat("en-IN", {
+          timeZone: "Asia/Kolkata",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }).format(new Date())
+      );
+    };
+
+    updateTime();
+    const intervalId = window.setInterval(updateTime, 1000);
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  return (
+    <div
+      aria-label={`Local time in Pune, India: ${time || "updating"}`}
+      className="ml-5 hidden border-l border-[#F3EFE6]/15 pl-5 font-mono text-[9px] uppercase leading-relaxed tracking-[0.12em] text-[#F3EFE6]/45 md:block"
+    >
+      <span className="block">Pune, India</span>
+      <time className="tabular-nums text-[#D6B97A]/85">{time || "--:--:--"}</time>
+    </div>
   );
 }
 

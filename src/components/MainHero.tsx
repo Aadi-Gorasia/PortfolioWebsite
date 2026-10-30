@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 
-export default function MainHero() {
+interface MainHeroProps {
+  startAnimations?: boolean;
+}
+
+export default function MainHero({ startAnimations = true }: MainHeroProps) {
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
     document.getElementById("contact")?.scrollIntoView({
@@ -19,7 +23,7 @@ export default function MainHero() {
             <div className="overflow-hidden">
                 <motion.h1
                     initial={{ y: "105%" }}
-                    animate={{ y: 0 }}
+                    animate={{ y: startAnimations ? 0 : "105%" }}
                     transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
                     className="text-[clamp(5rem,14vw,12rem)] font-display font-semibold text-[#F3EFE6] tracking-[-0.06em]"
                 >
@@ -30,7 +34,7 @@ export default function MainHero() {
             <div className="overflow-hidden">
                 <motion.h1
                     initial={{ y: "105%" }}
-                    animate={{ y: 0 }}
+                    animate={{ y: startAnimations ? 0 : "105%" }}
                     transition={{ duration: 1.1, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
                     className="text-[clamp(5rem,14vw,12rem)] font-serif font-medium italic text-[#D6B97A] tracking-[-0.05em] md:pl-32"
                 >
@@ -46,7 +50,7 @@ export default function MainHero() {
             
             <motion.div
                 initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: startAnimations ? 1 : 0, y: startAnimations ? 0 : 18 }}
                 transition={{ duration: 0.8, delay: 0.55, ease: "easeOut" }}
                 className="max-w-2xl border-l border-[#D6B97A]/50 pl-4 md:pl-8 py-2"
             >
@@ -57,7 +61,7 @@ export default function MainHero() {
 
             <motion.button
                 initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: startAnimations ? 1 : 0, y: startAnimations ? 0 : 12 }}
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.35, delay: 0.7 }}
