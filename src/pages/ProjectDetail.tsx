@@ -1,181 +1,98 @@
-import { useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import { motion, useScroll, useSpring } from "framer-motion";
-import { ArrowLeft, ArrowUpRight, Cpu, Layers, Calendar, User, Terminal } from "lucide-react";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { PROJECTS } from "../lib/project-data";
-import { Navigate } from "react-router-dom";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
-  const project = PROJECTS.find((p) => p.slug === slug);
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  // Scroll to top on load
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [slug]);
+  const project = PROJECTS.find((item) => item.slug === slug);
 
-  if (!project) { return <Navigate to="/dangerZone" replace/>; }
+  if (!project) return <Navigate to="/projects" replace />;
+
+  const details = [
+    { label: "Client", value: project.client },
+    { label: "Year", value: project.year },
+    { label: "Role", value: project.role },
+    { label: "Core technology", value: project.tech?.[0] },
+  ].filter((detail): detail is { label: string; value: string } => Boolean(detail.value));
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#000] relative">
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-[#D6B97A] origin-left z-50"
-        style={{ scaleX: progress }}
-      />
-
-      {/* Back Button */}
-      <Link to="/projects" className="fixed top-[max(1.25rem,env(safe-area-inset-top))] left-5 md:top-8 md:left-8 z-40 group mix-blend-difference">
-        <div className="flex items-center gap-4">
-            <div className="w-11 h-11 md:w-12 md:h-12 border border-[#F3EFE6] rounded-full flex items-center justify-center group-hover:bg-[#F3EFE6] transition-all duration-300">
-                <ArrowLeft className="w-5 h-5 text-[#F3EFE6] group-hover:text-[#000]" />
-            </div>
-            <span className="hidden md:block text-xs font-bold uppercase tracking-[0.2em] text-[#F3EFE6]">Abort</span>
-        </div>
+    <main className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-black">
+      <Link to="/projects" className="fixed left-4 top-[max(0.75rem,env(safe-area-inset-top))] z-40 flex min-h-12 items-center gap-2 border-b border-white/20 bg-[#050505] font-mono text-[9px] uppercase tracking-[0.12em] text-white md:left-8 md:top-8">
+        ← All projects
       </Link>
 
-      {/* --- HERO SECTION --- */}
-      <header className="relative min-h-[68svh] md:h-[80vh] w-full overflow-hidden flex items-end pb-14 md:pb-24 px-5 sm:px-6 md:px-12 pt-28 border-b border-[#F3EFE6]/10">
-
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-            <img src={project.coverImage} alt={project.title} fetchPriority="high" decoding="async" className="w-full h-full object-cover opacity-40 grayscale" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent" />
-            {/* Grid Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px]" />
-        </div>
-
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto">
-            <div className="flex items-center gap-4 mb-6">
-                 <span className={`px-3 py-1 text-[10px] font-mono uppercase tracking-widest border ${
-                     project.status === "LIVE_ORBIT" ? "bg-emerald-500/20 border-emerald-500 text-emerald-500" :
-                     "bg-[#D6B97A]/20 border-[#D6B97A] text-[#D6B97A]"
-                 }`}>
-                    Status: {project.status}
-                </span>
-                <div className="h-[1px] w-24 bg-[#F3EFE6]/20" />
-            </div>
-
-            <h1 className="text-[clamp(2.7rem,11vw,5rem)] md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter leading-[0.9] max-w-5xl break-words">
-                {project.title}
-            </h1>
+      <header className="relative flex min-h-[65svh] items-end overflow-hidden border-b border-[#F3EFE6]/10 px-5 pb-12 pt-28 sm:px-6 md:min-h-[75vh] md:px-12 md:pb-20">
+        {project.coverImage ? (
+          <img
+            src={project.coverImage}
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover opacity-35"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[#111]" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/55 to-[#050505]/10" />
+        <div className="relative z-10 mx-auto w-full max-w-[1600px]">
+          <div className="mb-5 flex flex-wrap gap-3 font-mono text-[10px] uppercase tracking-widest text-[#D6B97A]">
+            {project.status && <span>{project.status}</span>}
+            {project.category && <span>{project.category}</span>}
+          </div>
+          <h1 className="max-w-5xl break-words text-[clamp(2.7rem,11vw,5rem)] font-bold uppercase leading-[0.9] tracking-tighter md:text-8xl lg:text-9xl">
+            {project.title}
+          </h1>
         </div>
       </header>
 
-      {/* --- MISSION SPECS (Data Grid) --- */}
-      <section className="border-b border-[#F3EFE6]/10 bg-[#0A0A0A]">
-          <div className="max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-[#F3EFE6]/10">
-              <SpecItem icon={<User size={16} />} label="Client" value={project.client} />
-              <SpecItem icon={<Calendar size={16} />} label="Year" value={project.year} />
-              <SpecItem icon={<Layers size={16} />} label="Role" value={project.role} />
-              <SpecItem icon={<Cpu size={16} />} label="Core Tech" value={project.tech[0]} />
-          </div>
-      </section>
-
-      <main className="max-w-[1600px] mx-auto px-5 sm:px-6 md:px-12 py-20 md:py-32 grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 lg:gap-24">
-
-        {/* --- LEFT: NARRATIVE --- */}
-        <div className="lg:col-span-7 space-y-12 md:space-y-16">
-
-            {/* Description */}
-            <div>
-                <h3 className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
-                    <Terminal size={14} /> Mission Brief
-                </h3>
-                <p className="text-xl sm:text-2xl md:text-3xl font-light leading-relaxed text-[#F3EFE6]">
-                    {project.description}
-                </p>
-            </div>
-
-            {/* The Deep Dive */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12 border-t border-[#F3EFE6]/10">
-                <div>
-                    <h4 className="text-[#F3EFE6]/50 font-mono text-xs uppercase tracking-widest mb-4">
-                        // The Challenge
-                    </h4>
-                    <p className="text-[#BEB6A8] leading-relaxed">
-                        {project.challenge}
-                    </p>
-                </div>
-                <div>
-                    <h4 className="text-[#F3EFE6]/50 font-mono text-xs uppercase tracking-widest mb-4">
-                        // The Solution
-                    </h4>
-                    <p className="text-[#BEB6A8] leading-relaxed">
-                        {project.solution}
-                    </p>
-                </div>
-            </div>
-
-             {/* Tech Stack Full List */}
-             <div className="pt-12">
-                <h4 className="text-[#F3EFE6]/50 font-mono text-xs uppercase tracking-widest mb-6">
-                    // Full Arsenal
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                    {project.tech.map((t: string) => (
-                        <span key={t} className="px-4 py-2 bg-[#F3EFE6]/5 border border-[#F3EFE6]/10 text-xs font-mono uppercase tracking-widest text-[#D6B97A]">
-                            {t}
-                        </span>
-                    ))}
-                </div>
-            </div>
-        </div>
-
-        {/* --- RIGHT: VISUAL EVIDENCE (Gallery) --- */}
-        <div className="lg:col-span-5 space-y-8">
-            <h3 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em] mb-6 text-right">
-                Visual_Evidence
-            </h3>
-
-            {project.gallery.map((img: string, i: number) => (
-                <div key={i} className="group relative aspect-[4/3] bg-[#111] border border-[#F3EFE6]/10 overflow-hidden">
-                    <img
-                        src={img}
-                        alt={`Evidence ${i}`}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover grayscale transition-[filter] duration-300 group-hover:grayscale-0"
-                    />
-                    {/* Scanlines */}
-                    <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none" />
-                    <div className="absolute bottom-4 left-4 text-[10px] font-mono bg-black/50 text-[#F3EFE6] px-2 py-1">
-                        FIG_0{i + 1}
-                    </div>
-                </div>
+      {details.length > 0 && (
+        <section aria-label="Project details" className="border-b border-[#F3EFE6]/10 bg-[#0A0A0A]">
+          <dl className="mx-auto grid max-w-[1600px] grid-cols-2 divide-x divide-y divide-[#F3EFE6]/10 md:grid-cols-4 md:divide-y-0">
+            {details.map((detail) => (
+              <div key={detail.label} className="p-4 sm:p-6 md:p-8">
+                <dt className="mb-2 font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6]/40">{detail.label}</dt>
+                <dd className="break-words text-sm font-medium text-[#F3EFE6] sm:text-base md:text-xl">{detail.value}</dd>
+              </div>
             ))}
-        </div>
+          </dl>
+        </section>
+      )}
 
-      </main>
+      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-5 py-16 sm:px-6 md:grid-cols-2 md:gap-16 md:px-12 md:py-24">
+        {project.description && (
+          <section>
+            <h2 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[#D6B97A]">Overview</h2>
+            <p className="text-lg font-light leading-relaxed text-[#F3EFE6] md:text-2xl">{project.description}</p>
+          </section>
+        )}
+        {project.challenge && (
+          <section>
+            <h2 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[#D6B97A]">Challenge</h2>
+            <p className="leading-relaxed text-[#BEB6A8]">{project.challenge}</p>
+          </section>
+        )}
+        {project.solution && (
+          <section>
+            <h2 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[#D6B97A]">Approach</h2>
+            <p className="leading-relaxed text-[#BEB6A8]">{project.solution}</p>
+          </section>
+        )}
+        {project.tech && project.tech.length > 0 && (
+          <section>
+            <h2 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[#D6B97A]">Technology</h2>
+            <ul className="flex flex-wrap gap-2">
+              {project.tech.map((item) => (
+                <li key={item} className="border-b border-[#F3EFE6]/10 py-2 font-mono text-xs uppercase tracking-widest text-[#F3EFE6]/70">{item}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
 
-      {/* --- FOOTER (Next Project) --- */}
-      <footer className="border-t border-[#F3EFE6]/10 bg-[#0A0A0A] py-24 text-center">
-        <Link to="/projects" className="group inline-flex flex-col items-center gap-4">
-            <span className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-widest">
-                Mission Complete
-            </span>
-            <span className="text-4xl md:text-6xl font-bold text-[#F3EFE6] uppercase tracking-tighter group-hover:text-[#D6B97A] transition-colors">
-                Return to Base
-            </span>
-            <div className="w-12 h-12 border border-[#F3EFE6]/20 rounded-full flex items-center justify-center mt-4 group-hover:bg-[#D6B97A] group-hover:border-[#D6B97A] transition-all">
-                 <ArrowUpRight className="text-[#F3EFE6] group-hover:text-[#000]" />
-            </div>
+      <footer className="border-t border-[#F3EFE6]/10 bg-[#0A0A0A] px-5 py-12 text-center md:py-20">
+        <Link to="/projects" className="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-[#F3EFE6]/65 transition-colors hover:text-[#D6B97A]">
+          Browse all projects <span aria-hidden="true">↗</span>
         </Link>
       </footer>
-
-    </div>
+    </main>
   );
-}
-
-// Subcomponent for specs
-function SpecItem({ icon, label, value }: any) {
-    return (
-        <div className="p-6 md:p-8 flex flex-col gap-3 group hover:bg-[#F3EFE6]/5 transition-colors">
-            <div className="text-[#D6B97A]">{icon}</div>
-            <div>
-                <p className="text-[#F3EFE6]/40 text-[10px] font-mono uppercase tracking-widest mb-1">{label}</p>
-                <p className="text-[#F3EFE6] font-medium text-lg md:text-xl">{value}</p>
-            </div>
-        </div>
-    )
 }

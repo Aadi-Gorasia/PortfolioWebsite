@@ -5,7 +5,6 @@ export interface PostMeta {
   tags: string[];
   category: string;
   coverImage: string;
-  readingTime: string;
   featured: boolean;
   slug: string;
 }

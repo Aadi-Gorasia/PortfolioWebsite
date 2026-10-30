@@ -1,8 +1,4 @@
-"use client";
-
-import { useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { Plus, ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 const PHILOSOPHY = [
   {
@@ -23,39 +19,26 @@ const PHILOSOPHY = [
 ];
 
 export default function AboutSection() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-  const imageY = useTransform(scrollYProgress, [0, 1], [-35, 35]);
-
   return (
     <section 
       id="about" 
-      ref={containerRef}
       className="portfolio-section relative bg-[#F1ECE2] min-h-screen flex items-center py-20 md:py-32 px-5 sm:px-6 md:px-16 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto w-full grid md:grid-cols-12 gap-16 items-start z-10">
+      <div className="hidden md:grid max-w-7xl mx-auto w-full md:grid-cols-12 gap-16 items-start z-10">
         
         {/* Left Column: Narrative */}
         <div className="md:col-span-7 space-y-8 md:space-y-12">
             <RevealTitle />
             
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-            >
+            <div>
                 <p className="text-lg sm:text-xl md:text-2xl font-light text-[#1A1A1A] leading-relaxed max-w-2xl">
                     Building systems is a habit born from an inability to accept 
 <span className="font-medium italic"> surface-level answers</span>.
-                     My process started with the scent of burnt rosin in a cramped living room—a refusal to let a circuit board stay dead.
+                     My process started with the scent of burnt rosin in a cramped living room, and a refusal to let a circuit board stay dead.
                     <br /><br />
                     I use mathematics as the blueprint and duct tape as the reality. I’m not looking for perfection; I’m looking for the moment the system actually pulses.
                 </p>
-            </motion.div>
+            </div>
 
             <div className="md:hidden w-full aspect-[4/3] overflow-hidden border border-[#1A1A1A]/15">
               <img
@@ -79,21 +62,20 @@ export default function AboutSection() {
         <div className="md:col-span-5 relative h-[600px] w-full hidden md:block">
             {/* The Image Container with Masking */}
             <div className="overflow-hidden h-full w-full relative">
-                <motion.div style={{ y: imageY }} className="absolute left-1/2 -translate-x-1/2 h-[120%] w-[70%] -top-[10%]">
-                    {/* Replace with your actual image. Using a placeholder that fits the vibe. */}
+                <div className="absolute left-1/2 -translate-x-1/2 h-[120%] w-[70%] -top-[10%]">
                    <img 
   src="/aboutPhoto.jpeg" 
-  alt="Engineering Schematic"
+  alt="Portrait of Aadi Gorasia"
   loading="lazy"
   decoding="async"
   className="w-full h-full object-cover object-[75%_center] contrast-[1] brightness-[1.1]"
 />
-                </motion.div>
+                </div>
                 
                 {/* Technical Overlay */}
                 <div className="absolute inset-0 border-[1px] border-[#1A1A1A]/10 m-4 pointer-events-none">
                     <div className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase font-mono text-[#1A1A1A]">
-                        Fig. 01 — The Man, The Myth, HIM
+                        Portrait of Aadi Gorasia
                     </div>
 
                 </div>
@@ -101,40 +83,61 @@ export default function AboutSection() {
         </div>
 
       </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-xl space-y-7 md:hidden">
+        <div className="flex items-center justify-between border-b border-[#1A1A1A]/15 pb-3 font-mono text-[9px] uppercase tracking-[0.16em] text-[#1A1A1A]/50">
+          <span>About</span>
+          <span>Pune, India</span>
+        </div>
+
+        <h2 className="font-display text-[clamp(2.6rem,12vw,4rem)] font-semibold leading-[0.93] tracking-[-0.07em] text-[#1A1A1A]">
+          Working toward
+          <span className="mt-1 block font-serif text-[1.12em] font-medium italic tracking-[-0.04em] text-[#A7823D]">the blue LED.</span>
+        </h2>
+
+        <div className="relative aspect-[1.15] overflow-hidden bg-[#D8D0C2]">
+          <img
+            src="/aboutPhoto.jpeg"
+            alt="Aadi working on engineering projects"
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover object-[72%_center]"
+          />
+        </div>
+
+        <p className="text-[15px] leading-7 text-[#1A1A1A]/75">
+          I build from first principles: mathematics as the blueprint, real hardware as the test. I’m drawn to the moment an idea starts working in the physical world.
+        </p>
+
+        <div className="border-t border-[#1A1A1A]/15">
+          {PHILOSOPHY.map((item) => (
+            <ListItem key={item.tag} item={item} />
+          ))}
+        </div>
+      </div>
+
     </section>
   );
 }
 
-// Sub-component for the reveal animation of the title
 function RevealTitle() {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
-
     return (
-        <div ref={ref} className="overflow-hidden">
-            <motion.h2 
-                initial={{ y: "100%" }}
-                animate={isInView ? { y: 0 } : { y: "100%" }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        <div>
+            <h2
                 className="text-5xl md:text-7xl font-semibold text-[#1A1A1A] tracking-tight leading-[1.1]"
             >
                 Working towards <br />
                 the <span className="text-[#888] italic serif">blue LED.</span>
-            </motion.h2>
+            </h2>
         </div>
     )
 }
 
-// Sub-component for the Interactive List Items
 function ListItem({ item }: { item: { title: string, desc: string, tag: string } }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
-        <motion.div 
-            initial="initial"
-            whileHover="hover"
-            className="group relative border-b border-[#1A1A1A]/10 py-4 md:py-8 cursor-pointer"
-        >
+        <div className="border-b border-[#1A1A1A]/10 py-4 md:py-8">
             <button
                 type="button"
                 aria-expanded={isExpanded}
@@ -142,41 +145,20 @@ function ListItem({ item }: { item: { title: string, desc: string, tag: string }
                 className="flex min-h-12 w-full items-center justify-between text-left"
             >
                 <div className="flex items-baseline gap-6">
-                    <span className="text-xs font-mono text-[#1A1A1A]/40">{item.tag}</span>
-                    <span className="text-2xl sm:text-3xl font-medium text-[#1A1A1A] group-hover:md:pl-4 transition-all duration-300 ease-out">
+                    <span className="text-[10px] font-mono text-[#1A1A1A]/40">{item.tag}</span>
+                    <span className="text-xl md:text-3xl font-medium text-[#1A1A1A]">
                         {item.title}
                     </span>
                 </div>
-                
-                {/* Icon turns into Arrow on hover */}
-                <div className="relative overflow-hidden w-6 h-6">
-                    <motion.div 
-                        variants={{ initial: { y: 0 }, hover: { y: -24 } }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        <Plus className="w-6 h-6 text-[#1A1A1A]/40" />
-                    </motion.div>
-                    <motion.div 
-                        variants={{ initial: { y: 24 }, hover: { y: -24 } }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute top-0 left-0"
-                    >
-                        <ArrowRight className="w-6 h-6 text-[#1A1A1A]" />
-                    </motion.div>
-                </div>
-                </button>
-
-                {/* Expandable Description */}
-            <motion.div
-                animate={isExpanded ? "hover" : undefined}
-                variants={{ initial: { height: 0, opacity: 0 }, hover: { height: "auto", opacity: 1 } }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="overflow-hidden"
-            >
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[#1A1A1A]/50">
+                  {isExpanded ? "Close" : "Read"}
+                </span>
+            </button>
+            {isExpanded && (
                 <p className="pt-4 text-[#1A1A1A]/70 text-base sm:text-lg max-w-md ml-10">
                     {item.desc}
                 </p>
-            </motion.div>
-        </motion.div>
+            )}
+        </div>
     );
 }

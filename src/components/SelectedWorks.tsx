@@ -1,135 +1,72 @@
-import { useState } from "react";
-import { motion, useSpring, useMotionValue } from "framer-motion";
-import { ArrowUpRight, Database } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PROJECTS } from "../lib/project-data";
 
-// ⚠️ DATA CONFIGURATION (Top 4 Featured)
-const PROJECTS =[
-  {
-    id: "01",
-    client: "Machine Learning",
-    name: "Gesture Control Car",
-    role: "Systems Architecture",
-    year: "2023",
-    slug: "gesture-control-car",
-    img: "/gesturecontrolcar.png",
-  },
-  {
-    id: "02",
-    client: "Applied Physics",
-    name: "Tesla Turbine",
-    role: "ML Engineering",
-    year: "2024",
-    slug: "tesla-turbine",
-    img: "/teslaturbine.png"
-  },
-  {
-    id: "03",
-    client: "Algorithmic Technologies",
-    name: "A* Path Finding Algorithm",
-    role: "Algorithm Design",
-    year: "2024",
-    slug: "a-star-path-finding",
-    img: "/a*pathfindingalgorithm.png"
-  },
-  {
-    id: "04",
-    client: "Aerospace Systems",
-    name: "PLEN",
-    role: "Backend Optimization",
-    year: "2025 (ONGOING)",
-    slug: "hyper-index-engine",
-    img: "/plen.png"
-  }
-];
+const FEATURED_PROJECTS = PROJECTS.filter((project) =>
+  ["gesture-control-car", "tesla-turbine", "a-star-path-finding", "hyper-index-engine"].includes(project.slug)
+);
 
 export default function SelectedWorks() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  // Mouse Position Physics
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const smoothX = useSpring(mouseX, { stiffness: 150, damping: 15, mass: 0.1 });
-  const smoothY = useSpring(mouseY, { stiffness: 150, damping: 15, mass: 0.1 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (hoveredIndex === null) return;
-    const { clientX, clientY } = e;
-    mouseX.set(clientX);
-    mouseY.set(clientY);
-  };
-
   return (
     <section
         id="projects"
-        onMouseMove={handleMouseMove}
-        className="portfolio-section relative bg-[#050505] py-32 overflow-hidden"
+        className="portfolio-section relative bg-[#050505] py-14 md:py-32 overflow-hidden"
     >
 
-      {/* 1. ATMOSPHERE GRID */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
+      <div className="relative z-10 md:hidden">
+        <div className="mb-6 flex items-end justify-between px-5">
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#D6B97A]">A selection of things made</p>
+            <h2 className="mt-2 font-display text-4xl font-semibold leading-[0.9] tracking-[-0.07em] text-[#F3EFE6]">
+              Selected <span className="font-serif font-medium italic text-[#D6B97A]">work.</span>
+            </h2>
+          </div>
+        </div>
 
-      {/* 2. THE FLOATING EYE */}
-      <motion.div
-        style={{
-            left: smoothX,
-            top: smoothY,
-        }}
-        className="fixed top-0 left-0 w-[400px] h-[280px] pointer-events-none z-30 hidden md:block overflow-hidden rounded-sm -translate-x-1/2 -translate-y-1/2"
-      >
-        {PROJECTS.map((project, index) => {
-            const isActive = hoveredIndex === index;
-            return (
-                isActive && (
-                  <motion.div
-                      key={index}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 w-full h-full bg-[#111]"
-                  >
-                      <img
-                          src={project.img}
-                          alt={project.name}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.45)_50%)] bg-[size:100%_4px]" />
-                      <div className="absolute bottom-4 left-4 bg-[#D6B97A] text-black px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-widest">
-                          Target_Locked
-                      </div>
-                  </motion.div>
-                )
-            )
-        })}
-      </motion.div>
+        <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {FEATURED_PROJECTS.map((project) => (
+            <Link
+              key={project.slug}
+              to={`/projects/${project.slug}`}
+              className="group relative aspect-[0.82] w-[82vw] max-w-[340px] shrink-0 snap-center overflow-hidden border border-white/10 bg-[#151515]"
+            >
+              {project.coverImage && <img src={project.coverImage} alt={project.title} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/5" />
+              <div className="absolute inset-x-5 bottom-5">
+                <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#D6B97A]">{project.client} <span className="text-white/35">· {project.year}</span></p>
+                <h3 className="mt-2 font-display text-3xl font-semibold leading-[0.95] tracking-[-0.055em] text-white">{project.title}</h3>
+                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/45">{project.role}</p>
+              </div>
+            </Link>
+          ))}
+          <Link to="/projects" className="flex min-h-full w-[72vw] max-w-[280px] shrink-0 snap-center flex-col justify-between border border-[#D6B97A]/40 p-5 text-[#F3EFE6]">
+            <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#D6B97A]">All projects</span>
+            <span className="font-display text-3xl font-semibold leading-[0.95] tracking-[-0.06em]">Browse the<br />full archive</span>
+          </Link>
+        </div>
+        <p className="mt-2 px-5 text-xs text-white/45">More projects are available in the archive.</p>
+      </div>
 
-      <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative z-10">
+      <div className="hidden max-w-[1600px] mx-auto px-6 md:px-12 relative z-10 md:block">
 
         {/* HEADER */}
         <div className="flex items-end justify-between mb-12 md:mb-24 border-b border-[#F3EFE6]/10 pb-6">
-          <h2 className="text-[#F3EFE6] text-[clamp(2.8rem,12vw,6rem)] md:text-9xl font-bold tracking-tighter uppercase leading-[0.8]">
-            Operational<br /><span className="text-[#F3EFE6]/20">Output</span>
+          <h2 className="text-[#F3EFE6] text-[clamp(2.8rem,10vw,6rem)] md:text-8xl font-semibold tracking-tighter leading-[0.9]">
+            Selected work
           </h2>
           <div className="hidden md:flex flex-col items-end text-right gap-2">
-             <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse" />
              <span className="text-[#D6B97A] font-mono text-xs tracking-widest uppercase">
-                Featured Archive
+                Featured projects
              </span>
           </div>
         </div>
 
         {/* THE LIST */}
         <div className="flex flex-col border-b border-[#F3EFE6]/10">
-          {PROJECTS.map((project, index) => (
+          {FEATURED_PROJECTS.map((project, index) => (
             <ProjectItem
-              key={index}
+              key={project.slug}
               project={project}
               index={index}
-              setHoveredIndex={setHoveredIndex}
-              hoveredIndex={hoveredIndex}
             />
           ))}
         </div>
@@ -138,28 +75,10 @@ export default function SelectedWorks() {
         <div className="mt-12 flex justify-end">
             <Link
                 to="/projects"
-                className="group relative flex items-center justify-between w-full md:w-[600px] border border-[#F3EFE6]/20 bg-[#0A0A0A] p-5 sm:p-8 overflow-hidden transition-colors duration-500 hover:border-[#D6B97A]"
+                className="group flex min-h-16 w-full items-center justify-between border-y border-[#F3EFE6]/20 py-5 transition-colors hover:border-[#D6B97A] md:w-[600px]"
             >
-                {/* Background Fill Animation */}
-                <div className="absolute inset-0 bg-[#D6B97A] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
-
-                {/* Content */}
-                <div className="relative z-10 flex items-center gap-6 mix-blend-difference">
-                    <Database className="w-8 h-8 text-[#F3EFE6]" />
-                    <div className="flex flex-col">
-                        <span className="text-[#F3EFE6]/50 font-mono text-[10px] uppercase tracking-widest mb-1">
-                            // Unrestricted_Access
-                        </span>
-                        <span className="text-lg sm:text-2xl md:text-3xl font-bold text-[#F3EFE6] uppercase tracking-tighter">
-                            Access Full Database
-                        </span>
-                    </div>
-                </div>
-
-                {/* Arrow */}
-                <div className="relative z-10 mix-blend-difference">
-                    <ArrowUpRight className="w-8 h-8 text-[#F3EFE6] group-hover:rotate-45 transition-transform duration-500" />
-                </div>
+                <span className="text-lg font-bold uppercase tracking-tight text-[#F3EFE6] sm:text-2xl">View all projects</span>
+                <span aria-hidden="true" className="text-[#D6B97A]">↗</span>
             </Link>
         </div>
 
@@ -168,85 +87,35 @@ export default function SelectedWorks() {
   );
 }
 
-// --- ROW COMPONENT ---
-function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
-  const isHovered = hoveredIndex === index;
-  const isDimmed = hoveredIndex !== null && hoveredIndex !== index;
-
+function ProjectItem({ project, index }: { project: (typeof PROJECTS)[number]; index: number }) {
   return (
-    <Link to={`/projects/${project.slug}`} className="block relative group">
-      <motion.div
-        onMouseEnter={() => {
-          if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(index);
-        }}
-        onMouseLeave={() => {
-          if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(null);
-        }}
-        animate={{ opacity: isDimmed ? 0.3 : 1 }}
-        transition={{ duration: 0.3 }}
-        className="relative border-t border-[#F3EFE6]/10 py-8 md:py-16 transition-all duration-500 hover:border-[#D6B97A]/50"
-      >
+    <Link
+      to={`/projects/${project.slug}`}
+      className="group flex flex-col gap-6 border-t border-[#F3EFE6]/10 py-8 transition-colors hover:border-[#D6B97A]/50 md:flex-row md:items-center md:justify-between md:py-10"
+    >
+      <div className="flex min-w-0 items-center gap-4 sm:gap-8 md:gap-12">
+        <span className="font-mono text-sm text-[#F3EFE6]/50">{String(index + 1).padStart(2, "0")}</span>
+        <h3 className="break-words text-[clamp(1.7rem,7vw,4.5rem)] font-semibold tracking-tighter text-[#F3EFE6] transition-colors group-hover:text-[#D6B97A] md:text-6xl">
+          {project.title}
+        </h3>
+      </div>
 
-        {/* BACKGROUND FLASH (On Hover) */}
-        <motion.div
-             initial={{ scaleX: 0 }}
-             animate={{ scaleX: isHovered ? 1 : 0 }}
-             transition={{ duration: 0.5, ease:[0.16, 1, 0.3, 1] }}
-             className="absolute inset-0 bg-[#F3EFE6] origin-left z-0"
-        />
-
-        {/* Mobile project preview */}
-        <div className="md:hidden relative z-10 mb-6 w-full aspect-[16/9] overflow-hidden border border-white/10">
-            <img
-              src={project.img}
-              alt={project.name}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover grayscale"
-            />
+      <div className="flex items-center justify-between gap-6 pl-9 sm:pl-14 md:justify-end md:pl-0">
+        {project.coverImage && (
+          <img
+            src={project.coverImage}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="hidden aspect-video w-48 object-cover md:block"
+          />
+        )}
+        <div className="text-right font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6]/50">
+          <span className="block">{project.client}</span>
+          <span className="block font-bold text-[#F3EFE6]">{project.year}</span>
         </div>
-
-        {/* CONTENT LAYER */}
-        <div className="relative z-10 flex flex-col md:flex-row md:items-baseline justify-between gap-4 md:gap-6 mix-blend-difference">
-
-            {/* Left: ID + Title */}
-            <div className="flex items-baseline gap-4 sm:gap-8 md:gap-16 min-w-0">
-                <span className="text-[#F3EFE6] font-mono text-sm opacity-50">
-                    0{index + 1}
-                </span>
-                <h3 className="text-[clamp(1.7rem,8vw,4.5rem)] md:text-7xl text-[#F3EFE6] font-bold uppercase tracking-tighter transition-transform duration-500 group-hover:translate-x-4 break-words">
-                    {project.name}
-                </h3>
-            </div>
-
-            {/* Right: Meta + Arrow */}
-            <div className="flex items-center justify-between md:justify-end gap-6 md:gap-12 pl-9 sm:pl-14 md:pl-0">
-                <div className="hidden md:flex flex-col text-right">
-                    <span className="text-[#F3EFE6] text-xs uppercase tracking-widest opacity-50">
-                        {project.client}
-                    </span>
-                    <span className="text-[#F3EFE6] text-xs uppercase tracking-widest font-bold">
-                        {project.year}
-                    </span>
-                </div>
-                <div className="md:hidden flex items-center gap-3 text-[#F3EFE6]/50 font-mono text-[10px] uppercase tracking-widest">
-                    <span>{project.client}</span>
-                    <span>//</span>
-                    <span>{project.year}</span>
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <span className="text-[#F3EFE6] font-mono text-xs uppercase tracking-widest hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        Access_File
-                    </span>
-                    <div className="w-12 h-12 border border-[#F3EFE6] rounded-full flex items-center justify-center group-hover:bg-[#F3EFE6] group-hover:text-black transition-colors duration-300">
-                         <ArrowUpRight className="w-5 h-5" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-      </motion.div>
+        <span aria-hidden="true" className="text-2xl text-[#F3EFE6]/60 transition-colors group-hover:text-[#D6B97A]">↗</span>
+      </div>
     </Link>
   );
 }

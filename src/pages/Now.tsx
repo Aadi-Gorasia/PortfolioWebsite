@@ -1,203 +1,23 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Now() {
-  const[time, setTime] = useState("");
-
-  // Live India Time (IST)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(
-        new Date().toLocaleTimeString("en-IN", {
-          timeZone: "Asia/Kolkata",
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })
-      );
-    }, 1000);
-    return () => clearInterval(timer);
-  },[]);
-
   return (
-    <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#F3EFE6] selection:text-[#050505] font-sans">
-
-      {/* 2. THE RETURN (Minimalist Back Button) */}
-      <Link
-        to="/"
-        className="fixed top-8 left-6 md:left-12 z-50 flex items-center gap-4 text-[#F3EFE6]/40 hover:text-[#F3EFE6] transition-colors duration-500 group"
-      >
-        <ArrowLeft size={16} className="group-hover:-translate-x-2 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-        <span className="font-mono text-xs uppercase tracking-[0.2em]">Index</span>
-      </Link>
-
-      <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 pt-40 pb-32">
-
-        {/* --- HEADER --- */}
-        <header className="mb-32">
-            <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, ease:[0.16, 1, 0.3, 1] }}
-                className="text-[15vw] md:text-[12vw] leading-[0.75] font-bold tracking-tighter uppercase ml-[-0.05em]"
-            >
-                Now.
-            </motion.h1>
-        </header>
-
-        {/* --- THE LEDGER (Brutalist Grid) --- */}
-        <div className="border-t border-[#F3EFE6]/20">
-
-            {/* ROW 1: TELEMETRY */}
-            <Row delay={0.1} label="Current_State">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div className="flex flex-col gap-1">
-                        <span className="font-mono text-[10px] text-[#F3EFE6]/40 uppercase tracking-widest">Location</span>
-                        <span className="text-xl md:text-2xl font-medium tracking-tight">India</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <span className="font-mono text-[10px] text-[#F3EFE6]/40 uppercase tracking-widest">Local_Time</span>
-                        <span className="text-xl md:text-2xl font-mono tracking-tight tabular-nums">{time || "00:00:00"} IST</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <span className="font-mono text-[10px] text-[#F3EFE6]/40 uppercase tracking-widest">Status</span>
-                        <div className="flex items-center gap-3 mt-1">
-                            <div className="w-2 h-2 bg-[#F3EFE6] rounded-full animate-pulse" />
-                            <span className="text-xl md:text-2xl font-medium tracking-tight">Engineering</span>
-                        </div>
-                    </div>
-                </div>
-            </Row>
-
-            {/* ROW 2: PRIMARY FOCUS */}
-            <Row delay={0.2} label="Primary_Focus">
-                <div className="max-w-3xl">
-                    <h4 className="text-3xl md:text-5xl font-serif italic text-[#F3EFE6] leading-tight mb-8">
-                        Designing adaptive, self-regulating systems that translate abstract control theory into efficient, real-world hardware implementations.
-                    </h4>
-
-<h3>01 // THE COLLISION </h3>
-                    <p className="text-[#F3EFE6]/60 text-lg md:text-xl font-light leading-relaxed">
-Colliding abstract control theory with the friction of real hardware. I build for the moment the mathematical blueprint meets the unpredictability of a circuit board. I’m not looking for a "clean" simulation; I’m looking for the specific point where the logic holds under load.
-                    </p>
-                    <br />
-<h3>02 // CURRENT ARCHITECTURE</h3>
- <p className="text-[#F3EFE6]/60 text-lg md:text-xl font-light leading-relaxed">
-Constructing an autonomous, decentralized grid protocol. My current hours are spent in the Rust borrow-checker trenches, sifting through mesh networking whitepapers to isolate the one variable causing packet jitter. I’m drafting a system where nodes negotiate in the dark to keep the power moving.
-</p>
-<br />
-<h3>03 // THE MISSION</h3>
- <p className="text-[#F3EFE6]/60 text-lg md:text-xl font-light leading-relaxed">
-Reducing complexity until only the skeleton remains. I don't "manage" chaos; I eliminate the clutter that causes it. If a system can’t be explained by a diagram on a napkin or survive a "frayed wire" event, it’s not finished. I’m still working toward that blue LED.
-</p>
-                </div>
-            </Row>
-
-            {/* ROW 3: CONSUMPTION */}
-            <Row delay={0.3} label="Input_Stream">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-4xl">
-
-                    {/* Reading */}
-                    <div className="flex flex-col gap-6">
-                        <span className="font-mono text-xs text-[#F3EFE6]/30 uppercase tracking-[0.2em] border-b border-[#F3EFE6]/10 pb-4">
-                            Reading
-                        </span>
-                        <ul className="space-y-6">
-                            <ListItem title="Project Hail Mary" author="Andy Weir" />
-                            <ListItem title="The Hunger Games" author="Suzanne Collins" />
-                            <ListItem title="Unfinished Tales" author="J.R.R. Tolkein" />
-                        </ul>
-                    </div>
-
-                    {/* Listening */}
-                    <div className="flex flex-col gap-6">
-                        <span className="font-mono text-xs text-[#F3EFE6]/30 uppercase tracking-[0.2em] border-b border-[#F3EFE6]/10 pb-4">
-                            Resonance
-                        </span>
-                        <ul className="space-y-6">
-                            <ListItem title="Selected Ambient Works 85-92" author="Aphex Twin" />
-                            <ListItem title="Untrue" author="Burial" />
-                            <ListItem title="Blade Runner 2049 (OST)" author="Hans Zimmer" />
-                        </ul>
-                    </div>
-                </div>
-            </Row>
-
-            {/* ROW 4: PHILOSOPHY / QUOTE */}
-            <Row delay={0.4} label="Directive">
-                <div className="max-w-4xl py-12">
-                    <blockquote className="text-4xl md:text-6xl font-serif italic text-[#F3EFE6]/80 leading-[1.1] tracking-tight">
-                        "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away."
-                    </blockquote>
-                    <cite className="block mt-8 font-mono text-xs text-[#F3EFE6]/40 uppercase tracking-[0.2em]">
-                        — Antoine de Saint-Exupéry
-                    </cite>
-                </div>
-            </Row>
-
+    <main className="min-h-screen bg-[#050505] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-28 text-[#F3EFE6] sm:px-6 md:px-12 md:pb-24 md:pt-40">
+      <div className="mx-auto max-w-[1200px]">
+        <Link to="/" className="mb-12 inline-flex min-h-11 items-center gap-3 font-mono text-xs uppercase tracking-widest text-[#D6B97A]">
+          ← Home
+        </Link>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#D6B97A]">Current update</p>
+        <h1 className="mt-4 text-[clamp(4rem,20vw,12rem)] font-bold uppercase leading-[0.8] tracking-tighter">Now</h1>
+        <div className="mt-12 max-w-2xl border-t border-white/10 pt-8 md:mt-16">
+          <p className="text-xl leading-relaxed text-white/65 md:text-2xl">
+            I have not posted a current update here. The project list shows the work currently featured on this site.
+          </p>
+          <Link to="/projects" className="mt-8 inline-flex min-h-12 items-center gap-3 border-b border-white/20 font-mono text-xs uppercase tracking-widest transition-colors hover:border-[#D6B97A] hover:text-[#D6B97A]">
+            View projects <span aria-hidden="true">↗</span>
+          </Link>
         </div>
-
-        {/* --- FOOTER --- */}
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-            className="mt-32 pt-8 border-t border-[#F3EFE6]/20 flex justify-between items-center"
-        >
-            <span className="font-mono text-[10px] text-[#F3EFE6]/30 uppercase tracking-widest">
-                Last_Updated :: March 2026
-            </span>
-            <span className="font-mono text-[10px] text-[#F3EFE6]/30 uppercase tracking-widest">
-                End_Of_File
-            </span>
-        </motion.div>
-
       </div>
-    </div>
+    </main>
   );
-}
-
-/* =========================================
-   SUBCOMPONENTS FOR STRICT BRUTALIST GRID
-   ========================================= */
-
-// The "Ledger Row"
-function Row({ children, label, delay }: { children: React.ReactNode, label: string, delay: number }) {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col lg:flex-row border-b border-[#F3EFE6]/20"
-        >
-            {/* The Label Column (Fixed width on desktop) */}
-            <div className="lg:w-1/4 py-8 lg:py-16 pr-8 border-b lg:border-b-0 lg:border-r border-[#F3EFE6]/10">
-                <span className="font-mono text-xs text-[#F3EFE6]/50 uppercase tracking-[0.2em] sticky top-32">
-                    // {label}
-                </span>
-            </div>
-
-            {/* The Content Column */}
-            <div className="lg:w-3/4 py-12 lg:py-16 lg:pl-16">
-                {children}
-            </div>
-        </motion.div>
-    );
-}
-
-// Minimalist List Item
-function ListItem({ title, author }: { title: string, author: string }) {
-    return (
-        <li className="flex flex-col gap-1 group">
-            <span className="text-xl md:text-2xl font-medium tracking-tight text-[#F3EFE6] group-hover:text-[#F3EFE6]/70 transition-colors">
-                {title}
-            </span>
-            <span className="font-mono text-[10px] text-[#F3EFE6]/40 uppercase tracking-widest">
-                {author}
-            </span>
-        </li>
-    );
 }

@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight, Terminal } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 /* -------------------- TYPES -------------------- */
@@ -17,7 +15,7 @@ const NAV_ITEMS: NavItemType[] = [
   { name: "Expertise", id: "work" },
   { name: "Projects", id: "projects" },
   { name: "Editorial", id: "editorial" },
-  { name: "Blogs", id: "blog", isRoute: true },
+  { name: "Writing", id: "blog", isRoute: true },
   { name: "Now", id: "now", isRoute: true }
 ];
 
@@ -27,11 +25,7 @@ export default function Navbar() {
   const location = useLocation();
 
   const [activeTab, setActiveTab] = useState<string>("home");
-  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
-  const [time, setTime] = useState<string>("");
-  const { scrollYProgress } = useScroll();
-  const width = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
     if (!isMobileOpen) return;
@@ -51,21 +45,6 @@ export default function Navbar() {
 
   // Ref to prevent Scroll Spy from reactivating tabs while we auto-scroll to contact
   const isManualScroll = useRef(false);
-
-  /* CLOCK */
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(
-        new Date().toLocaleTimeString("en-US", {
-          hour12: true,
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })
-      );
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   /* SCROLL SPY (Desktop Only) */
   useEffect(() => {
@@ -126,8 +105,8 @@ export default function Navbar() {
   };
 
   /* CONTACT CLICK HANDLER */
-  const handleContactClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleContactClick = (e?: React.MouseEvent) => {
+    e?.preventDefault();
     setIsMobileOpen(false);
     
     // 1. Lock the scroll spy so it doesn't light up "Editorial" while scrolling past it
@@ -137,9 +116,13 @@ export default function Navbar() {
     setActiveTab("");
 
     // 3. Scroll to contact
-    document.getElementById("contact")?.scrollIntoView({
-      behavior: "smooth",
-    });
+    const scrollToContact = () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    if (location.pathname !== "/") {
+      navigate("/");
+      window.setTimeout(scrollToContact, 120);
+    } else {
+      scrollToContact();
+    }
 
     // 4. Unlock the scroll spy after animation (approx 1s)
     // This allows the highlight to reappear when the user manually scrolls back up
@@ -150,237 +133,131 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-[max(1rem,env(safe-area-inset-top))] md:top-6 inset-x-0 z-50 flex justify-center pointer-events-none px-3 sm:px-4"
-      >
-        <div className="pointer-events-auto relative group w-full lg:w-auto flex justify-center">
-          
-          {/* HUD Container */}
-          <div className="relative flex items-center justify-between lg:justify-center bg-[#0B0B0C]/95 md:bg-[#0B0B0C]/90 md:backdrop-blur-md border border-[#F3EFE6]/10 rounded-full p-1.5 shadow-xl shadow-black/60 w-full lg:w-auto">
-            
-            {/* LEFT: Telemetry */}
-            <div className="hidden lg:flex items-center gap-3 px-4 border-r border-[#F3EFE6]/10 mr-1 h-8">
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10B981]" />
-                <span className="text-[10px] font-mono text-[#F3EFE6]/60 tracking-widest">
-                  SYS.ONLINE
-                </span>
-              </div>
-              <span className="text-[10px] font-mono text-[#F3EFE6] tabular-nums tracking-widest opacity-50">
-                {time} UTC
-              </span>
-            </div>
-
-            {/* CENTER: Nav Items */}
-            <ul
-              className="hidden lg:flex items-center relative z-10"
-              onMouseLeave={() => setHoveredTab(null)}
-            >
-              {NAV_ITEMS.map((item) => (
-                <NavItem
-                  key={item.id}
-                  item={item}
-                  isActive={activeTab === item.id}
-                  isHovered={hoveredTab === item.id}
-                  isAnyHovered={!!hoveredTab}
-                  onHover={() => setHoveredTab(item.id)}
-                  onClick={() => handleNavigation(item)}
-                />
-              ))}
-            </ul>
-
-            {/* MOBILE HEADER */}
-            <div className="lg:hidden pl-4 flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse" />
-                <span className="text-xs font-mono text-[#F3EFE6] tracking-widest uppercase">
-                    Aadi.SYS
-                </span>
-            </div>
-
-            {/* RIGHT: Connect */}
-            <div className="hidden lg:flex items-center pl-1 ml-1 border-l border-[#F3EFE6]/10 h-8">
-              <a
-                  href="#contact"
-                  onClick={handleContactClick}
-                  className="group/btn relative flex items-center gap-2 px-5 py-2 rounded-full hover:bg-white/5 transition-colors"
-                >
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#F3EFE6]">
-                  Connect
-                </span>
-                <ArrowUpRight className="w-3 h-3 text-[#F3EFE6] group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 transition-transform" />
-              </a>
-            </div>
-
-            {/* MOBILE TOGGLE */}
-            <div className="lg:hidden pr-1">
-              <button
-                onClick={() => setIsMobileOpen(true)}
-                aria-label="Open navigation"
-                className="min-h-11 min-w-11 p-2 text-[#F3EFE6] bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5 flex items-center justify-center"
-              >
-                <Menu size={18} />
-              </button>
-            </div>
-
-            <div className="absolute bottom-0 left-6 right-6 h-px bg-[#F3EFE6]/5 overflow-hidden rounded-full">
-              <motion.div
-                style={{ width }}
-                className="h-full bg-[#D6B97A]/70"
+      <nav className="fixed top-0 inset-x-0 z-50 border-b border-[#F3EFE6]/10 bg-[#0B0B0C] pt-[env(safe-area-inset-top)]">
+        <div className="mx-auto flex min-h-16 max-w-[1600px] items-center justify-between px-5 sm:px-8 md:px-12">
+          <button onClick={() => handleNavigation(NAV_ITEMS[0])} className="font-display text-base font-semibold text-[#F3EFE6]" aria-label="Go to home">
+            Aadi Gorasia
+          </button>
+          <ul className="hidden items-center gap-1 lg:flex">
+            {NAV_ITEMS.map((item) => (
+              <NavItem
+                key={item.id}
+                item={item}
+                isActive={activeTab === item.id}
+                onClick={() => handleNavigation(item)}
               />
-            </div>
-
-          </div>
+            ))}
+            <li className="ml-3 border-l border-[#F3EFE6]/15 pl-4">
+              <button onClick={() => handleContactClick()} className="min-h-11 px-2 font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6] transition-colors hover:text-[#D6B97A]">
+                Contact
+              </button>
+            </li>
+          </ul>
+          <button
+            onClick={() => setIsMobileOpen(true)}
+            aria-label="Open navigation"
+            aria-expanded={isMobileOpen}
+            className="min-h-11 px-2 font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6] lg:hidden"
+          >
+            Menu
+          </button>
         </div>
-      </motion.nav>
+      </nav>
 
-      {/* -------------------- MOBILE OVERLAY -------------------- */}
-      <AnimatePresence>
-        {isMobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+      <nav aria-label="Quick navigation" className="fixed bottom-0 inset-x-0 z-40 border-t border-white/15 bg-[#0B0B0C] pb-[env(safe-area-inset-bottom)] md:hidden">
+        <div className="mx-auto grid max-w-xl grid-cols-4">
+          <button
+            onClick={() => handleNavigation(NAV_ITEMS[0])}
+            aria-current={location.pathname === "/" && activeTab === "home" ? "page" : undefined}
+            className={`min-h-14 border-r border-white/10 font-mono text-[9px] uppercase tracking-[0.08em] transition-colors ${location.pathname === "/" && activeTab === "home" ? "text-[#D6B97A]" : "text-[#F3EFE6]/55 active:text-[#F3EFE6]"}`}
+          >
+            Home
+          </button>
+          <button
+            onClick={() => handleNavigation(NAV_ITEMS[3])}
+            aria-current={activeTab === "projects" || location.pathname.startsWith("/projects") ? "page" : undefined}
+            className={`min-h-14 border-r border-white/10 font-mono text-[9px] uppercase tracking-[0.08em] transition-colors ${activeTab === "projects" || location.pathname.startsWith("/projects") ? "text-[#D6B97A]" : "text-[#F3EFE6]/55 active:text-[#F3EFE6]"}`}
+          >
+            Work
+          </button>
+          <button
+            onClick={() => navigate("/blog")}
+            aria-current={location.pathname.startsWith("/blog") ? "page" : undefined}
+            className={`min-h-14 border-r border-white/10 font-mono text-[9px] uppercase tracking-[0.08em] transition-colors ${location.pathname.startsWith("/blog") ? "text-[#D6B97A]" : "text-[#F3EFE6]/55 active:text-[#F3EFE6]"}`}
+          >
+            Journal
+          </button>
+          <button
+            onClick={() => handleContactClick()}
+            aria-current={activeTab === "" ? "page" : undefined}
+            className={`min-h-14 font-mono text-[9px] uppercase tracking-[0.08em] transition-colors ${activeTab === "" ? "text-[#D6B97A]" : "text-[#F3EFE6]/55 active:text-[#F3EFE6]"}`}
+          >
+            Contact
+          </button>
+        </div>
+      </nav>
+
+      {isMobileOpen && (
+          <div
             role="dialog"
             aria-modal="true"
             aria-label="Site navigation"
             className="fixed inset-0 z-[60] bg-[#050505] md:bg-[#050505]/95 flex flex-col items-center justify-start overflow-y-auto overscroll-contain px-6 pt-[max(5.5rem,calc(env(safe-area-inset-top)+4.5rem))] pb-[max(5rem,calc(env(safe-area-inset-bottom)+4rem))] md:justify-center md:px-0 md:py-0"
           >
-            {/* Background Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-20" />
-            
             <button
               onClick={() => setIsMobileOpen(false)}
               aria-label="Close navigation"
-              className="absolute top-[max(1.25rem,env(safe-area-inset-top))] right-5 md:top-8 md:right-6 min-h-11 min-w-11 p-2 md:p-4 text-[#F3EFE6] bg-white/5 rounded-full hover:rotate-90 transition-transform border border-white/10 z-50 flex items-center justify-center"
+              className="absolute top-[max(1.25rem,env(safe-area-inset-top))] right-5 md:top-8 md:right-6 min-h-11 px-2 md:px-4 font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6] z-50"
             >
-              <X size={24} />
+              Close
             </button>
 
             <div className="mobile-menu-items flex flex-col gap-2 md:gap-6 text-center relative z-10 w-full max-w-xl md:px-8">
-                <div className="text-[#D6B97A]/50 font-mono text-xs uppercase tracking-[0.3em] mb-2 md:mb-4">
-                    // Navigation_Sequence
-                </div>
-                
-              {NAV_ITEMS.map((item, i) => (
-                <motion.button
+              {NAV_ITEMS.map((item) => (
+                <button
                   key={item.id}
                   onClick={() => handleNavigation(item)}
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                   className="group flex items-center justify-between w-full min-h-12 border-b border-white/10 py-1 md:min-h-14 md:py-3 md:pb-4"
                 >
-                    <span className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#F3EFE6] uppercase tracking-tighter group-hover:text-[#D6B97A] transition-colors">
+                    <span className="font-display text-2xl font-medium tracking-tight text-[#F3EFE6] group-hover:text-[#D6B97A] transition-colors sm:text-3xl md:text-5xl">
                         {item.name}
                     </span>
-                    <ArrowUpRight className="text-[#333] group-hover:text-[#D6B97A] transition-colors" />
-                </motion.button>
+                </button>
               ))}
 
-               {/* Mobile Connect Button */}
-               <motion.button
+               <button
                   onClick={handleContactClick}
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                   className="group flex items-center justify-between w-full min-h-12 border-b border-[#D6B97A]/50 py-1 mt-1 md:min-h-14 md:py-3 md:mt-4"
                 >
-                    <span className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#D6B97A] uppercase tracking-tighter">
-                        Connect
+                    <span className="font-display text-2xl font-medium tracking-tight text-[#D6B97A] sm:text-3xl md:text-5xl">
+                        Contact
                     </span>
-                    <ArrowUpRight className="text-[#D6B97A]" />
-                </motion.button>
+                </button>
             </div>
             
-            <div className="mobile-menu-status fixed bottom-0 left-0 w-full px-6 md:px-8 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] bg-gradient-to-t from-[#050505] via-[#050505] to-transparent flex justify-between items-end">
-                <div className="flex flex-col gap-1">
-                    <span className="text-[#F3EFE6]/30 font-mono text-[10px] uppercase tracking-widest">System Status</span>
-                    <span className="text-[#D6B97A] font-mono text-xs uppercase tracking-widest">Nominal</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#F3EFE6]/30 font-mono text-[10px]">
-                    <Terminal size={12} /> v2.4.0
-                </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      )}
     </>
   );
 }
 
-/* -------------------- NAV ITEM (With Glitch) -------------------- */
+/* -------------------- NAV ITEM -------------------- */
 
-function NavItem({ item, isActive, isHovered, isAnyHovered, onHover, onClick }: any) {
-  const showPill = isHovered || (isActive && !isAnyHovered);
+interface NavItemProps {
+  item: NavItemType;
+  isActive: boolean;
+  onClick: () => void;
+}
 
+function NavItem({ item, isActive, onClick }: NavItemProps) {
   return (
     <li className="relative list-none">
       <button
         onClick={onClick}
-        onMouseEnter={onHover}
-        className="relative block px-5 py-2 text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors duration-200 z-20"
+        className={`relative block border-b px-3 py-5 text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors duration-200 ${isActive ? "border-[#D6B97A] text-[#D6B97A]" : "border-transparent text-[#F3EFE6] hover:text-[#D6B97A]"}`}
       >
-        {showPill && (
-          <motion.div
-            layoutId="nav-pill"
-            className="absolute inset-0 bg-[#F3EFE6] rounded-full shadow-[0_0_15px_rgba(243,239,230,0.2)] mix-blend-exclusion z-0"
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          />
-        )}
-        <span
-          className={`relative z-10 transition-colors duration-200 ${
-            showPill ? "text-[#0B0B0C]" : "text-[#F3EFE6]"
-          }`}
-        >
-          {/* THE GLITCH IS HERE */}
-          <ScrambleText text={item.name} trigger={showPill} />
-        </span>
+        {item.name}
       </button>
     </li>
   );
-}
-
-/* -------------------- SCRAMBLE COMPONENT -------------------- */
-const CHARS = "ABCDEFGH!@#$%^&*()";
-
-function ScrambleText({ text, trigger }: { text: string; trigger: boolean }) {
-  const [displayText, setDisplayText] = useState<string>(text);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (trigger) {
-      let iteration = 0;
-      if (intervalRef.current) clearInterval(intervalRef.current);
-
-      intervalRef.current = setInterval(() => {
-        setDisplayText(
-          text
-            .split("")
-            .map((_, index) =>
-              index < iteration
-                ? text[index]
-                : CHARS[Math.floor(Math.random() * CHARS.length)]
-            )
-            .join("")
-        );
-
-        if (iteration >= text.length) {
-          if (intervalRef.current) clearInterval(intervalRef.current);
-          setDisplayText(text);
-        }
-        iteration += 0.5;
-      }, 30);
-    } else {
-      setDisplayText(text);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    }
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [trigger, text]);
-
-  return <>{displayText}</>;
 }

@@ -1,21 +1,4 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useSpring } from "framer-motion";
-import { ArrowDownRight, Crosshair } from "lucide-react";
-
 export default function MainHero() {
-  const heroRef = useRef<HTMLElement>(null);
-  const spotlightX = useSpring(0, { stiffness: 120, damping: 24 });
-  const spotlightY = useSpring(0, { stiffness: 120, damping: 24 });
-
-  const handlePointerMove = (event: React.MouseEvent<HTMLElement>) => {
-    const bounds = heroRef.current?.getBoundingClientRect();
-    if (!bounds) return;
-    spotlightX.set(event.clientX - bounds.left);
-    spotlightY.set(event.clientY - bounds.top);
-  };
-
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
     document.getElementById("contact")?.scrollIntoView({
@@ -24,131 +7,99 @@ export default function MainHero() {
   };
 
   return (
-    <section ref={heroRef} onMouseMove={handlePointerMove} id="home" className="portfolio-section relative w-full min-h-[100svh] bg-[#0B0B0C] overflow-hidden selection:bg-[#D6B97A] selection:text-[#0B0B0C] flex flex-col justify-between">
+    <section id="home" className="portfolio-section relative w-full min-h-[100svh] bg-[#0B0B0C] overflow-hidden selection:bg-[#D6B97A] selection:text-[#0B0B0C] flex flex-col justify-between">
       
-      {/* 1. TECHNICAL GRID & NOISE */}
-      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-      <motion.div
-        className="absolute top-0 left-0 z-10 w-[900px] h-[700px] pointer-events-none rounded-full opacity-80"
-        aria-hidden="true"
-        style={{
-          x: spotlightX,
-          y: spotlightY,
-          translateX: "-50%",
-          translateY: "-50%",
-          background: "radial-gradient(ellipse, rgba(214,185,122,0.16), transparent 70%)",
-        }}
-      />
-
-      {/* 3. STRUCTURAL FRAMING (The HUD Elements) */}
-      <div className="absolute top-8 left-8 w-4 h-4 border-t-2 border-l-2 border-[#F3EFE6]/20 z-0" />
-      <div className="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-[#F3EFE6]/20 z-0" />
-      <div className="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-[#F3EFE6]/20 z-0" />
-      <div className="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-[#F3EFE6]/20 z-0" />
-      
-      {/* Center Reticle */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 pointer-events-none z-0 hidden md:block">
-         <Crosshair size={400} strokeWidth={0.5} />
-      </div>
-
-      {/* --- TOP: STATUS ROW --- */}
-      <div className="relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 pt-28 sm:pt-32 flex justify-between items-end">
-        <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="flex items-center gap-4"
-        >
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_#10B981]" />
-            <span className="text-[#F3EFE6] text-xs uppercase tracking-[0.3em] font-mono opacity-80">
-                System Status: Nominal
-            </span>
-        </motion.div>
-        
-        {/* Telemetry Data (Pune Coordinates) */}
-        <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="hidden md:flex flex-col text-right text-[#F3EFE6]/30 font-mono text-[10px] uppercase tracking-widest"
-        >
-            <span>LAT: 18.5204° N</span>
-            <span>LNG: 73.8567° E</span>
-        </motion.div>
-      </div>
-
-      {/* --- CENTER: MASSIVE TYPOGRAPHY --- */}
-      <div className="relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 flex-grow flex flex-col justify-center pointer-events-none">
-        <div className="flex flex-col leading-[0.8] tracking-tighter mix-blend-difference">
+      {/* Desktop introduction */}
+      <div className="hidden md:flex relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 flex-grow flex-col justify-center pointer-events-none">
+        <div className="flex flex-col leading-[0.9] tracking-tighter">
             
             {/* First Name */}
             <div className="overflow-hidden">
-                <motion.h1
-                    initial={{ y: "100%" }}
-                    animate={{ y: "0%" }}
-                    transition={{ duration: 1.2, ease:[0.16, 1, 0.3, 1] }} 
-                    className="text-[clamp(4.5rem,18vw,14rem)] md:text-[14vw] font-black text-[#F3EFE6] uppercase"
+                <h1
+                    className="text-[clamp(5rem,14vw,12rem)] font-display font-semibold text-[#F3EFE6] tracking-[-0.06em]"
                 >
                     Aadi
-                </motion.h1>
+                </h1>
             </div>
             
-            {/* Last Name (Staggered & Colored) */}
             <div className="overflow-hidden">
-                <motion.h1
-                    initial={{ y: "100%" }}
-                    animate={{ y: "0%" }}
-                    transition={{ duration: 1.2, delay: 0.1, ease:[0.16, 1, 0.3, 1] }}
-                    className="text-[clamp(4.2rem,17vw,14rem)] md:text-[14vw] font-black text-[#D6B97A] uppercase md:pl-32 relative"
+                <h1
+                    className="text-[clamp(5rem,14vw,12rem)] font-serif font-medium italic text-[#D6B97A] tracking-[-0.05em] md:pl-32"
                 >
                     Gorasia
-                    <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-[30vw] h-[15vh] bg-[#D6B97A]/15 blur-[60px] rounded-full pointer-events-none" />
-                </motion.h1>
+                </h1>
             </div>
 
         </div>
       </div>
 
       {/* --- BOTTOM: NARRATIVE & ACTION --- */}
-      <div className="relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 pb-[max(2rem,env(safe-area-inset-bottom))] md:pb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-8 md:gap-12 lg:gap-24">
+      <div className="hidden md:flex relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 pb-[max(2rem,env(safe-area-inset-bottom))] md:pb-24 flex-col lg:flex-row lg:items-end justify-between gap-8 md:gap-12 lg:gap-24">
             
-            {/* The Backstory (Now structured like a data log) */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-                className="max-w-2xl border-l border-[#D6B97A]/30 pl-4 md:pl-8 py-2 relative"
-            >
-                {/* Decorative corner on the text box */}
-                <div className="absolute top-0 left-0 w-2 h-[1px] bg-[#D6B97A]" />
-                <div className="absolute bottom-0 left-0 w-2 h-[1px] bg-[#D6B97A]" />
-                
+            <div className="max-w-2xl border-l border-[#D6B97A]/50 pl-4 md:pl-8 py-2">
                 <p className="text-base sm:text-lg md:text-xl font-light leading-relaxed">
-                    I live in Pune and the lockdown turned me into <span className="text-[#F3EFE6] font-medium">a nerd</span>, the boredom kicked in and <span className="text-[#F3EFE6] font-medium">programming really got to me</span>, I built a lot of random projects, mainly to teach myself <span className="text-[#F3EFE6] font-medium">but also for the fun of it.</span>
+                    I live in Pune. I started programming during lockdown and built projects to teach myself.
                 </p>
-            </motion.div>
+            </div>
 
-            {/* The CTA Button */}
-            <motion.button
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            <button
                 onClick={handleContactClick}
-                className="group relative flex items-center justify-between gap-8 px-8 py-5 border border-[#F3EFE6]/20 bg-[#0B0B0C] overflow-hidden transition-all duration-500 hover:border-[#D6B97A] w-full md:w-auto"
+                className="group flex min-h-12 items-center justify-between gap-8 border-b border-[#F3EFE6]/30 py-3 text-left transition-colors hover:border-[#D6B97A] hover:text-[#D6B97A] md:w-auto"
             >
-                {/* Slide-up Gold Fill */}
-                <div className="absolute inset-0 bg-[#D6B97A] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
-                
-                <span className="relative z-10 uppercase tracking-widest text-sm font-bold text-[#F3EFE6] group-hover:text-[#0B0B0C] transition-colors duration-300">
-                    Meet Up
-                </span> 
-                
-                <div className="relative z-10 w-8 h-8 flex items-center justify-center border border-[#F3EFE6]/20 rounded-full group-hover:border-[#0B0B0C]/20 transition-colors duration-300">
-                    <ArrowDownRight className="w-4 h-4 text-[#F3EFE6] group-hover:text-[#0B0B0C] transition-all duration-500 group-hover:rotate-45" />
-                </div>
-            </motion.button>
+                <span className="uppercase tracking-widest text-sm font-bold">Contact</span>
+                <span aria-hidden="true">↘</span>
+            </button>
+      </div>
+
+      <div className="mobile-home-hero relative z-20 flex min-h-[100svh] flex-col justify-between px-5 pb-28 pt-24 md:hidden">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#F3EFE6]/55">
+            Pune, India
+          </div>
+        </div>
+
+        <div className="mobile-home-art relative -mx-5 my-8 min-h-[34svh] flex-1 overflow-hidden">
+          <img
+            src="/aboutPhoto.jpeg"
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover object-[72%_center] opacity-70"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0C] via-[#0B0B0C]/35 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0C] via-transparent to-[#0B0B0C]/35" />
+          <div className="absolute inset-0 flex flex-col justify-center px-5">
+            <h1
+              className="font-display text-[16vw] font-semibold leading-[0.85] tracking-[-0.07em] text-[#F3EFE6]"
+            >
+              Aadi
+              <span className="mt-2 block font-serif font-medium italic text-[16vw] text-[#D6B97A]">Gorasia</span>
+            </h1>
+          </div>
+        </div>
+
+        <div>
+          <p className="max-w-sm text-[15px] leading-6 text-[#F3EFE6]/70">
+            I started programming during lockdown and built projects to teach myself.
+          </p>
+          <div className="mt-6 flex flex-col gap-3">
+            <button
+              onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+              className="flex min-h-12 items-center justify-between border-b border-[#D6B97A] py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-[#D6B97A]"
+            >
+              See my work <span aria-hidden="true">↓</span>
+            </button>
+            <button
+              onClick={handleContactClick}
+              className="flex min-h-12 items-center justify-between border-b border-white/20 py-3 font-mono text-[10px] uppercase tracking-[0.1em] text-[#F3EFE6]"
+            >
+              Say hello <span aria-hidden="true">↓</span>
+            </button>
+          </div>
+          <div className="mobile-home-meta mt-6 flex items-center justify-between border-t border-white/10 pt-3 font-mono text-[9px] uppercase tracking-[0.12em] text-[#F3EFE6]/35">
+            <span>Software and hardware projects</span>
+          </div>
+        </div>
       </div>
 
     </section>

@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { ArrowUp, ArrowUpRight } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const FOOTER_LINKS = [
   { label: "About", id: "about" },
@@ -32,34 +30,49 @@ export default function FatFooter() {
       if (element) element.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTime(now.toLocaleTimeString("en-US", { 
-        hour: "2-digit", 
-        minute: "2-digit", 
-        second: "2-digit",
-        timeZoneName: "long" 
-      }));
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="portfolio-section relative bg-[#0B0B0C] pt-16 md:pt-24 pb-8 px-5 sm:px-6 md:px-12 border-t border-[#F3EFE6]/10 overflow-hidden">
+    <footer className="portfolio-section relative bg-[#0B0B0C] pt-16 md:pt-24 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-8 px-5 sm:px-6 md:px-12 border-t border-[#F3EFE6]/10 overflow-hidden">
       
-      {/* Background Grid Pattern (Faint) */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+      <div className="relative z-10 mx-auto max-w-xl md:hidden">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/40">
+          <span>Contact</span>
+          <span className="text-[#D6B97A]">Aadi Gorasia</span>
+        </div>
+        <h2 className="mt-8 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.06em] text-[#F3EFE6]">
+          Get in touch.
+        </h2>
+        <button onClick={(e) => handleScroll(e, "contact")} className="mt-6 flex min-h-12 w-full items-center justify-between border-y border-white/15 font-mono text-[10px] uppercase tracking-[0.12em] text-white">
+          Start a conversation <span aria-hidden="true" className="text-[#D6B97A]">↗</span>
+        </button>
+        <div className="mt-10 grid grid-cols-2 gap-3">
+          <Link to="/blog" className="border-t border-white/15 py-4">
+            <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-white/40">Read</span>
+            <span className="mt-2 block font-display text-lg font-medium text-white">Writing ↗</span>
+          </Link>
+          <Link to="/now" className="border-t border-white/15 py-4">
+            <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-white/40">Today</span>
+            <span className="mt-2 block font-display text-lg font-medium text-white">What I’m up to ↗</span>
+          </Link>
+        </div>
+        <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5">
+          <div className="flex gap-4 font-mono text-[10px] uppercase tracking-[0.1em] text-white/50">
+            <a href="https://github.com/Aadi-Gorasia" target="_blank" rel="noopener noreferrer" className="min-h-11 flex items-center">GitHub ↗</a>
+            <a href="https://x.com/gorasiaaadi" target="_blank" rel="noopener noreferrer" className="min-h-11 flex items-center">X ↗</a>
+          </div>
+          <button onClick={scrollToTop} className="min-h-11 font-mono text-[10px] uppercase tracking-widest text-[#D6B97A]">Back to top ↑</button>
+        </div>
+        <div className="mt-4 flex gap-5 font-mono text-[9px] uppercase tracking-[0.1em] text-white/40">
+          <Link to="/privacy-policy" className="min-h-11 flex items-center">Privacy</Link>
+          <Link to="/terms-and-conditions" className="min-h-11 flex items-center">Terms</Link>
+        </div>
+        <p className="mt-5 font-mono text-[9px] uppercase tracking-[0.1em] text-white/30">© {new Date().getFullYear()} Aadi Gorasia · Pune, India</p>
+      </div>
 
-      <div className="max-w-[1600px] mx-auto relative z-10">
+      <div className="hidden max-w-[1600px] mx-auto relative z-10 md:block">
         
         {/* TOP ROW: CTA & NAVIGATION */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 gap-y-10 md:gap-8 mb-16 md:mb-24">
@@ -68,17 +81,16 @@ export default function FatFooter() {
           <div className="col-span-2 md:col-span-6 flex flex-col justify-between">
             <div>
                 <h2 className="text-[#F3EFE6] text-[clamp(2.7rem,11vw,4.5rem)] md:text-7xl font-medium tracking-tighter leading-[0.9] mb-8">
-                  Let’s build <br />
-                  <span className="text-[#666] italic font-serif">something.</span>
+                  Get in touch.
                 </h2>
                 <button 
                   onClick={(e) => handleScroll(e, "contact")}
                   className="group flex items-center gap-4 text-[#F3EFE6] hover:text-[#D6B97A] transition-colors duration-300"
                 >
                   <span className="text-sm font-mono uppercase tracking-widest border-b border-[#F3EFE6]/30 pb-1 group-hover:border-[#D6B97A]">
-                    Initiate Sequence
+                    Contact
                   </span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+                  <span aria-hidden="true">↗</span>
                 </button>
             </div>
           </div>
@@ -123,61 +135,43 @@ export default function FatFooter() {
           className="text-[#F3EFE6]/70 hover:text-[#F3EFE6] text-sm tracking-wide transition-colors block group"
         >
           {item.name}
-          <span className="opacity-0 group-hover:opacity-100 transition-opacity ml-1">
-            ↗
-          </span>
+          <span className="ml-1">↗</span>
         </a>
       </li>
     ))}
   </ul>
 </div>
 
-          {/* 4. Meta Data (Span 2) */}
-          <div className="col-span-2 md:col-span-2 space-y-4 md:space-y-6 flex flex-row md:flex-col justify-between gap-6">
-            <div>
-                <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em] mb-4">Coordinates</h4>
-                <p className="text-[#F3EFE6] font-mono text-xs">
-                    Pune, MH<br />
-                    18.5246° N, 73.8786° E
-                </p>
-            </div>
-            
-            <div>
-                <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em] mb-4">Local Time</h4>
-                <p className="text-[#F3EFE6] font-mono text-xs tabular-nums">
-                    {time}
-                </p>
-            </div>
+          {/* 4. Legal links */}
+          <div className="md:col-span-2 space-y-4 md:space-y-6">
+            <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em]">Information</h4>
+            <ul className="space-y-3">
+              <li><Link to="/privacy-policy" className="text-[#F3EFE6]/70 hover:text-[#D6B97A] text-sm tracking-wide transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-and-conditions" className="text-[#F3EFE6]/70 hover:text-[#D6B97A] text-sm tracking-wide transition-colors">Terms and Conditions</Link></li>
+            </ul>
           </div>
         </div>
 
-        {/* BOTTOM ROW: MASSIVE SIGNATURE */}
         <div className="border-t border-[#F3EFE6]/10 pt-8 md:pt-12 flex flex-col md:flex-row items-end justify-between gap-8">
-            
-            {/* The Name (Fills the space) */}
             <div className="w-full overflow-hidden">
-                <h1 className="text-[13vw] sm:text-[14vw] leading-[0.8] font-bold text-[#F3EFE6] tracking-tighter uppercase select-none mix-blend-difference opacity-90">
-                    GORASIA
+                <h1 className="font-display text-[clamp(3rem,8vw,7rem)] leading-none font-medium text-[#F3EFE6] tracking-tight">
+                    Aadi Gorasia
                 </h1>
             </div>
 
             {/* Back to Top Button */}
             <button 
                 onClick={scrollToTop}
-                className="group relative flex items-center justify-center w-14 h-14 md:w-24 md:h-24 border border-[#F3EFE6]/20 rounded-full hover:bg-[#F3EFE6] hover:border-[#F3EFE6] transition-all duration-500 shrink-0 mb-2 md:mb-8"
+                className="shrink-0 border-y border-[#F3EFE6]/30 py-4 font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6] transition-colors hover:border-[#D6B97A] hover:text-[#D6B97A] md:mb-8"
             >
-                <div className="absolute inset-0 rounded-full bg-[#F3EFE6] scale-0 group-hover:scale-100 transition-transform duration-500" />
-                <ArrowUp className="w-6 h-6 md:w-8 md:h-8 text-[#F3EFE6] group-hover:text-[#0B0B0C] relative z-10 transition-colors duration-500" />
+                Back to top ↑
             </button>
         </div>
 
         {/* COPYRIGHT BAR */}
         <div className="flex flex-col md:flex-row justify-between items-center mt-12 pt-6 border-t border-[#F3EFE6]/5 text-[#F3EFE6]/30 text-[10px] uppercase tracking-widest font-mono">
-            <span>© {new Date().getFullYear()} Aadi Gorasia Systems. All Rights Reserved.</span>
-            <div className="flex items-center gap-2 mt-4 md:mt-0">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_5px_#22c55e]" />
-                <span>System Status: Operational</span>
-            </div>
+            <span>© {new Date().getFullYear()} Aadi Gorasia</span>
+            <span className="mt-4 md:mt-0">Pune, India</span>
         </div>
 
       </div>

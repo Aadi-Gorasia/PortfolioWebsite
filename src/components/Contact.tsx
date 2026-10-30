@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Copy, Check, Terminal, Send, Loader2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [mobileFormOpen, setMobileFormOpen] = useState(false);
+  const formPanelRef = useRef<HTMLDivElement>(null);
   
   const email = "gorasiaaadi@gmail.com"; 
 
@@ -38,7 +39,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     } else {
       setStatus("error");
     }
-  } catch (err) {
+  } catch {
     setStatus("error");
   }
 };
@@ -46,81 +47,81 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <section id="contact" className="portfolio-section relative bg-[#0B0B0C] py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden">
       
-      {/* 1. ATMOSPHERE */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,185,122,0.05),transparent_40%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
         
         {/* --- LEFT COLUMN: THE HOOK --- */}
-        <div className="space-y-8 md:space-y-12">
+        <div className="hidden space-y-8 md:block md:space-y-12">
             
             <div className="space-y-6">
-                <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse shadow-[0_0_10px_#D6B97A]" />
-                    <span className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em]">
-                        Comms_Link :: Open
-                    </span>
-                </div>
-                
+                <p className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em]">Contact</p>
                 <h2 className="text-[#F3EFE6] text-[clamp(2.5rem,10vw,4.5rem)] md:text-7xl font-semibold tracking-tighter leading-[0.9]">
-                    Ready to engineer <br />
-                    the <span className="text-[#444] italic font-serif">impossible?</span>
+                    Get in touch.
                 </h2>
 
                 <p className="text-[#BEB6A8] text-base sm:text-lg max-w-md leading-relaxed">
-                    I am currently available for select projects involving autonomous systems, high-scale architecture, and exotic interfaces.
+                    For project inquiries or questions, use the email link or send a message below.
                 </p>
             </div>
 
-            {/* The Existing Magnetic Email Button */}
-            <motion.button
+            <button
                 onClick={handleCopy}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="group w-full md:w-auto min-h-16 flex items-center justify-between md:justify-start gap-4 sm:gap-8 px-4 sm:px-8 py-4 sm:py-6 bg-[#1A1A1A] border border-white/10 rounded-sm hover:border-[#D6B97A]/50 transition-all duration-300"
+                className="group w-full md:w-auto min-h-16 flex items-center justify-between md:justify-start gap-4 sm:gap-8 border-y border-white/15 py-4 sm:py-6 text-left hover:border-[#D6B97A]/50 transition-colors"
             >
                 <div className="text-left">
                     <span className="block text-[10px] font-mono uppercase tracking-widest text-[#F3EFE6]/40 mb-1 group-hover:text-[#D6B97A]">
-                        Direct Uplink
+                        Copy email address
                     </span>
                     <span className="text-sm sm:text-xl md:text-2xl font-mono tracking-tight text-[#F3EFE6] group-hover:text-white break-all">
                         {email}
                     </span>
                 </div>
                 
-                <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full group-hover:bg-[#D6B97A] transition-colors">
-                    {copied ? <Check className="w-5 h-5 text-white" /> : <Copy className="w-5 h-5 text-[#F3EFE6] group-hover:text-black" />}
-                </div>
-            </motion.button>
+                <span className="font-mono text-xs uppercase tracking-widest text-[#D6B97A]">{copied ? "Copied" : "Copy"}</span>
+            </button>
+        </div>
+
+        <div className="md:hidden">
+          <div className="mb-6 font-mono text-[9px] uppercase tracking-[0.16em] text-[#D6B97A]">Contact</div>
+          <h2 className="max-w-[12ch] font-display text-[clamp(2.7rem,12vw,4rem)] font-semibold leading-[0.92] tracking-[-0.07em] text-[#F3EFE6]">
+            Get in touch.
+          </h2>
+          <p className="mt-4 max-w-sm text-sm leading-6 text-[#BEB6A8]">
+            For project inquiries or questions, send me an email.
+          </p>
+          <a href={`mailto:${email}`} className="mt-6 flex min-h-14 items-center justify-between border-y border-[#D6B97A] font-mono text-xs font-semibold text-[#D6B97A]">
+            {email} <span aria-hidden="true">↗</span>
+          </a>
+          <button
+            onClick={() => {
+              setMobileFormOpen((isOpen) => !isOpen);
+              if (!mobileFormOpen) {
+                window.setTimeout(() => formPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+              }
+            }}
+            aria-expanded={mobileFormOpen}
+            className="mt-3 flex min-h-14 w-full items-center justify-between border-b border-white/15 font-mono text-[10px] uppercase tracking-[0.12em] text-[#F3EFE6]"
+          >
+            {mobileFormOpen ? "Close message form" : "Prefer a form? Write a note"}
+            <span aria-hidden="true">{mobileFormOpen ? "−" : "+"}</span>
+          </button>
         </div>
 
 
         {/* --- RIGHT COLUMN: THE CONSOLE (FORM) --- */}
-        <div className="relative">
-            {/* Console Frame */}
-            <div className="absolute -inset-1 bg-gradient-to-b from-[#F3EFE6]/10 to-transparent rounded-lg blur-sm opacity-50" />
-            
-            <div className="relative bg-[#050505] border border-[#F3EFE6]/10 p-5 sm:p-8 md:p-12 rounded-lg overflow-hidden">
-                
-                {/* Scanline Effect */}
-                <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none" />
-                
+        <div ref={formPanelRef} className={`relative scroll-mt-24 ${mobileFormOpen ? "block" : "hidden"} md:block`}>
+            <div className="relative border-y border-[#F3EFE6]/15 py-6 sm:py-8 md:py-12">
                 <div className="flex items-center justify-between mb-8 border-b border-[#F3EFE6]/10 pb-4">
-                    <span className="text-[#F3EFE6]/50 font-mono text-xs uppercase tracking-widest flex items-center gap-2">
-                        <Terminal size={14} /> Transmission_Console
-                    </span>
-                    <span className="text-[#D6B97A] font-mono text-xs uppercase tracking-widest">
-                        v2.0
+                    <span className="text-[#F3EFE6]/70 font-mono text-xs uppercase tracking-widest">
+                        Send a message
                     </span>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                <form onSubmit={handleSubmit} className="space-y-8">
                     
                     {/* Name Input */}
                     <div className="group space-y-2">
                         <label className="text-[10px] font-mono uppercase tracking-widest text-[#F3EFE6]/40 group-focus-within:text-[#D6B97A] transition-colors">
-                            // Identification
+                            Name
                         </label>
                         <input 
                             type="text" 
@@ -129,14 +130,14 @@ const handleSubmit = async (e: React.FormEvent) => {
                             value={formState.name}
                             onChange={(e) => setFormState({...formState, name: e.target.value})}
                             className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-3 text-[#F3EFE6] font-mono text-base md:text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
-                            placeholder="ENTER_ID"
+                            placeholder="Your name"
                         />
                     </div>
 
                     {/* Email Input */}
                     <div className="group space-y-2">
                         <label className="text-[10px] font-mono uppercase tracking-widest text-[#F3EFE6]/40 group-focus-within:text-[#D6B97A] transition-colors">
-                            // Return_Signal
+                            Email
                         </label>
                         <input 
                             type="email" 
@@ -145,14 +146,14 @@ const handleSubmit = async (e: React.FormEvent) => {
                             value={formState.email}
                             onChange={(e) => setFormState({...formState, email: e.target.value})}
                             className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-3 text-[#F3EFE6] font-mono text-base md:text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
-                            placeholder="ENTER_SIGNAL_ADDRESS"
+                            placeholder="you@example.com"
                         />
                     </div>
 
                     {/* Message Input */}
                     <div className="group space-y-2">
                         <label className="text-[10px] font-mono uppercase tracking-widest text-[#F3EFE6]/40 group-focus-within:text-[#D6B97A] transition-colors">
-                            // Payload_Data
+                            Message
                         </label>
                         <textarea 
                             required
@@ -161,46 +162,38 @@ const handleSubmit = async (e: React.FormEvent) => {
                             value={formState.message}
                             onChange={(e) => setFormState({...formState, message: e.target.value})}
                             className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-3 text-[#F3EFE6] font-mono text-base md:text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10 resize-none"
-                            placeholder="ENTER_TRANSMISSION_DATA..."
+                            placeholder="What would you like to discuss?"
                         />
                     </div>
 
                     {/* Action Area */}
                     <div className="pt-4">
-                        <AnimatePresence mode="wait">
                             {status === "success" ? (
-                                <motion.div 
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="flex items-center gap-4 text-[#D6B97A] font-mono text-sm bg-[#D6B97A]/10 p-4 border border-[#D6B97A]/20"
-                                >
-                                    <Check size={16} />
-                                    <span className="uppercase tracking-widest">Transmission_Sent</span>
-                                </motion.div>
+                                <p role="status" className="border-y border-[#D6B97A]/40 py-4 font-mono text-sm text-[#D6B97A]">
+                                    Message sent.
+                                </p>
                             ) : (
+                                <>
+                                {status === "error" && (
+                                  <p role="alert" className="mb-4 border border-red-400/30 bg-red-400/5 p-4 text-sm text-red-200">
+                                    Your message could not be sent. Please use the email link to contact me.
+                                  </p>
+                                )}
                                 <button 
                                     type="submit"
                                     disabled={status === "sending"}
-                                    className="group relative w-full overflow-hidden bg-[#F3EFE6] text-[#0B0B0C] py-4 font-bold uppercase tracking-widest text-xs hover:text-[#F3EFE6] transition-colors disabled:opacity-50"
+                                    className="group relative w-full border-y border-[#F3EFE6]/50 py-4 text-left font-mono text-xs font-bold uppercase tracking-widest text-[#F3EFE6] transition-colors hover:border-[#D6B97A] hover:text-[#D6B97A] disabled:opacity-50"
                                 >
-                                    <div className="absolute inset-0 w-full h-full bg-[#1A1A1A] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                                    <div className="relative flex items-center justify-center gap-3">
-                                        {status === "sending" ? (
-                                            <>
-                                                <Loader2 className="animate-spin" size={14} />
-                                                <span>Encrypting...</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span>Initiate_Protocol</span>
-                                                <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                            </>
-                                        )}
-                                    </div>
+                                    {status === "sending" ? "Sending..." : "Send message"}
                                 </button>
+                                </>
                             )}
-                        </AnimatePresence>
                     </div>
+
+                    <p className="text-xs leading-5 text-[#F3EFE6]/45">
+                      Submitting sends your details to Formspree. See the{" "}
+                      <Link to="/privacy-policy" className="text-[#D6B97A] underline underline-offset-2">Privacy Policy</Link>.
+                    </p>
 
                 </form>
             </div>

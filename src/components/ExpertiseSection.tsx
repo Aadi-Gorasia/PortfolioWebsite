@@ -1,175 +1,97 @@
-"use client";
-
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
-// Replace these with your actual gritty engineering photos/videos
 const EXPERTISE = [
   {
     id: 0,
     title: "Catabolic Process",
     category: "Dynamic Control",
-    src: "https://images.unsplash.com/photo-1738162837619-5d0b158abcec?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fHByb2Nlc3MlMjBhdXRvbWF0aW9ufGVufDB8fDB8fHww", // Industrial/Tech
+    mobileSrc: "/teslaturbine.png",
   },
   {
     id: 1,
     title: "Aerospace Systems",
     category: "Hardware Integration",
-    src: "https://images.unsplash.com/photo-1648998224981-99656b9f2c3c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGFlcm9zcGFjZSUyMGVuZ2luZWVyaW5nfGVufDB8fDB8fHww", // Turbine/Jet
+    mobileSrc: "/plen.png",
   },
   {
     id: 2,
     title: "Machine Learning",
     category: "Neural Architectures",
-    src: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=900&q=65", // AI/Data
+    mobileSrc: "/gesturecontrolcar.png",
   },
   {
     id: 3,
     title: "Navigational Algorithms",
     category: "Path Planning",
-    src: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=65", // Robot/Drone
+    mobileSrc: "/a*pathfindingalgorithm.png",
   },
   {
     id: 4,
     title: "Systems Knowledge",
     category: "Full Stack Development",
-    src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=65", // Server/Structure
+    mobileSrc: "/ProjectsSection.png",
   },
 ];
 
 export default function ExpertiseSection() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [selectedMobileIndex, setSelectedMobileIndex] = useState(0);
 
   return (
-    <section id="work" className="portfolio-section relative bg-[#0B0B0C] min-h-screen py-20 md:py-32 px-5 sm:px-8 md:px-16 overflow-hidden flex flex-col justify-center">
-      
-      {/* 1. The Background Image Reveal Layer */}
-      <div className="absolute inset-0 z-0 w-full h-full pointer-events-none">
-        <AnimatePresence mode="popLayout">
-          {hoveredIndex !== null && (
-            <motion.div
-              key={hoveredIndex}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 0.8, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="absolute inset-0 w-full h-full"
-            >
-              {/* Image with Grayscale & Contrast filter for that 'Classified' look */}
-              <img
-                src={EXPERTISE[hoveredIndex].src}
-                alt="Expertise"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover filter grayscale contrast-[1.2] brightness-75"
-              />
-              {/* Vignette Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0C] via-transparent to-[#0B0B0C]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0C] via-transparent to-[#0B0B0C]" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* 2. The List */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full">
-        
-        {/* Section Header */}
-        <div className="mb-10 md:mb-16 flex items-end justify-between border-b border-[#F3EFE6]/10 pb-4">
-          <h2 className="text-[#F3EFE6]/40 text-sm font-mono tracking-widest uppercase">
-            // Core Competencies
-          </h2>
-          <div className="hidden md:flex gap-2">
-             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-             <span className="text-[#F3EFE6]/40 text-xs font-mono">OPERATIONAL</span>
+    <section id="work" className="portfolio-section bg-[#0B0B0C] py-14 md:py-32 px-5 sm:px-8 md:px-16">
+      <div className="relative z-10 mx-auto w-full max-w-xl md:hidden">
+        <div className="mb-7 flex items-end justify-between border-b border-white/10 pb-4">
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#D6B97A]">What I work on</p>
+            <h2 className="mt-2 font-display text-3xl font-semibold tracking-[-0.06em] text-[#F3EFE6]">Areas of work</h2>
           </div>
         </div>
 
-        {/* The Menu */}
-        <div className="flex flex-col">
+        {(() => {
+          const selected = selectedMobileIndex;
+          const item = EXPERTISE[selected];
+          return (
+            <div className="relative aspect-[0.92] overflow-hidden border-y border-white/10 bg-[#181817]">
+              <img src={item.mobileSrc} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover grayscale opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#090909] via-black/10 to-black/10" />
+              <div className="absolute inset-x-5 bottom-5">
+                <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#D6B97A]">{item.category}</p>
+                <h3 className="mt-2 max-w-[16ch] font-display text-4xl font-semibold leading-[0.95] tracking-[-0.06em] text-white">{item.title}</h3>
+              </div>
+            </div>
+          );
+        })()}
+
+        <div className="mt-5 grid grid-cols-1">
           {EXPERTISE.map((item, index) => (
-            <ExpertiseItem
+            <button
               key={item.id}
-              item={item}
-              index={index}
-              hoveredIndex={hoveredIndex}
-              setHoveredIndex={setHoveredIndex}
-            />
+              onClick={() => setSelectedMobileIndex(index)}
+              aria-pressed={selectedMobileIndex === index}
+              className={`min-h-11 border-b text-left font-mono text-[10px] uppercase tracking-[0.08em] transition-colors ${selectedMobileIndex === index ? "border-[#D6B97A] text-[#D6B97A]" : "border-white/10 text-white/55"}`}
+            >
+              <span className="flex items-center justify-between gap-4 py-3">
+                <span>{item.title}</span>
+                <span>{item.category}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 hidden max-w-7xl mx-auto w-full md:block">
+        <div className="mb-10 md:mb-16 flex items-end justify-between border-b border-[#F3EFE6]/10 pb-4">
+          <h2 className="text-[#F3EFE6]/60 text-sm font-mono tracking-widest uppercase">Areas of work</h2>
+        </div>
+        <div className="grid grid-cols-1">
+          {EXPERTISE.map((item, index) => (
+            <div key={item.id} className="grid grid-cols-[4rem_1fr_18rem] items-baseline gap-6 border-b border-[#F3EFE6]/10 py-6 lg:py-8">
+              <span className="font-mono text-sm text-[#F3EFE6]/40">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="text-[clamp(2rem,6vw,5rem)] font-bold uppercase leading-none tracking-tighter text-[#F3EFE6]">{item.title}</h3>
+              <p className="font-mono text-xs uppercase tracking-widest text-[#F3EFE6]/55">{item.category}</p>
+            </div>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: { item: typeof EXPERTISE[number], index: number, hoveredIndex: number | null, setHoveredIndex: (index: number | null) => void }) {
-  // Determine the state of this specific item
-  const isHovered = hoveredIndex === index;
-  const isDimmed = hoveredIndex !== null && hoveredIndex !== index;
-
-  return (
-    <motion.button
-      type="button"
-      aria-pressed={isHovered}
-      onClick={() => {
-        if (window.matchMedia("(pointer: coarse)").matches) {
-          setHoveredIndex(isHovered ? null : index);
-        }
-      }}
-      onHoverStart={() => {
-        if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(index);
-      }}
-      onHoverEnd={() => {
-        if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(null);
-      }}
-      className="group relative w-full border-b border-[#F3EFE6]/10 py-6 md:py-10 text-left cursor-pointer transition-colors duration-500"
-    >
-      {/* Container Layout */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between relative z-20 mix-blend-difference">
-        
-        {/* Title */}
-        <motion.h3
-          animate={{
-            x: isHovered ? 20 : 0,
-            opacity: isDimmed ? 0.2 : 1,
-            filter: isDimmed ? "blur(2px)" : "blur(0px)",
-          }}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="text-[clamp(2rem,8vw,3rem)] sm:text-5xl md:text-8xl font-bold tracking-tighter text-[#F3EFE6] uppercase"
-        >
-          {item.title}
-        </motion.h3>
-
-        {/* Category Tag & Arrow */}
-        <motion.div
-           animate={{
-            opacity: isHovered ? 1 : 0,
-            x: isHovered ? -20 : 0,
-          }}
-          className="hidden md:flex items-center gap-4 text-[#F3EFE6]"
-        >
-          <span className="text-sm font-mono tracking-widest uppercase opacity-70">
-            {item.category}
-          </span>
-          {/* <MoveRight className="w-8 h-8" /> */}
-        </motion.div>
-        <div className="mt-2 flex items-center justify-between md:hidden">
-          <span className="text-[10px] font-mono tracking-widest uppercase text-[#D6B97A]">
-            {item.category}
-          </span>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#F3EFE6]/40">
-            {isHovered ? "Selected" : "Tap to explore"}
-          </span>
-        </div>
-      </div>
-
-      {/* Hover Background Strip (The 'Selection' Highlight) */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 bg-[#F3EFE6] origin-left z-0 mix-blend-exclusion opacity-100"
-      />
-    </motion.button>
   );
 }

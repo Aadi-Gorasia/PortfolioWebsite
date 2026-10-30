@@ -1,126 +1,24 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function EditorialSection() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-  const citationY = useTransform(scrollYProgress, [0, 1], [35, -35]);
-
   return (
-    <section 
-      id="editorial" 
-      ref={containerRef}
-      className="portfolio-section relative min-h-screen bg-[#050505] text-[#F3EFE6] flex items-center justify-center py-32 px-6 md:px-12 overflow-hidden"
-    >
-      
-      <div className="max-w-[1600px] mx-auto relative z-10 w-full">
-        
-        {/* --- THE POEM (Arranged Layout) --- */}
-        <div className="flex flex-col relative leading-[0.8] uppercase select-none pointer-events-none">
-            
-            {/* LINE 1: CHAOS */}
-            <MaskedReveal delay={0}>
-                <div className="flex items-end gap-8">
-                    <h2 className="font-bold text-[clamp(4rem,16vw,12rem)] md:text-[12vw] tracking-tighter text-[#F3EFE6] mix-blend-difference">
-                        Chaos
-                    </h2>
-                    <span className="hidden md:block text-sm font-mono text-[#F3EFE6]/30 mb-8 max-w-[200px] normal-case tracking-normal leading-tight">
-                        / The initial state of all complex systems before intervention.
-                    </span>
-                </div>
-            </MaskedReveal>
-
-            {/* LINE 2: IS JUST */}
-            <MaskedReveal delay={0.15}>
-                <div className="flex justify-end pr-12 md:pr-32">
-                     <h2 className="font-light text-[8vw] tracking-tight text-[#F3EFE6]/40 italic font-serif lowercase">
-                        is just
-                    </h2>
-                </div>
-            </MaskedReveal>
-
-            {/* LINE 3: UNRECOGNIZED */}
-            <MaskedReveal delay={0.3}>
-                <div className="pl-4 md:pl-24">
-                    <h2 className="font-bold text-[clamp(2.4rem,11.5vw,11vw)] md:text-[11vw] tracking-tighter text-[#F3EFE6]">
-                        Unrecognized
-                    </h2>
-                </div>
-            </MaskedReveal>
-
-            {/* LINE 4: PATTERN (Gold) */}
-            <MaskedReveal delay={0.45}>
-                 <div className="flex justify-end items-center gap-6 mt-4 md:mt-0">
-                    <div className="h-[1px] w-12 md:w-32 bg-[#D6B97A]" />
-                    <h2 className="font-serif italic text-[clamp(3rem,12vw,10vw)] md:text-[10vw] tracking-tighter text-[#D6B97A]">
-                        Pattern.
-                    </h2>
-                </div>
-            </MaskedReveal>
-
+    <section id="editorial" className="portfolio-section bg-[#050505] px-5 py-20 text-[#F3EFE6] sm:px-6 md:px-12 md:py-32">
+      <div className="mx-auto grid max-w-[1400px] gap-8 border-t border-white/10 pt-8 md:grid-cols-2 md:items-end md:gap-16 md:pt-12">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#D6B97A]">Writing</p>
+          <h2 className="mt-5 max-w-[12ch] font-display text-5xl font-semibold leading-[0.9] tracking-[-0.07em] md:text-7xl">
+            Notes from the work.
+          </h2>
         </div>
-
-        {/* --- THE CITATION (Tripesh Bodhi) --- */}
-        <motion.div style={{ y: citationY }} className="mt-20 md:mt-48 flex justify-center md:justify-end">
-            <a 
-                href="https://palerecrite.vercel.app/profile.html?author=TRIPESH%20BODHI" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group relative inline-block pointer-events-auto"
-            >
-                <div className="flex items-start gap-4 text-left">
-                    {/* The Bracket */}
-                    <span className="text-[#D6B97A] font-mono text-4xl hidden md:block opacity-50">[</span>
-                    
-                    <div className="flex flex-col gap-2">
-                        <div className="flex items-center gap-3">
-                            <span className="text-[#F3EFE6]/40 font-mono text-[10px] uppercase tracking-[0.2em]">
-                                Reference_ID :: EXT_MEMORY
-                            </span>
-                            <div className="h-[1px] w-8 bg-[#F3EFE6]/20 group-hover:w-16 transition-all duration-500" />
-                        </div>
-                        
-                        <h3 className="text-3xl md:text-5xl font-serif italic text-[#F3EFE6] group-hover:text-[#D6B97A] transition-colors duration-300">
-                            Tripesh Bodhi
-                        </h3>
-                        
-                        <div className="flex items-center gap-2 mt-1">
-                            <ArrowUpRight className="w-4 h-4 text-[#F3EFE6]/50 group-hover:text-[#D6B97A] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                            <span className="text-[#F3EFE6]/30 font-mono text-xs hover:underline decoration-[#D6B97A]">
-                                read_source_entry
-                            </span>
-                        </div>
-                    </div>
-
-                    <span className="text-[#D6B97A] font-mono text-4xl hidden md:block opacity-50">]</span>
-                </div>
-                
-                {/* Subtle Glow on Hover */}
-                <div className="absolute -inset-4 bg-[#D6B97A]/5 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-            </a>
-        </motion.div>
-
+        <div className="max-w-xl">
+          <p className="text-base leading-7 text-white/60 md:text-lg">
+            A personal account of a hardware project and what happened while building it.
+          </p>
+          <Link to="/blog" className="mt-7 inline-flex min-h-12 items-center gap-3 border-b border-[#D6B97A]/50 pb-2 font-mono text-xs uppercase tracking-widest text-[#D6B97A] transition-colors hover:text-white">
+            Read the post <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
       </div>
     </section>
   );
-}
-
-// Text Reveal Wrapper
-function MaskedReveal({ children, delay }: { children: React.ReactNode, delay: number }) {
-    return (
-        <div className="overflow-hidden">
-            <motion.div
-                initial={{ y: "100%", opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
-            >
-                {children}
-            </motion.div>
-        </div>
-    );
 }

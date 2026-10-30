@@ -1,4 +1,20 @@
-export const PROJECTS = [
+export interface Project {
+  slug: string;
+  title: string;
+  client?: string;
+  year?: string;
+  role?: string;
+  category?: string;
+  status?: string;
+  coverImage?: string;
+  tech?: string[];
+  description?: string;
+  challenge?: string;
+  solution?: string;
+  gallery?: string[];
+}
+
+export const PROJECTS: Project[] = [
   {
     slug: "autonomous-flight-grid",
     title: "Autonomous Flight Grid",
@@ -7,15 +23,10 @@ export const PROJECTS = [
     role: "Systems Architect",
     category: "Hardware",
     status: "LIVE_ORBIT",
-    coverImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=65",
     tech: ["Rust", "Tauri", "WebGL", "Postgres"],
     description: "A decentralized swarm control system for autonomous drone fleets operating in GPS-denied environments.",
     challenge: "Existing protocols relied on centralized command servers, creating single points of failure and high latency in urban canyons.",
     solution: "We engineered a peer-to-peer mesh network using Rust for microsecond-latency communication and a custom WebGL visualizer for real-time telemetry.",
-    gallery: [
-      "https://images.unsplash.com/photo-1559067515-bf7d799b23e2?auto=format&fit=crop&w=1000&q=65",
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=65"
-    ]
   },
   {
     slug: "neural-vision-mod",
@@ -25,15 +36,45 @@ export const PROJECTS = [
     role: "ML Engineer",
     category: "AI_Research",
     status: "CLASSIFIED",
-    coverImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=65",
     tech: ["Python", "PyTorch", "CUDA", "C++"],
     description: "Computer vision pipeline optimized for edge devices, capable of identifying structural anomalies in real-time.",
     challenge: "Standard models were too heavy for the target hardware (embedded field units) and required cloud connectivity.",
     solution: "Developed a quantized model architecture that runs locally on TPU accelerators with 99.8% accuracy.",
-    gallery: [
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1000&q=65",
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=65"
-    ]
   },
-  // Add more projects here...
+  {
+    slug: "gesture-control-car",
+    title: "Gesture Control Car",
+    client: "Machine Learning",
+    year: "2023",
+    role: "Systems Architecture",
+    category: "Selected",
+    coverImage: "/gesturecontrolcar.png",
+  },
+  {
+    slug: "tesla-turbine",
+    title: "Tesla Turbine",
+    client: "Applied Physics",
+    year: "2024",
+    role: "ML Engineering",
+    category: "Selected",
+    coverImage: "/teslaturbine.png",
+  },
+  {
+    slug: "a-star-path-finding",
+    title: "A* Path Finding Algorithm",
+    client: "Algorithmic Technologies",
+    year: "2024",
+    role: "Algorithm Design",
+    category: "Selected",
+    coverImage: "/a*pathfindingalgorithm.png",
+  },
+  {
+    slug: "hyper-index-engine",
+    title: "PLEN",
+    client: "Aerospace Systems",
+    year: "2025 (ONGOING)",
+    role: "Backend Optimization",
+    category: "Selected",
+    coverImage: "/plen.png",
+  },
 ];
