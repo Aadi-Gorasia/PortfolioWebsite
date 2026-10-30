@@ -109,8 +109,8 @@ export default function SelectedWorks() {
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative z-10">
 
         {/* HEADER */}
-        <div className="flex items-end justify-between mb-24 border-b border-[#F3EFE6]/10 pb-6">
-          <h2 className="text-[#F3EFE6] text-6xl md:text-9xl font-bold tracking-tighter uppercase leading-[0.8]">
+        <div className="flex items-end justify-between mb-12 md:mb-24 border-b border-[#F3EFE6]/10 pb-6">
+          <h2 className="text-[#F3EFE6] text-[clamp(2.8rem,12vw,6rem)] md:text-9xl font-bold tracking-tighter uppercase leading-[0.8]">
             Operational<br /><span className="text-[#F3EFE6]/20">Output</span>
           </h2>
           <div className="hidden md:flex flex-col items-end text-right gap-2">
@@ -138,7 +138,7 @@ export default function SelectedWorks() {
         <div className="mt-12 flex justify-end">
             <Link
                 to="/projects"
-                className="group relative flex items-center justify-between w-full md:w-[600px] border border-[#F3EFE6]/20 bg-[#0A0A0A] p-8 overflow-hidden transition-colors duration-500 hover:border-[#D6B97A]"
+                className="group relative flex items-center justify-between w-full md:w-[600px] border border-[#F3EFE6]/20 bg-[#0A0A0A] p-5 sm:p-8 overflow-hidden transition-colors duration-500 hover:border-[#D6B97A]"
             >
                 {/* Background Fill Animation */}
                 <div className="absolute inset-0 bg-[#D6B97A] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
@@ -150,7 +150,7 @@ export default function SelectedWorks() {
                         <span className="text-[#F3EFE6]/50 font-mono text-[10px] uppercase tracking-widest mb-1">
                             // Unrestricted_Access
                         </span>
-                        <span className="text-2xl md:text-3xl font-bold text-[#F3EFE6] uppercase tracking-tighter">
+                        <span className="text-lg sm:text-2xl md:text-3xl font-bold text-[#F3EFE6] uppercase tracking-tighter">
                             Access Full Database
                         </span>
                     </div>
@@ -176,11 +176,15 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
   return (
     <Link to={`/projects/${project.slug}`} className="block relative group">
       <motion.div
-        onMouseEnter={() => setHoveredIndex(index)}
-        onMouseLeave={() => setHoveredIndex(null)}
+        onMouseEnter={() => {
+          if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(index);
+        }}
+        onMouseLeave={() => {
+          if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(null);
+        }}
         animate={{ opacity: isDimmed ? 0.3 : 1 }}
         transition={{ duration: 0.3 }}
-        className="relative border-t border-[#F3EFE6]/10 py-16 transition-all duration-500 hover:border-[#D6B97A]/50"
+        className="relative border-t border-[#F3EFE6]/10 py-8 md:py-16 transition-all duration-500 hover:border-[#D6B97A]/50"
       >
 
         {/* BACKGROUND FLASH (On Hover) */}
@@ -191,21 +195,32 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
              className="absolute inset-0 bg-[#F3EFE6] origin-left z-0"
         />
 
+        {/* Mobile project preview */}
+        <div className="md:hidden relative z-10 mb-6 w-full aspect-[16/9] overflow-hidden border border-white/10">
+            <img
+              src={project.img}
+              alt={project.name}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover grayscale"
+            />
+        </div>
+
         {/* CONTENT LAYER */}
-        <div className="relative z-10 flex flex-col md:flex-row md:items-baseline justify-between gap-6 mix-blend-difference">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-baseline justify-between gap-4 md:gap-6 mix-blend-difference">
 
             {/* Left: ID + Title */}
-            <div className="flex items-baseline gap-8 md:gap-16">
+            <div className="flex items-baseline gap-4 sm:gap-8 md:gap-16 min-w-0">
                 <span className="text-[#F3EFE6] font-mono text-sm opacity-50">
                     0{index + 1}
                 </span>
-                <h3 className="text-4xl md:text-7xl text-[#F3EFE6] font-bold uppercase tracking-tighter transition-transform duration-500 group-hover:translate-x-4">
+                <h3 className="text-[clamp(1.7rem,8vw,4.5rem)] md:text-7xl text-[#F3EFE6] font-bold uppercase tracking-tighter transition-transform duration-500 group-hover:translate-x-4 break-words">
                     {project.name}
                 </h3>
             </div>
 
             {/* Right: Meta + Arrow */}
-            <div className="flex items-center gap-12 pl-14 md:pl-0">
+            <div className="flex items-center justify-between md:justify-end gap-6 md:gap-12 pl-9 sm:pl-14 md:pl-0">
                 <div className="hidden md:flex flex-col text-right">
                     <span className="text-[#F3EFE6] text-xs uppercase tracking-widest opacity-50">
                         {project.client}
@@ -213,6 +228,11 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
                     <span className="text-[#F3EFE6] text-xs uppercase tracking-widest font-bold">
                         {project.year}
                     </span>
+                </div>
+                <div className="md:hidden flex items-center gap-3 text-[#F3EFE6]/50 font-mono text-[10px] uppercase tracking-widest">
+                    <span>{project.client}</span>
+                    <span>//</span>
+                    <span>{project.year}</span>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -224,17 +244,6 @@ function ProjectItem({ project, index, setHoveredIndex, hoveredIndex }: any) {
                     </div>
                 </div>
             </div>
-        </div>
-
-        {/* Mobile-Only Image */}
-        <div className="md:hidden mt-8 w-full aspect-video overflow-hidden border border-white/10">
-            <img
-              src={project.img}
-              alt={project.name}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover grayscale"
-            />
         </div>
 
       </motion.div>

@@ -25,7 +25,7 @@ export default function EditorialSection() {
             {/* LINE 1: CHAOS */}
             <MaskedReveal delay={0}>
                 <div className="flex items-end gap-8">
-                    <h2 className="font-bold text-[16vw] md:text-[12vw] tracking-tighter text-[#F3EFE6] mix-blend-difference">
+                    <h2 className="font-bold text-[clamp(4rem,16vw,12rem)] md:text-[12vw] tracking-tighter text-[#F3EFE6] mix-blend-difference">
                         Chaos
                     </h2>
                     <span className="hidden md:block text-sm font-mono text-[#F3EFE6]/30 mb-8 max-w-[200px] normal-case tracking-normal leading-tight">
@@ -46,7 +46,7 @@ export default function EditorialSection() {
             {/* LINE 3: UNRECOGNIZED */}
             <MaskedReveal delay={0.3}>
                 <div className="pl-4 md:pl-24">
-                    <h2 className="font-bold text-[14vw] md:text-[11vw] tracking-tighter text-[#F3EFE6]">
+                    <h2 className="font-bold text-[clamp(2.4rem,11.5vw,11vw)] md:text-[11vw] tracking-tighter text-[#F3EFE6]">
                         Unrecognized
                     </h2>
                 </div>
@@ -56,7 +56,7 @@ export default function EditorialSection() {
             <MaskedReveal delay={0.45}>
                  <div className="flex justify-end items-center gap-6 mt-4 md:mt-0">
                     <div className="h-[1px] w-12 md:w-32 bg-[#D6B97A]" />
-                    <h2 className="font-serif italic text-[12vw] md:text-[10vw] tracking-tighter text-[#D6B97A]">
+                    <h2 className="font-serif italic text-[clamp(3rem,12vw,10vw)] md:text-[10vw] tracking-tighter text-[#D6B97A]">
                         Pattern.
                     </h2>
                 </div>
@@ -65,7 +65,7 @@ export default function EditorialSection() {
         </div>
 
         {/* --- THE CITATION (Tripesh Bodhi) --- */}
-        <motion.div style={{ y: citationY }} className="mt-32 md:mt-48 flex justify-center md:justify-end">
+        <motion.div style={{ y: citationY }} className="mt-20 md:mt-48 flex justify-center md:justify-end">
             <a 
                 href="https://palerecrite.vercel.app/profile.html?author=TRIPESH%20BODHI" 
                 target="_blank" 

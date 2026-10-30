@@ -25,12 +25,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
   scrollbar-width: thin;
   scrollbar-color: #1f1f1f #0b0b0c;
 }
 
 body {
   margin: 0;
+  overflow-x: clip;
   min-width: 320px;
   min-height: 100vh;
   background: #0b0b0c;
@@ -83,5 +85,29 @@ h6 {
 
   ::-webkit-scrollbar-thumb:active {
     background: #f3efe6;
+  }
+}
+
+@media (max-height: 700px) and (max-width: 1023px) {
+  .mobile-menu-items {
+    gap: 0.25rem;
+  }
+
+  .mobile-menu-items > button {
+    min-height: 2.75rem;
+    padding-block: 0.125rem;
+  }
+
+  .mobile-menu-items > button > span {
+    font-size: 1.625rem;
+    line-height: 1.1;
+  }
+
+  .mobile-menu-items > div:first-child {
+    margin-bottom: 0.25rem;
+  }
+
+  .mobile-menu-status {
+    display: none;
   }
 }

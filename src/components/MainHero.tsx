@@ -24,12 +24,13 @@ export default function MainHero() {
   };
 
   return (
-    <section ref={heroRef} onMouseMove={handlePointerMove} id="home" className="portfolio-section relative w-full min-h-screen bg-[#0B0B0C] overflow-hidden selection:bg-[#D6B97A] selection:text-[#0B0B0C] flex flex-col justify-between">
+    <section ref={heroRef} onMouseMove={handlePointerMove} id="home" className="portfolio-section relative w-full min-h-[100svh] bg-[#0B0B0C] overflow-hidden selection:bg-[#D6B97A] selection:text-[#0B0B0C] flex flex-col justify-between">
       
       {/* 1. TECHNICAL GRID & NOISE */}
       <div className="absolute inset-0 z-0 opacity-20 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       <motion.div
         className="absolute top-0 left-0 z-10 w-[900px] h-[700px] pointer-events-none rounded-full opacity-80"
+        aria-hidden="true"
         style={{
           x: spotlightX,
           y: spotlightY,
@@ -46,12 +47,12 @@ export default function MainHero() {
       <div className="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-[#F3EFE6]/20 z-0" />
       
       {/* Center Reticle */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 pointer-events-none z-0">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 pointer-events-none z-0 hidden md:block">
          <Crosshair size={400} strokeWidth={0.5} />
       </div>
 
       {/* --- TOP: STATUS ROW --- */}
-      <div className="relative z-30 w-full px-8 md:px-16 lg:px-24 pt-32 flex justify-between items-end">
+      <div className="relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 pt-28 sm:pt-32 flex justify-between items-end">
         <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -77,7 +78,7 @@ export default function MainHero() {
       </div>
 
       {/* --- CENTER: MASSIVE TYPOGRAPHY --- */}
-      <div className="relative z-30 w-full px-8 md:px-16 lg:px-24 flex-grow flex flex-col justify-center pointer-events-none">
+      <div className="relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 flex-grow flex flex-col justify-center pointer-events-none">
         <div className="flex flex-col leading-[0.8] tracking-tighter mix-blend-difference">
             
             {/* First Name */}
@@ -86,7 +87,7 @@ export default function MainHero() {
                     initial={{ y: "100%" }}
                     animate={{ y: "0%" }}
                     transition={{ duration: 1.2, ease:[0.16, 1, 0.3, 1] }} 
-                    className="text-[18vw] md:text-[14vw] font-black text-[#F3EFE6] uppercase"
+                    className="text-[clamp(4.5rem,18vw,14rem)] md:text-[14vw] font-black text-[#F3EFE6] uppercase"
                 >
                     Aadi
                 </motion.h1>
@@ -98,7 +99,7 @@ export default function MainHero() {
                     initial={{ y: "100%" }}
                     animate={{ y: "0%" }}
                     transition={{ duration: 1.2, delay: 0.1, ease:[0.16, 1, 0.3, 1] }}
-                    className="text-[18vw] md:text-[14vw] font-black text-[#D6B97A] uppercase md:pl-32 relative"
+                    className="text-[clamp(4.2rem,17vw,14rem)] md:text-[14vw] font-black text-[#D6B97A] uppercase md:pl-32 relative"
                 >
                     Gorasia
                     <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-[30vw] h-[15vh] bg-[#D6B97A]/15 blur-[60px] rounded-full pointer-events-none" />
@@ -109,20 +110,20 @@ export default function MainHero() {
       </div>
 
       {/* --- BOTTOM: NARRATIVE & ACTION --- */}
-      <div className="relative z-30 w-full px-8 md:px-16 lg:px-24 pb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-12 lg:gap-24">
+      <div className="relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 pb-[max(2rem,env(safe-area-inset-bottom))] md:pb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-8 md:gap-12 lg:gap-24">
             
             {/* The Backstory (Now structured like a data log) */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-                className="max-w-2xl border-l border-[#D6B97A]/30 pl-6 md:pl-8 py-2 relative"
+                className="max-w-2xl border-l border-[#D6B97A]/30 pl-4 md:pl-8 py-2 relative"
             >
                 {/* Decorative corner on the text box */}
                 <div className="absolute top-0 left-0 w-2 h-[1px] bg-[#D6B97A]" />
                 <div className="absolute bottom-0 left-0 w-2 h-[1px] bg-[#D6B97A]" />
                 
-                <p className="text-[#BEB6A8] text-lg md:text-xl font-light leading-relaxed">
+                <p className="text-base sm:text-lg md:text-xl font-light leading-relaxed">
                     I live in Pune and the lockdown turned me into <span className="text-[#F3EFE6] font-medium">a nerd</span>, the boredom kicked in and <span className="text-[#F3EFE6] font-medium">programming really got to me</span>, I built a lot of random projects, mainly to teach myself <span className="text-[#F3EFE6] font-medium">but also for the fun of it.</span>
                 </p>
             </motion.div>

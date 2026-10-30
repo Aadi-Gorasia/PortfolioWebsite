@@ -25,9 +25,9 @@ export default function ProjectDetail() {
       />
 
       {/* Back Button */}
-      <Link to="/projects" className="fixed top-8 left-8 z-40 group mix-blend-difference">
+      <Link to="/projects" className="fixed top-[max(1.25rem,env(safe-area-inset-top))] left-5 md:top-8 md:left-8 z-40 group mix-blend-difference">
         <div className="flex items-center gap-4">
-            <div className="w-12 h-12 border border-[#F3EFE6] rounded-full flex items-center justify-center group-hover:bg-[#F3EFE6] transition-all duration-300">
+            <div className="w-11 h-11 md:w-12 md:h-12 border border-[#F3EFE6] rounded-full flex items-center justify-center group-hover:bg-[#F3EFE6] transition-all duration-300">
                 <ArrowLeft className="w-5 h-5 text-[#F3EFE6] group-hover:text-[#000]" />
             </div>
             <span className="hidden md:block text-xs font-bold uppercase tracking-[0.2em] text-[#F3EFE6]">Abort</span>
@@ -35,7 +35,7 @@ export default function ProjectDetail() {
       </Link>
 
       {/* --- HERO SECTION --- */}
-      <header className="relative h-[80vh] w-full overflow-hidden flex items-end pb-24 px-6 md:px-12 border-b border-[#F3EFE6]/10">
+      <header className="relative min-h-[68svh] md:h-[80vh] w-full overflow-hidden flex items-end pb-14 md:pb-24 px-5 sm:px-6 md:px-12 pt-28 border-b border-[#F3EFE6]/10">
 
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
@@ -56,7 +56,7 @@ export default function ProjectDetail() {
                 <div className="h-[1px] w-24 bg-[#F3EFE6]/20" />
             </div>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter leading-[0.9] max-w-5xl">
+            <h1 className="text-[clamp(2.7rem,11vw,5rem)] md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter leading-[0.9] max-w-5xl break-words">
                 {project.title}
             </h1>
         </div>
@@ -64,7 +64,7 @@ export default function ProjectDetail() {
 
       {/* --- MISSION SPECS (Data Grid) --- */}
       <section className="border-b border-[#F3EFE6]/10 bg-[#0A0A0A]">
-          <div className="max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-[#F3EFE6]/10">
+          <div className="max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-[#F3EFE6]/10">
               <SpecItem icon={<User size={16} />} label="Client" value={project.client} />
               <SpecItem icon={<Calendar size={16} />} label="Year" value={project.year} />
               <SpecItem icon={<Layers size={16} />} label="Role" value={project.role} />
@@ -72,17 +72,17 @@ export default function ProjectDetail() {
           </div>
       </section>
 
-      <main className="max-w-[1600px] mx-auto px-6 md:px-12 py-32 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+      <main className="max-w-[1600px] mx-auto px-5 sm:px-6 md:px-12 py-20 md:py-32 grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 lg:gap-24">
 
         {/* --- LEFT: NARRATIVE --- */}
-        <div className="lg:col-span-7 space-y-16">
+        <div className="lg:col-span-7 space-y-12 md:space-y-16">
 
             {/* Description */}
             <div>
                 <h3 className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                     <Terminal size={14} /> Mission Brief
                 </h3>
-                <p className="text-2xl md:text-3xl font-light leading-relaxed text-[#F3EFE6]">
+                <p className="text-xl sm:text-2xl md:text-3xl font-light leading-relaxed text-[#F3EFE6]">
                     {project.description}
                 </p>
             </div>

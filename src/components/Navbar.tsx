@@ -33,6 +33,22 @@ export default function Navbar() {
   const { scrollYProgress } = useScroll();
   const width = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
+  useEffect(() => {
+    if (!isMobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isMobileOpen]);
+
   // Ref to prevent Scroll Spy from reactivating tabs while we auto-scroll to contact
   const isManualScroll = useRef(false);
 
@@ -138,12 +154,12 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-6 inset-x-0 z-50 flex justify-center pointer-events-none px-4"
+        className="fixed top-[max(1rem,env(safe-area-inset-top))] md:top-6 inset-x-0 z-50 flex justify-center pointer-events-none px-3 sm:px-4"
       >
         <div className="pointer-events-auto relative group w-full lg:w-auto flex justify-center">
           
           {/* HUD Container */}
-          <div className="relative flex items-center justify-between lg:justify-center bg-[#0B0B0C]/90 backdrop-blur-md border border-[#F3EFE6]/10 rounded-full p-1.5 shadow-xl shadow-black/60 w-full lg:w-auto">
+          <div className="relative flex items-center justify-between lg:justify-center bg-[#0B0B0C]/95 md:bg-[#0B0B0C]/90 md:backdrop-blur-md border border-[#F3EFE6]/10 rounded-full p-1.5 shadow-xl shadow-black/60 w-full lg:w-auto">
             
             {/* LEFT: Telemetry */}
             <div className="hidden lg:flex items-center gap-3 px-4 border-r border-[#F3EFE6]/10 mr-1 h-8">
@@ -202,7 +218,8 @@ export default function Navbar() {
             <div className="lg:hidden pr-1">
               <button
                 onClick={() => setIsMobileOpen(true)}
-                className="p-2 text-[#F3EFE6] bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5"
+                aria-label="Open navigation"
+                className="min-h-11 min-w-11 p-2 text-[#F3EFE6] bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5 flex items-center justify-center"
               >
                 <Menu size={18} />
               </button>
@@ -226,20 +243,24 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-[#050505]/95 flex flex-col items-center justify-center overflow-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            className="fixed inset-0 z-[60] bg-[#050505] md:bg-[#050505]/95 flex flex-col items-center justify-start overflow-y-auto overscroll-contain px-6 pt-[max(5.5rem,calc(env(safe-area-inset-top)+4.5rem))] pb-[max(5rem,calc(env(safe-area-inset-bottom)+4rem))] md:justify-center md:px-0 md:py-0"
           >
             {/* Background Grid */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-20" />
             
             <button
               onClick={() => setIsMobileOpen(false)}
-              className="absolute top-8 right-6 p-4 text-[#F3EFE6] bg-white/5 rounded-full hover:rotate-90 transition-transform border border-white/10 z-50"
+              aria-label="Close navigation"
+              className="absolute top-[max(1.25rem,env(safe-area-inset-top))] right-5 md:top-8 md:right-6 min-h-11 min-w-11 p-2 md:p-4 text-[#F3EFE6] bg-white/5 rounded-full hover:rotate-90 transition-transform border border-white/10 z-50 flex items-center justify-center"
             >
               <X size={24} />
             </button>
 
-            <div className="flex flex-col gap-6 text-center relative z-10 w-full px-8">
-                <div className="text-[#D6B97A]/50 font-mono text-xs uppercase tracking-[0.3em] mb-4">
+            <div className="mobile-menu-items flex flex-col gap-2 md:gap-6 text-center relative z-10 w-full max-w-xl md:px-8">
+                <div className="text-[#D6B97A]/50 font-mono text-xs uppercase tracking-[0.3em] mb-2 md:mb-4">
                     // Navigation_Sequence
                 </div>
                 
@@ -250,9 +271,9 @@ export default function Navbar() {
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                  className="group flex items-center justify-between w-full border-b border-white/10 pb-4"
+                  className="group flex items-center justify-between w-full min-h-12 border-b border-white/10 py-1 md:min-h-14 md:py-3 md:pb-4"
                 >
-                    <span className="text-3xl md:text-5xl font-bold text-[#F3EFE6] uppercase tracking-tighter group-hover:text-[#D6B97A] transition-colors">
+                    <span className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#F3EFE6] uppercase tracking-tighter group-hover:text-[#D6B97A] transition-colors">
                         {item.name}
                     </span>
                     <ArrowUpRight className="text-[#333] group-hover:text-[#D6B97A] transition-colors" />
@@ -265,16 +286,16 @@ export default function Navbar() {
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="group flex items-center justify-between w-full border-b border-[#D6B97A]/50 pb-4 mt-4"
+                  className="group flex items-center justify-between w-full min-h-12 border-b border-[#D6B97A]/50 py-1 mt-1 md:min-h-14 md:py-3 md:mt-4"
                 >
-                    <span className="text-3xl md:text-5xl font-bold text-[#D6B97A] uppercase tracking-tighter">
+                    <span className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#D6B97A] uppercase tracking-tighter">
                         Connect
                     </span>
                     <ArrowUpRight className="text-[#D6B97A]" />
                 </motion.button>
             </div>
             
-            <div className="absolute bottom-12 w-full px-8 flex justify-between items-end">
+            <div className="mobile-menu-status fixed bottom-0 left-0 w-full px-6 md:px-8 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] bg-gradient-to-t from-[#050505] via-[#050505] to-transparent flex justify-between items-end">
                 <div className="flex flex-col gap-1">
                     <span className="text-[#F3EFE6]/30 font-mono text-[10px] uppercase tracking-widest">System Status</span>
                     <span className="text-[#D6B97A] font-mono text-xs uppercase tracking-widest">Nominal</span>

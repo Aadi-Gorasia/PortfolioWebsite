@@ -68,10 +68,6 @@ export default function BlogPost() {
         className="fixed top-0 left-0 right-0 h-[2px] bg-[#D6B97A] origin-left z-[110]"
         style={{ scaleX: progress }}
       />
-      <br />
-      <br />
-      <br />
-      <br />
       {/* --- HUD / NAVIGATION --- */}
       
       <nav className="fixed top-0 inset-x-0 h-20 flex items-center justify-between px-6 md:px-12 z-[105] mix-blend-difference">
@@ -84,13 +80,13 @@ export default function BlogPost() {
       </nav>
 
       {/* --- HERO SECTION --- */}
-      <header className="relative h-screen flex flex-col justify-center px-6 md:px-12 max-w-[1800px] mx-auto overflow-hidden">
+      <header className="relative min-h-[78svh] md:min-h-screen flex flex-col justify-center py-28 md:py-20 px-5 sm:px-6 md:px-12 max-w-[1800px] mx-auto overflow-hidden">
         <motion.div style={{ y: titleY, opacity: titleOpacity }} className="z-10">
             <div className="flex items-center gap-4 mb-8 text-[#D6B97A]">
                 <Command size={20} className="animate-spin-slow" />
-                <span className="font-mono tracking-[0.5em] text-sm uppercase">{post.category} // {post.date}</span>
+                <span className="font-mono tracking-[0.2em] sm:tracking-[0.5em] text-[10px] sm:text-sm uppercase">{post.category} // {post.date}</span>
             </div>
-            <h1 className="text-[12vw] md:text-[10vw] font-black leading-[0.85] tracking-tighter uppercase break-words">
+            <h1 className="text-[clamp(3rem,12vw,10rem)] md:text-[10vw] font-black leading-[0.85] tracking-tighter uppercase break-words">
                 {post.title.split(' ').map((word, i) => (
                     <motion.span 
                         key={i} 
@@ -114,7 +110,7 @@ export default function BlogPost() {
 
         <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+            className="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
         >
             <span className="font-mono text-[10px] uppercase tracking-[0.4em] opacity-40">Scroll to Decrypt</span>
             <div className="w-[1px] h-12 bg-gradient-to-b from-[#D6B97A] to-transparent" />

@@ -13,42 +13,42 @@ export default function Projects() {
     : PROJECTS.filter(p => p.category === filter);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#000] relative overflow-hidden pt-32 pb-24 px-6 md:px-12">
+    <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#000] relative overflow-hidden pt-28 md:pt-32 pb-16 md:pb-24 px-5 sm:px-6 md:px-12">
       
       <div className="max-w-[1600px] mx-auto relative z-10">
         
-        <Link to="/" className="fixed top-8 left-6 z-40 group mix-blend-difference">
+        <Link to="/" className="fixed top-[max(1.25rem,env(safe-area-inset-top))] left-5 md:top-8 md:left-6 z-40 group mix-blend-difference">
          <div className="flex flex-col items-start">
             <div className="flex items-center gap-2 text-[#D6B97A] mb-1 opacity-100 group-hover:opacity-100 transition-opacity duration-300">
                 <ArrowLeft size={12} />
-                <span className="font-mono text-[20px] uppercase tracking-widest">Abort</span>
+                <span className="font-mono text-xs md:text-xl uppercase tracking-widest">Abort</span>
             </div>
          </div>
       </Link>
         {/* Header */}
-        <div className="mb-24 flex flex-col lg:flex-row justify-between items-end gap-12 border-b border-[#F3EFE6]/10 pb-12">
+        <div className="mb-14 md:mb-24 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 md:gap-12 border-b border-[#F3EFE6]/10 pb-8 md:pb-12">
             <div>
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse shadow-[0_0_10px_#D6B97A]" />
                     <span className="text-[#D6B97A] font-mono text-xs uppercase tracking-[0.2em]">System Inventory</span>
                 </div>
-                <h1 className="text-6xl md:text-9xl font-bold tracking-tighter leading-[0.85] text-[#F3EFE6] uppercase">
+                <h1 className="text-[clamp(3.2rem,14vw,6rem)] md:text-9xl font-bold tracking-tighter leading-[0.85] text-[#F3EFE6] uppercase">
                     Deployed <br /><span className="text-[#F3EFE6]/20">Units</span>
                 </h1>
             </div>
 
             {/* Filter */}
-            <div className="flex flex-col items-end gap-4">
+            <div className="flex w-full lg:w-auto flex-col items-start lg:items-end gap-3 md:gap-4">
                 <div className="flex items-center gap-2 text-[#F3EFE6]/40 text-xs font-mono uppercase tracking-widest mb-2">
                     <Filter size={12} />
                     <span>Filter_Protocol</span>
                 </div>
-                <div className="flex flex-wrap justify-end gap-2">
+                <div className="flex w-full max-w-full lg:w-auto overflow-x-auto lg:overflow-visible justify-start lg:justify-end gap-2 pb-2 lg:pb-0">
                     {categories.map(cat => (
                         <button
                             key={cat}
                             onClick={() => setFilter(cat)}
-                            className={`px-4 py-2 border text-xs font-mono uppercase tracking-widest transition-all duration-300 ${
+                            className={`min-h-11 shrink-0 px-4 py-2 border text-[10px] sm:text-xs font-mono uppercase tracking-widest transition-all duration-300 ${
                                 filter === cat 
                                 ? "bg-[#D6B97A] text-[#000] border-[#D6B97A]" 
                                 : "bg-transparent text-[#F3EFE6]/50 border-[#F3EFE6]/10 hover:border-[#D6B97A] hover:text-[#D6B97A]"
@@ -62,7 +62,7 @@ export default function Projects() {
         </div>
 
         {/* The Grid */}
-        <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-20">
+        <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-12 md:gap-y-20">
             <AnimatePresence>
                 {filtered.map((project, index) => (
                     <ProjectCard key={project.slug} project={project} index={index} />
@@ -112,7 +112,7 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
                     </div>
 
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-[#D6B97A] text-[#000] px-4 py-2 text-xs font-mono uppercase tracking-widest font-bold flex items-center gap-2">
+                        <div className="bg-[#D6B97A] text-[#000] px-4 py-2 text-xs font-mono uppercase tracking-widest font-bold flex items-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100">
                             <Crosshair size={14} /> Initialize
                         </div>
                     </div>

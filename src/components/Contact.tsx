@@ -44,7 +44,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 };
 
   return (
-    <section id="contact" className="portfolio-section relative bg-[#0B0B0C] py-32 px-6 md:px-12 overflow-hidden">
+    <section id="contact" className="portfolio-section relative bg-[#0B0B0C] py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden">
       
       {/* 1. ATMOSPHERE */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,185,122,0.05),transparent_40%)] pointer-events-none" />
@@ -53,7 +53,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
         
         {/* --- LEFT COLUMN: THE HOOK --- */}
-        <div className="space-y-12">
+        <div className="space-y-8 md:space-y-12">
             
             <div className="space-y-6">
                 <div className="flex items-center gap-3">
@@ -63,12 +63,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                     </span>
                 </div>
                 
-                <h2 className="text-[#F3EFE6] text-5xl md:text-7xl font-semibold tracking-tighter leading-[0.9]">
+                <h2 className="text-[#F3EFE6] text-[clamp(2.5rem,10vw,4.5rem)] md:text-7xl font-semibold tracking-tighter leading-[0.9]">
                     Ready to engineer <br />
                     the <span className="text-[#444] italic font-serif">impossible?</span>
                 </h2>
 
-                <p className="text-[#BEB6A8] text-lg max-w-md leading-relaxed">
+                <p className="text-[#BEB6A8] text-base sm:text-lg max-w-md leading-relaxed">
                     I am currently available for select projects involving autonomous systems, high-scale architecture, and exotic interfaces.
                 </p>
             </div>
@@ -78,13 +78,13 @@ const handleSubmit = async (e: React.FormEvent) => {
                 onClick={handleCopy}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group w-full md:w-auto flex items-center justify-between md:justify-start gap-8 px-8 py-6 bg-[#1A1A1A] border border-white/10 rounded-sm hover:border-[#D6B97A]/50 transition-all duration-300"
+                className="group w-full md:w-auto min-h-16 flex items-center justify-between md:justify-start gap-4 sm:gap-8 px-4 sm:px-8 py-4 sm:py-6 bg-[#1A1A1A] border border-white/10 rounded-sm hover:border-[#D6B97A]/50 transition-all duration-300"
             >
                 <div className="text-left">
                     <span className="block text-[10px] font-mono uppercase tracking-widest text-[#F3EFE6]/40 mb-1 group-hover:text-[#D6B97A]">
                         Direct Uplink
                     </span>
-                    <span className="text-xl md:text-2xl font-mono tracking-tight text-[#F3EFE6] group-hover:text-white">
+                    <span className="text-sm sm:text-xl md:text-2xl font-mono tracking-tight text-[#F3EFE6] group-hover:text-white break-all">
                         {email}
                     </span>
                 </div>
@@ -101,7 +101,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             {/* Console Frame */}
             <div className="absolute -inset-1 bg-gradient-to-b from-[#F3EFE6]/10 to-transparent rounded-lg blur-sm opacity-50" />
             
-            <div className="relative bg-[#050505] border border-[#F3EFE6]/10 p-8 md:p-12 rounded-lg overflow-hidden">
+            <div className="relative bg-[#050505] border border-[#F3EFE6]/10 p-5 sm:p-8 md:p-12 rounded-lg overflow-hidden">
                 
                 {/* Scanline Effect */}
                 <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none" />
@@ -128,7 +128,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                             name="Username"
                             value={formState.name}
                             onChange={(e) => setFormState({...formState, name: e.target.value})}
-                            className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 text-[#F3EFE6] font-mono text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
+                            className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-3 text-[#F3EFE6] font-mono text-base md:text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
                             placeholder="ENTER_ID"
                         />
                     </div>
@@ -144,7 +144,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                             name="User Address"
                             value={formState.email}
                             onChange={(e) => setFormState({...formState, email: e.target.value})}
-                            className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 text-[#F3EFE6] font-mono text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
+                            className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-3 text-[#F3EFE6] font-mono text-base md:text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10"
                             placeholder="ENTER_SIGNAL_ADDRESS"
                         />
                     </div>
@@ -160,7 +160,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                             name="Message"
                             value={formState.message}
                             onChange={(e) => setFormState({...formState, message: e.target.value})}
-                            className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 text-[#F3EFE6] font-mono text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10 resize-none"
+                            className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-3 text-[#F3EFE6] font-mono text-base md:text-sm focus:outline-none focus:border-[#D6B97A] transition-colors placeholder:text-[#F3EFE6]/10 resize-none"
                             placeholder="ENTER_TRANSMISSION_DATA..."
                         />
                     </div>

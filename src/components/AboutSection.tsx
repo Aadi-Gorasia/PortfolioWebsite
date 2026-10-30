@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Plus, ArrowRight } from "lucide-react";
 
@@ -34,12 +34,12 @@ export default function AboutSection() {
     <section 
       id="about" 
       ref={containerRef}
-      className="portfolio-section relative bg-[#F1ECE2] min-h-screen flex items-center py-32 px-6 md:px-16 overflow-hidden"
+      className="portfolio-section relative bg-[#F1ECE2] min-h-screen flex items-center py-20 md:py-32 px-5 sm:px-6 md:px-16 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto w-full grid md:grid-cols-12 gap-16 items-start z-10">
         
         {/* Left Column: Narrative */}
-        <div className="md:col-span-7 space-y-12">
+        <div className="md:col-span-7 space-y-8 md:space-y-12">
             <RevealTitle />
             
             <motion.div
@@ -48,7 +48,7 @@ export default function AboutSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.2 }}
             >
-                <p className="text-xl md:text-2xl font-light text-[#1A1A1A] leading-relaxed max-w-2xl">
+                <p className="text-lg sm:text-xl md:text-2xl font-light text-[#1A1A1A] leading-relaxed max-w-2xl">
                     Building systems is a habit born from an inability to accept 
 <span className="font-medium italic"> surface-level answers</span>.
                      My process started with the scent of burnt rosin in a cramped living room—a refusal to let a circuit board stay dead.
@@ -56,6 +56,16 @@ export default function AboutSection() {
                     I use mathematics as the blueprint and duct tape as the reality. I’m not looking for perfection; I’m looking for the moment the system actually pulses.
                 </p>
             </motion.div>
+
+            <div className="md:hidden w-full aspect-[4/3] overflow-hidden border border-[#1A1A1A]/15">
+              <img
+                src="/aboutPhoto.jpeg"
+                alt="Aadi working on engineering projects"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-[75%_center]"
+              />
+            </div>
 
             {/* Interactive List */}
             <div className="pt-10 border-t border-[#1A1A1A]/10">
@@ -85,9 +95,11 @@ export default function AboutSection() {
                     <div className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase font-mono text-[#1A1A1A]">
                         Fig. 01 — The Man, The Myth, HIM
                     </div>
+
                 </div>
             </div>
         </div>
+
       </div>
     </section>
   );
@@ -115,18 +127,25 @@ function RevealTitle() {
 
 // Sub-component for the Interactive List Items
 function ListItem({ item }: { item: { title: string, desc: string, tag: string } }) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
     return (
         <motion.div 
             initial="initial"
             whileHover="hover"
-            className="group relative border-b border-[#1A1A1A]/10 py-8 cursor-pointer"
+            className="group relative border-b border-[#1A1A1A]/10 py-4 md:py-8 cursor-pointer"
         >
-            <div className="flex items-center justify-between">
+            <button
+                type="button"
+                aria-expanded={isExpanded}
+                onClick={() => setIsExpanded((expanded) => !expanded)}
+                className="flex min-h-12 w-full items-center justify-between text-left"
+            >
                 <div className="flex items-baseline gap-6">
                     <span className="text-xs font-mono text-[#1A1A1A]/40">{item.tag}</span>
-                    <h3 className="text-3xl font-medium text-[#1A1A1A] group-hover:pl-4 transition-all duration-300 ease-out">
+                    <span className="text-2xl sm:text-3xl font-medium text-[#1A1A1A] group-hover:md:pl-4 transition-all duration-300 ease-out">
                         {item.title}
-                    </h3>
+                    </span>
                 </div>
                 
                 {/* Icon turns into Arrow on hover */}
@@ -145,15 +164,16 @@ function ListItem({ item }: { item: { title: string, desc: string, tag: string }
                         <ArrowRight className="w-6 h-6 text-[#1A1A1A]" />
                     </motion.div>
                 </div>
-            </div>
+                </button>
 
-            {/* Expandable Description */}
+                {/* Expandable Description */}
             <motion.div
+                animate={isExpanded ? "hover" : undefined}
                 variants={{ initial: { height: 0, opacity: 0 }, hover: { height: "auto", opacity: 1 } }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="overflow-hidden"
             >
-                <p className="pt-4 text-[#1A1A1A]/70 text-lg max-w-md ml-10">
+                <p className="pt-4 text-[#1A1A1A]/70 text-base sm:text-lg max-w-md ml-10">
                     {item.desc}
                 </p>
             </motion.div>

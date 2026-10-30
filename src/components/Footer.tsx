@@ -54,7 +54,7 @@ export default function FatFooter() {
   };
 
   return (
-    <footer className="portfolio-section relative bg-[#0B0B0C] pt-24 pb-8 px-6 md:px-12 border-t border-[#F3EFE6]/10 overflow-hidden">
+    <footer className="portfolio-section relative bg-[#0B0B0C] pt-16 md:pt-24 pb-8 px-5 sm:px-6 md:px-12 border-t border-[#F3EFE6]/10 overflow-hidden">
       
       {/* Background Grid Pattern (Faint) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
@@ -62,12 +62,12 @@ export default function FatFooter() {
       <div className="max-w-[1600px] mx-auto relative z-10">
         
         {/* TOP ROW: CTA & NAVIGATION */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 gap-y-10 md:gap-8 mb-16 md:mb-24">
           
           {/* 1. The Call to Action (Span 6) */}
-          <div className="md:col-span-6 flex flex-col justify-between">
+          <div className="col-span-2 md:col-span-6 flex flex-col justify-between">
             <div>
-                <h2 className="text-[#F3EFE6] text-5xl md:text-7xl font-medium tracking-tighter leading-[0.9] mb-8">
+                <h2 className="text-[#F3EFE6] text-[clamp(2.7rem,11vw,4.5rem)] md:text-7xl font-medium tracking-tighter leading-[0.9] mb-8">
                   Let’s build <br />
                   <span className="text-[#666] italic font-serif">something.</span>
                 </h2>
@@ -84,7 +84,7 @@ export default function FatFooter() {
           </div>
 
           {/* 2. Sitemap (Span 2) */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-4 md:space-y-6">
         <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em]">
           Index
         </h4>
@@ -105,7 +105,7 @@ export default function FatFooter() {
 
 
           {/* 3. Socials (Span 2) */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-4 md:space-y-6">
   <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em]">
     Network
   </h4>
@@ -133,7 +133,7 @@ export default function FatFooter() {
 </div>
 
           {/* 4. Meta Data (Span 2) */}
-          <div className="md:col-span-2 space-y-6 flex flex-col justify-between">
+          <div className="col-span-2 md:col-span-2 space-y-4 md:space-y-6 flex flex-row md:flex-col justify-between gap-6">
             <div>
                 <h4 className="text-[#F3EFE6]/40 font-mono text-xs uppercase tracking-[0.2em] mb-4">Coordinates</h4>
                 <p className="text-[#F3EFE6] font-mono text-xs">
@@ -152,11 +152,11 @@ export default function FatFooter() {
         </div>
 
         {/* BOTTOM ROW: MASSIVE SIGNATURE */}
-        <div className="border-t border-[#F3EFE6]/10 pt-12 flex flex-col md:flex-row items-end justify-between gap-8">
+        <div className="border-t border-[#F3EFE6]/10 pt-8 md:pt-12 flex flex-col md:flex-row items-end justify-between gap-8">
             
             {/* The Name (Fills the space) */}
             <div className="w-full overflow-hidden">
-                <h1 className="text-[14vw] leading-[0.8] font-bold text-[#F3EFE6] tracking-tighter uppercase select-none mix-blend-difference opacity-90">
+                <h1 className="text-[13vw] sm:text-[14vw] leading-[0.8] font-bold text-[#F3EFE6] tracking-tighter uppercase select-none mix-blend-difference opacity-90">
                     GORASIA
                 </h1>
             </div>
@@ -164,7 +164,7 @@ export default function FatFooter() {
             {/* Back to Top Button */}
             <button 
                 onClick={scrollToTop}
-                className="group relative flex items-center justify-center w-16 h-16 md:w-24 md:h-24 border border-[#F3EFE6]/20 rounded-full hover:bg-[#F3EFE6] hover:border-[#F3EFE6] transition-all duration-500 shrink-0 mb-4 md:mb-8"
+                className="group relative flex items-center justify-center w-14 h-14 md:w-24 md:h-24 border border-[#F3EFE6]/20 rounded-full hover:bg-[#F3EFE6] hover:border-[#F3EFE6] transition-all duration-500 shrink-0 mb-2 md:mb-8"
             >
                 <div className="absolute inset-0 rounded-full bg-[#F3EFE6] scale-0 group-hover:scale-100 transition-transform duration-500" />
                 <ArrowUp className="w-6 h-6 md:w-8 md:h-8 text-[#F3EFE6] group-hover:text-[#0B0B0C] relative z-10 transition-colors duration-500" />

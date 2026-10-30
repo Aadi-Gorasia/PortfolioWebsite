@@ -33,16 +33,16 @@ export default function BlogListing() {
   }, [allPosts, searchQuery, selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#050505] relative overflow-hidden">
+    <div className="min-h-screen bg-[#050505] text-[#F3EFE6] selection:bg-[#D6B97A] selection:text-[#050505] relative overflow-x-clip">
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-[#D6B97A] origin-left z-50"
         style={{ scaleX: progress }}
       />
       
       {/* 2. BACK TO HOME (The Magnetic Return) */}
-      <Link to="/" className="fixed top-8 left-8 z-40 group mix-blend-difference">
+      <Link to="/" className="fixed top-[max(1.25rem,env(safe-area-inset-top))] left-5 md:top-8 md:left-8 z-40 group mix-blend-difference">
         <div className="flex items-center gap-4">
-            <div className="relative flex items-center justify-center w-14 h-14 border border-[#F3EFE6] rounded-full overflow-hidden transition-all duration-500 group-hover:bg-[#F3EFE6]">
+            <div className="relative flex items-center justify-center w-11 h-11 md:w-14 md:h-14 border border-[#F3EFE6] rounded-full overflow-hidden transition-all duration-500 group-hover:bg-[#F3EFE6]">
                 <ArrowLeft className="w-6 h-6 text-[#F3EFE6] group-hover:text-[#000] transition-colors duration-300 relative z-10" />
             </div>
             <div className="hidden md:flex flex-col">
@@ -52,10 +52,10 @@ export default function BlogListing() {
         </div>
       </Link>
 
-      <div className="max-w-[1800px] mx-auto px-6 md:px-12 relative z-10 pt-48 pb-24">
+      <div className="max-w-[1800px] mx-auto px-5 sm:px-6 md:px-12 relative z-10 pt-32 md:pt-48 pb-16 md:pb-24">
         
         {/* --- HEADER (Loud & Bold) --- */}
-        <div className="mb-32 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end border-b border-[#F3EFE6]/10 pb-12">
+        <div className="mb-16 md:mb-32 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-end border-b border-[#F3EFE6]/10 pb-8 md:pb-12">
             <div className="lg:col-span-9">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-2 h-2 bg-[#D6B97A] rounded-full animate-pulse" />
@@ -64,7 +64,7 @@ export default function BlogListing() {
                     </span>
                 </div>
                 
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9] text-[#F3EFE6] uppercase">
+                <h1 className="text-[clamp(3rem,13vw,6rem)] md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9] text-[#F3EFE6] uppercase">
                     Engineering <br />
                     <span className="text-[#F3EFE6]/20">Logs</span>
                 </h1>
@@ -77,8 +77,8 @@ export default function BlogListing() {
         </div>
 
         {/* --- CONTROL PANEL (Search & Filter) --- */}
-        <div className="sticky top-0 z-30 bg-[#050505] border-b border-[#F3EFE6]/10 mb-24 py-6 -mx-6 px-6 md:-mx-12 md:px-12">
-            <div className="flex flex-col lg:flex-row gap-8 lg:items-center justify-between">
+        <div className="sticky top-[4.75rem] md:top-0 z-30 bg-[#050505]/95 backdrop-blur-md border-b border-[#F3EFE6]/10 mb-14 md:mb-24 py-4 md:py-6 -mx-5 px-5 sm:-mx-6 sm:px-6 md:-mx-12 md:px-12">
+            <div className="flex flex-col lg:flex-row gap-4 md:gap-8 lg:items-center justify-between">
                 
                 {/* Search Input (The Terminal) */}
                 <div className={`relative group transition-all duration-300 w-full lg:w-1/3`}>
@@ -92,7 +92,7 @@ export default function BlogListing() {
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-2 pl-10 pr-4 text-[#F3EFE6] font-mono text-sm placeholder:text-[#F3EFE6]/20 focus:outline-none focus:border-[#D6B97A] transition-colors uppercase"
+                        className="w-full bg-transparent border-b border-[#F3EFE6]/20 py-3 pl-10 pr-4 text-[#F3EFE6] font-mono text-base md:text-sm placeholder:text-[#F3EFE6]/20 focus:outline-none focus:border-[#D6B97A] transition-colors uppercase"
                     />
                     {/* Blinking Cursor */}
                     {isFocused && (
@@ -101,12 +101,12 @@ export default function BlogListing() {
                 </div>
 
                 {/* Category Tabs (The Frequency Bands) */}
-                <div className="flex flex-wrap gap-x-8 gap-y-4">
+                <div className="flex max-w-full overflow-x-auto lg:overflow-visible lg:flex-wrap gap-x-6 md:gap-x-8 gap-y-4">
                     {categories.map((cat) => (
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className="relative pb-1 text-sm font-mono uppercase tracking-widest transition-colors"
+                            className="relative min-h-11 shrink-0 pb-1 text-xs sm:text-sm font-mono uppercase tracking-widest transition-colors"
                         >
                             <span className={`${selectedCategory === cat ? "text-[#F3EFE6]" : "text-[#F3EFE6]/40 hover:text-[#F3EFE6]/70"}`}>
                                 {cat}
@@ -129,7 +129,7 @@ export default function BlogListing() {
         {/* --- THE GRID (Dossier Files) --- */}
         <motion.div 
             layout 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-24"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14 md:gap-y-24"
         >
           <AnimatePresence>
             {filteredPosts.map((post, index) => (

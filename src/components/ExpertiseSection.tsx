@@ -41,7 +41,7 @@ export default function ExpertiseSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="work" className="portfolio-section relative bg-[#0B0B0C] min-h-screen py-32 px-4 md:px-16 overflow-hidden flex flex-col justify-center">
+    <section id="work" className="portfolio-section relative bg-[#0B0B0C] min-h-screen py-20 md:py-32 px-5 sm:px-8 md:px-16 overflow-hidden flex flex-col justify-center">
       
       {/* 1. The Background Image Reveal Layer */}
       <div className="absolute inset-0 z-0 w-full h-full pointer-events-none">
@@ -75,7 +75,7 @@ export default function ExpertiseSection() {
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         
         {/* Section Header */}
-        <div className="mb-16 flex items-end justify-between border-b border-[#F3EFE6]/10 pb-4">
+        <div className="mb-10 md:mb-16 flex items-end justify-between border-b border-[#F3EFE6]/10 pb-4">
           <h2 className="text-[#F3EFE6]/40 text-sm font-mono tracking-widest uppercase">
             // Core Competencies
           </h2>
@@ -102,19 +102,30 @@ export default function ExpertiseSection() {
   );
 }
 
-function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: any) {
+function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: { item: typeof EXPERTISE[number], index: number, hoveredIndex: number | null, setHoveredIndex: (index: number | null) => void }) {
   // Determine the state of this specific item
   const isHovered = hoveredIndex === index;
   const isDimmed = hoveredIndex !== null && hoveredIndex !== index;
 
   return (
-    <motion.div
-      onHoverStart={() => setHoveredIndex(index)}
-      onHoverEnd={() => setHoveredIndex(null)}
-      className="group relative border-b border-[#F3EFE6]/10 py-10 cursor-pointer transition-colors duration-500"
+    <motion.button
+      type="button"
+      aria-pressed={isHovered}
+      onClick={() => {
+        if (window.matchMedia("(pointer: coarse)").matches) {
+          setHoveredIndex(isHovered ? null : index);
+        }
+      }}
+      onHoverStart={() => {
+        if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(index);
+      }}
+      onHoverEnd={() => {
+        if (!window.matchMedia("(pointer: coarse)").matches) setHoveredIndex(null);
+      }}
+      className="group relative w-full border-b border-[#F3EFE6]/10 py-6 md:py-10 text-left cursor-pointer transition-colors duration-500"
     >
       {/* Container Layout */}
-      <div className="flex items-center justify-between relative z-20 mix-blend-difference">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between relative z-20 mix-blend-difference">
         
         {/* Title */}
         <motion.h3
@@ -124,7 +135,7 @@ function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: any) {
             filter: isDimmed ? "blur(2px)" : "blur(0px)",
           }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="text-5xl md:text-8xl font-bold tracking-tighter text-[#F3EFE6] uppercase"
+          className="text-[clamp(2rem,8vw,3rem)] sm:text-5xl md:text-8xl font-bold tracking-tighter text-[#F3EFE6] uppercase"
         >
           {item.title}
         </motion.h3>
@@ -142,6 +153,14 @@ function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: any) {
           </span>
           {/* <MoveRight className="w-8 h-8" /> */}
         </motion.div>
+        <div className="mt-2 flex items-center justify-between md:hidden">
+          <span className="text-[10px] font-mono tracking-widest uppercase text-[#D6B97A]">
+            {item.category}
+          </span>
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#F3EFE6]/40">
+            {isHovered ? "Selected" : "Tap to explore"}
+          </span>
+        </div>
       </div>
 
       {/* Hover Background Strip (The 'Selection' Highlight) */}
@@ -151,6 +170,6 @@ function ExpertiseItem({ item, index, hoveredIndex, setHoveredIndex }: any) {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="absolute inset-0 bg-[#F3EFE6] origin-left z-0 mix-blend-exclusion opacity-100"
       />
-    </motion.div>
+    </motion.button>
   );
 }
