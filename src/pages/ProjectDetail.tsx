@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { PROJECTS } from "../lib/project-data";
 
 export default function ProjectDetail() {
@@ -38,9 +39,14 @@ export default function ProjectDetail() {
             {project.status && <span>{project.status}</span>}
             {project.category && <span>{project.category}</span>}
           </div>
-          <h1 className="max-w-5xl break-words text-[clamp(2.7rem,11vw,5rem)] font-bold uppercase leading-[0.9] tracking-tighter md:text-8xl lg:text-9xl">
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-5xl break-words text-[clamp(2.7rem,11vw,5rem)] font-bold uppercase leading-[0.9] tracking-tighter md:text-8xl lg:text-9xl"
+          >
             {project.title}
-          </h1>
+          </motion.h1>
         </div>
       </header>
 

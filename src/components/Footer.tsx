@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const FOOTER_LINKS = [
@@ -72,7 +73,13 @@ export default function FatFooter() {
         <p className="mt-5 font-mono text-[9px] uppercase tracking-[0.1em] text-white/30">© {new Date().getFullYear()} Aadi Gorasia · Pune, India</p>
       </div>
 
-      <div className="hidden max-w-[1600px] mx-auto relative z-10 md:block">
+      <motion.div
+        initial={{ opacity: 0, y: 22 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.12 }}
+        transition={{ duration: 0.65, ease: "easeOut" }}
+        className="hidden max-w-[1600px] mx-auto relative z-10 md:block"
+      >
         
         {/* TOP ROW: CTA & NAVIGATION */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 gap-y-10 md:gap-8 mb-16 md:mb-24">
@@ -83,15 +90,17 @@ export default function FatFooter() {
                 <h2 className="text-[#F3EFE6] text-[clamp(2.7rem,11vw,4.5rem)] md:text-7xl font-medium tracking-tighter leading-[0.9] mb-8">
                   Get in touch.
                 </h2>
-                <button 
+                <motion.button
                   onClick={(e) => handleScroll(e, "contact")}
+                  whileHover={{ x: 6 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 24 }}
                   className="group flex items-center gap-4 text-[#F3EFE6] hover:text-[#D6B97A] transition-colors duration-300"
                 >
                   <span className="text-sm font-mono uppercase tracking-widest border-b border-[#F3EFE6]/30 pb-1 group-hover:border-[#D6B97A]">
                     Contact
                   </span>
                   <span aria-hidden="true">↗</span>
-                </button>
+                </motion.button>
             </div>
           </div>
 
@@ -160,12 +169,14 @@ export default function FatFooter() {
             </div>
 
             {/* Back to Top Button */}
-            <button 
+            <motion.button
                 onClick={scrollToTop}
+                whileHover={{ y: -4 }}
+                whileTap={{ y: 0 }}
                 className="shrink-0 border-y border-[#F3EFE6]/30 py-4 font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6] transition-colors hover:border-[#D6B97A] hover:text-[#D6B97A] md:mb-8"
             >
                 Back to top ↑
-            </button>
+            </motion.button>
         </div>
 
         {/* COPYRIGHT BAR */}
@@ -174,7 +185,7 @@ export default function FatFooter() {
             <span className="mt-4 md:mt-0">Pune, India</span>
         </div>
 
-      </div>
+      </motion.div>
     </footer>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { PROJECTS } from "../lib/project-data";
 
@@ -51,8 +52,15 @@ export default function Projects() {
         </header>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-8">
-          {filteredProjects.map((project) => (
-            <article key={project.slug} className="group overflow-hidden border-t border-white/15 pt-4">
+          {filteredProjects.map((project, index) => (
+            <motion.article
+              key={project.slug}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.12 }}
+              transition={{ duration: 0.45, delay: (index % 2) * 0.08, ease: "easeOut" }}
+              className="group overflow-hidden border-t border-white/15 pt-4"
+            >
               <Link to={`/projects/${project.slug}`} className="block">
                 {project.coverImage && (
                   <div className="relative aspect-[1.28] overflow-hidden md:aspect-video">
@@ -61,7 +69,7 @@ export default function Projects() {
                       alt={project.title}
                       loading="lazy"
                       decoding="async"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
                     />
                   </div>
                 )}
@@ -77,7 +85,7 @@ export default function Projects() {
                   <span className="sr-only">View project</span>
                 </div>
               </Link>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>

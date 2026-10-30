@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 
 /* -------------------- TYPES -------------------- */
@@ -254,9 +255,19 @@ function NavItem({ item, isActive, onClick }: NavItemProps) {
     <li className="relative list-none">
       <button
         onClick={onClick}
-        className={`relative block border-b px-3 py-5 text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors duration-200 ${isActive ? "border-[#D6B97A] text-[#D6B97A]" : "border-transparent text-[#F3EFE6] hover:text-[#D6B97A]"}`}
+        className={`group relative block px-3 py-5 text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors duration-200 ${isActive ? "text-[#D6B97A]" : "text-[#F3EFE6] hover:text-[#D6B97A]"}`}
       >
         {item.name}
+        {isActive && (
+          <motion.span
+            layoutId="desktop-nav-underline"
+            className="absolute inset-x-3 bottom-0 h-px bg-[#D6B97A]"
+            transition={{ type: "spring", stiffness: 360, damping: 32 }}
+          />
+        )}
+        {!isActive && (
+          <span className="absolute inset-x-3 bottom-0 h-px origin-left scale-x-0 bg-[#D6B97A] transition-transform duration-300 group-hover:scale-x-100" />
+        )}
       </button>
     </li>
   );

@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 const STACK = [
   { category: "Core", items: ["Python", "Rust", "JavaScript", "HTML"] },
   { category: "Frameworks", items: ["Next.js", "React Native", "Django", "Vite"] },
@@ -13,13 +15,34 @@ export default function TheArsenal() {
           <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#D6B97A]">Tools I use</p>
           <h3 className="mt-2 font-display text-3xl font-semibold tracking-[-0.04em] text-[#F3EFE6]">The toolkit</h3>
         </div>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-8">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:hidden">
           {STACK.map((group) => (
             <section key={group.category} className="border-t border-white/15 pt-4">
               <h4 className="font-display text-xl font-medium text-white">{group.category}</h4>
               <ul className="mt-4 space-y-3">
                 {group.items.map((tech) => (
                   <li key={tech} className="font-mono text-xs leading-5 text-[#BEB6A8] md:text-sm">{tech}</li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+        <div className="hidden grid-cols-4 gap-8 md:grid">
+          {STACK.map((group, groupIndex) => (
+            <section key={group.category} className="border-t border-white/15 pt-4">
+              <h4 className="font-display text-xl font-medium text-white">{group.category}</h4>
+              <ul className="mt-4 space-y-3">
+                {group.items.map((tech, itemIndex) => (
+                  <motion.li
+                    key={tech}
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.8 }}
+                    transition={{ duration: 0.35, delay: groupIndex * 0.08 + itemIndex * 0.035, ease: "easeOut" }}
+                    className="font-mono text-xs leading-5 text-[#BEB6A8] transition-colors hover:text-[#D6B97A] md:text-sm"
+                  >
+                    {tech}
+                  </motion.li>
                 ))}
               </ul>
             </section>

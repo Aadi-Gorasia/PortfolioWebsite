@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { getBlogPosts, type BlogPostMeta } from "@/lib/blog-utils";
 
@@ -69,7 +70,12 @@ export default function BlogListing() {
                             </span>
                             
                             {selectedCategory === cat && (
-                                <span aria-hidden="true" className="absolute bottom-0 left-0 w-full h-[2px] bg-[#D6B97A]" />
+                                <motion.span
+                                  layoutId="writing-category-underline"
+                                  aria-hidden="true"
+                                  className="absolute bottom-0 left-0 h-[2px] w-full bg-[#D6B97A]"
+                                  transition={{ type: "spring", stiffness: 340, damping: 32 }}
+                                />
                             )}
                         </button>
                     ))}
@@ -120,7 +126,13 @@ function MobileDossierCard({ post }: { post: BlogPostMeta }) {
 
 function DossierCard({ post }: { post: BlogPostMeta }) {
     return (
-        <article className="group flex h-full flex-col">
+        <motion.article
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.18 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="group flex h-full flex-col"
+        >
             <Link to={`/blog/${post.slug}`} className="block h-full">
                 <div className="relative mb-6 aspect-[16/10] w-full overflow-hidden border-y border-[#F3EFE6]/10">
                     {post.coverImage && (
@@ -129,7 +141,7 @@ function DossierCard({ post }: { post: BlogPostMeta }) {
                             alt={post.title}
                             loading="lazy"
                             decoding="async"
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover transition-transform duration-700 md:group-hover:scale-[1.035]"
                         />
                     )}
                 </div>
@@ -147,6 +159,6 @@ function DossierCard({ post }: { post: BlogPostMeta }) {
                     </div>
                 </div>
             </Link>
-        </article>
+        </motion.article>
     )
 }

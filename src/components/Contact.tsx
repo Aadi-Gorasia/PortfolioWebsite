@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 export default function Contact() {
@@ -63,8 +64,10 @@ const handleSubmit = async (e: React.FormEvent) => {
                 </p>
             </div>
 
-            <button
+            <motion.button
                 onClick={handleCopy}
+                whileHover={{ x: 6 }}
+                whileTap={{ scale: 0.99 }}
                 className="group w-full md:w-auto min-h-16 flex items-center justify-between md:justify-start gap-4 sm:gap-8 border-y border-white/15 py-4 sm:py-6 text-left hover:border-[#D6B97A]/50 transition-colors"
             >
                 <div className="text-left">
@@ -77,7 +80,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 </div>
                 
                 <span className="font-mono text-xs uppercase tracking-widest text-[#D6B97A]">{copied ? "Copied" : "Copy"}</span>
-            </button>
+            </motion.button>
         </div>
 
         <div className="md:hidden">
@@ -108,7 +111,14 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
         {/* --- RIGHT COLUMN: THE CONSOLE (FORM) --- */}
-        <div ref={formPanelRef} className={`relative scroll-mt-24 ${mobileFormOpen ? "block" : "hidden"} md:block`}>
+        <motion.div
+          ref={formPanelRef}
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className={`relative scroll-mt-24 ${mobileFormOpen ? "block" : "hidden"} md:block`}
+        >
             <div className="relative border-y border-[#F3EFE6]/15 py-6 sm:py-8 md:py-12">
                 <div className="flex items-center justify-between mb-8 border-b border-[#F3EFE6]/10 pb-4">
                     <span className="text-[#F3EFE6]/70 font-mono text-xs uppercase tracking-widest">
@@ -197,7 +207,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
                 </form>
             </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>

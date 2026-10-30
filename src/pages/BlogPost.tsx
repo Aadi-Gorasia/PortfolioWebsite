@@ -1,4 +1,5 @@
 import { lazy, Suspense, useMemo, type ComponentPropsWithoutRef, type ComponentType, type LazyExoticComponent } from "react";
+import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import { getBlogPosts } from "@/lib/blog-utils";
 
@@ -57,13 +58,18 @@ export default function BlogPost() {
       <header className="relative min-h-[55svh] flex flex-col justify-center py-28 md:py-32 px-5 sm:px-6 md:px-12 max-w-[1800px] mx-auto">
         <div className="z-10">
             <p className="mb-6 font-mono tracking-[0.2em] text-[10px] uppercase text-[#D6B97A]">{post.category}</p>
-            <h1 className="max-w-5xl text-[clamp(3rem,12vw,8rem)] font-bold leading-[0.9] tracking-tighter break-words">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-5xl text-[clamp(3rem,12vw,8rem)] font-bold leading-[0.9] tracking-tighter break-words"
+            >
                 {post.title.split(' ').map((word, i) => (
                     <span key={i} className="inline-block mr-[0.2em]">
                         {word}
                     </span>
                 ))}
-            </h1>
+            </motion.h1>
         </div>
 
       </header>
@@ -73,9 +79,15 @@ export default function BlogPost() {
         <div className="mx-auto w-full max-w-3xl">
             {Content && (
                 <Suspense fallback={<ArticleLoader />}>
-                    <article className="prose prose-invert prose-base md:prose-2xl max-w-none">
+                    <motion.article
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.05 }}
+                      transition={{ duration: 0.55, ease: "easeOut" }}
+                      className="prose prose-invert prose-base md:prose-2xl max-w-none"
+                    >
                         <Content components={MDXComponents} />
-                    </article>
+                    </motion.article>
                 </Suspense>
             )}
         </div>

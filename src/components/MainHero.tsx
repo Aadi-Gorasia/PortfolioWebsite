@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export default function MainHero() {
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -15,19 +17,25 @@ export default function MainHero() {
             
             {/* First Name */}
             <div className="overflow-hidden">
-                <h1
+                <motion.h1
+                    initial={{ y: "105%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
                     className="text-[clamp(5rem,14vw,12rem)] font-display font-semibold text-[#F3EFE6] tracking-[-0.06em]"
                 >
                     Aadi
-                </h1>
+                </motion.h1>
             </div>
             
             <div className="overflow-hidden">
-                <h1
+                <motion.h1
+                    initial={{ y: "105%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1.1, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
                     className="text-[clamp(5rem,14vw,12rem)] font-serif font-medium italic text-[#D6B97A] tracking-[-0.05em] md:pl-32"
                 >
                     Gorasia
-                </h1>
+                </motion.h1>
             </div>
 
         </div>
@@ -36,19 +44,29 @@ export default function MainHero() {
       {/* --- BOTTOM: NARRATIVE & ACTION --- */}
       <div className="hidden md:flex relative z-30 w-full px-6 sm:px-8 md:px-16 lg:px-24 pb-[max(2rem,env(safe-area-inset-bottom))] md:pb-24 flex-col lg:flex-row lg:items-end justify-between gap-8 md:gap-12 lg:gap-24">
             
-            <div className="max-w-2xl border-l border-[#D6B97A]/50 pl-4 md:pl-8 py-2">
+            <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.55, ease: "easeOut" }}
+                className="max-w-2xl border-l border-[#D6B97A]/50 pl-4 md:pl-8 py-2"
+            >
                 <p className="text-base sm:text-lg md:text-xl font-light leading-relaxed">
                     I live in Pune. I started programming during lockdown and built projects to teach myself.
                 </p>
-            </div>
+            </motion.div>
 
-            <button
+            <motion.button
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ x: 5 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.35, delay: 0.7 }}
                 onClick={handleContactClick}
                 className="group flex min-h-12 items-center justify-between gap-8 border-b border-[#F3EFE6]/30 py-3 text-left transition-colors hover:border-[#D6B97A] hover:text-[#D6B97A] md:w-auto"
             >
                 <span className="uppercase tracking-widest text-sm font-bold">Contact</span>
                 <span aria-hidden="true">↘</span>
-            </button>
+            </motion.button>
       </div>
 
       <div className="mobile-home-hero relative z-20 flex min-h-[100svh] flex-col justify-between px-5 pb-28 pt-24 md:hidden">

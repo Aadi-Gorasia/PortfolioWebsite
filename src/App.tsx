@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
+import { MotionConfig } from "framer-motion";
 
 // Homepage Components
 import MainHero from "./components/MainHero";
@@ -92,6 +93,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
+    <MotionConfig reducedMotion="user">
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -105,5 +107,6 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
+    </MotionConfig>
   );
 }

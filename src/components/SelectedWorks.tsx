@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { PROJECTS } from "../lib/project-data";
 
 const FEATURED_PROJECTS = PROJECTS.filter((project) =>
@@ -50,9 +51,15 @@ export default function SelectedWorks() {
 
         {/* HEADER */}
         <div className="flex items-end justify-between mb-12 md:mb-24 border-b border-[#F3EFE6]/10 pb-6">
-          <h2 className="text-[#F3EFE6] text-[clamp(2.8rem,10vw,6rem)] md:text-8xl font-semibold tracking-tighter leading-[0.9]">
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-[#F3EFE6] text-[clamp(2.8rem,10vw,6rem)] md:text-8xl font-semibold tracking-tighter leading-[0.9]"
+          >
             Selected work
-          </h2>
+          </motion.h2>
           <div className="hidden md:flex flex-col items-end text-right gap-2">
              <span className="text-[#D6B97A] font-mono text-xs tracking-widest uppercase">
                 Featured projects
@@ -63,16 +70,24 @@ export default function SelectedWorks() {
         {/* THE LIST */}
         <div className="flex flex-col border-b border-[#F3EFE6]/10">
           {FEATURED_PROJECTS.map((project, index) => (
-            <ProjectItem
+            <motion.div
               key={project.slug}
-              project={project}
-              index={index}
-            />
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.55, delay: index * 0.07, ease: "easeOut" }}
+            >
+              <ProjectItem project={project} index={index} />
+            </motion.div>
           ))}
         </div>
 
         {/* --- 3. THE GATEWAY (Link to All Projects) --- */}
         <div className="mt-12 flex justify-end">
+            <motion.div
+              whileHover={{ x: 8 }}
+              transition={{ type: "spring", stiffness: 220, damping: 22 }}
+            >
             <Link
                 to="/projects"
                 className="group flex min-h-16 w-full items-center justify-between border-y border-[#F3EFE6]/20 py-5 transition-colors hover:border-[#D6B97A] md:w-[600px]"
@@ -80,6 +95,7 @@ export default function SelectedWorks() {
                 <span className="text-lg font-bold uppercase tracking-tight text-[#F3EFE6] sm:text-2xl">View all projects</span>
                 <span aria-hidden="true" className="text-[#D6B97A]">↗</span>
             </Link>
+            </motion.div>
         </div>
 
       </div>
@@ -107,14 +123,14 @@ function ProjectItem({ project, index }: { project: (typeof PROJECTS)[number]; i
             alt=""
             loading="lazy"
             decoding="async"
-            className="hidden aspect-video w-48 object-cover md:block"
+            className="hidden aspect-video w-48 object-cover transition-transform duration-500 group-hover:scale-[1.04] md:block"
           />
         )}
         <div className="text-right font-mono text-[10px] uppercase tracking-widest text-[#F3EFE6]/50">
           <span className="block">{project.client}</span>
           <span className="block font-bold text-[#F3EFE6]">{project.year}</span>
         </div>
-        <span aria-hidden="true" className="text-2xl text-[#F3EFE6]/60 transition-colors group-hover:text-[#D6B97A]">↗</span>
+        <span aria-hidden="true" className="text-2xl text-[#F3EFE6]/60 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#D6B97A]">↗</span>
       </div>
     </Link>
   );
